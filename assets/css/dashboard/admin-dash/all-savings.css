@@ -1,0 +1,44 @@
+.main-table{
+    font-size: 1.2rem;
+}
+
+.tabs-container{
+    font-size: 1.5rem;
+    color: var(--white);
+    margin: 0 auto 3rem;
+    width: 80%;
+}
+
+.tabs{
+    background-color: var(--primary-color);
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid var(--primary-color);
+    overflow: hidden;
+}
+
+.tab{
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .5s;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.tab.active{
+    background-color: var(--white);
+    color: var(--black);
+}
+
+.tab-content{
+    display: none;
+}
+
+.tab-content.active{
+    display: block;
+}
+

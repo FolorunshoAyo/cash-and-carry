@@ -1,0 +1,33 @@
+.dash-header-container{
+    width: 100%;
+}
+
+.dashboard-main-container{
+    position: static;
+    top: 0px;
+    transform: translateY(0%);
+}
+
+.edit-profile-form-container{
+    display: none;
+}
+
+.edit-profile-form-container.active{
+    display: block;
+}
+
+.form-header{
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.submit-btn-container{
+    margin-bottom: 30px;
+}
+
+.submit-btn-container button{
+    width: auto;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+}

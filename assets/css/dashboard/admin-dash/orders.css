@@ -1,0 +1,97 @@
+tbody tr td{
+    font-size: 1.5rem;
+}
+
+.product-details-container{
+    display: flex;
+    align-items: center;
+}
+
+.product-img-container{
+    flex: 0 0 50px;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.product-img-container img{
+    width: 100%;
+    object-fit: cover;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #F5F5F5;
+}
+
+.product-details{
+    flex: 1;
+}
+
+.product-details .product-title,
+.productid-container .id-number,
+.date-added-container .date-added{
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.product-details .product-span,
+.productid-container .productid-date,
+.date-added-container .time-added{
+    font-size: 1.3rem;
+    color: #d0d0d0;
+}
+
+tbody tr td span.dot{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+
+tbody tr td span.red-dot{
+    background-color: var(--danger);
+}
+
+tbody tr td span.pending-dot{
+    background-color: #0275d8;
+}
+
+tbody tr td span.shipped-dot{
+    background-color: #cd02d8;
+}
+
+tbody tr td span.awaiting-shipment-dot{
+    background-color: #d80202;
+}
+
+tbody tr td span.completed-dot{
+    background-color: #6dbd28;
+}
+
+tbody tr td span.cancelled-dot{
+    background-color: #000000;
+}
+
+tbody tr td form{
+    display: flex;
+    align-items: center;
+}
+
+tbody tr td form select{
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    padding: 1rem;
+    font-size: 1rem;
+    font: inherit;
+    flex: 1;
+    margin-right: 10px;
+}
+
+tbody tr td form img{
+    width: 30px;
+    height: 30px;
+}
+

@@ -1,0 +1,122 @@
+.addresses-container{
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: row wrap;
+}
+
+.address-card{
+    flex: 0 0 48%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.address-card:not(:last-child){
+    margin-bottom: 30px;
+}
+
+.main-address{
+    font-size: 1.5rem;
+    padding: 1.5rem;
+    margin-bottom: 0;
+}
+
+.address-card.default .main-address{
+    background-color: #1271b0ea;  
+    color: #fff;
+    font-weight: 400;  
+}
+
+
+.main-address .recipient-name{
+    color: #75757a;
+    margin-bottom: 5px;
+}
+
+.address-card.default .recipient-name{  
+    color: #fff; 
+    font-weight: bold;
+}
+
+
+.address-action-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #ededed;
+    padding: 0.5rem 1rem;
+}
+
+.address-action-container .set-as-default-button{
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    padding: 1rem;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    color: #1270B0;
+    transition: all .3s linear;
+}
+
+.address-action-container .set-as-default-button:hover:enabled,
+.address-action-icon-group .edit-btn:hover{
+    background-color: #1271b0ea; 
+    color: var(--white);
+}
+
+
+.address-action-container .set-as-default-button:disabled{
+    color: #c7c7cd;
+    cursor: not-allowed;
+}
+
+
+.address-action-icon-group{
+    flex: 0 0 100px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.address-action-icon-group .edit-btn{
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1270B0;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: all .3s ease-in;
+}
+
+.address-action-icon-group .edit-btn:not(:last-child){
+    margin-right: 10px;
+}
+
+
+.btn-container{
+    text-align: end;
+    padding: 10px;
+    width: 80%;
+    margin: 20px auto 0;
+}
+
+.btn-container .new-address-btn{
+    padding: 1rem;
+    border: none;
+    color: var(--white);
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    width: 150px;
+    font-size: 1.5rem;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+
+
+

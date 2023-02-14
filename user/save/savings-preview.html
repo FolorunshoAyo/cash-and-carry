@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon Icon -->
+    <link rel="icon" href="../../assets/images/logo-small.png">
+    <!-- Custom Fonts (KyivType Sans and Inter) -->
+    <link rel="stylesheet" href="../../assets/css/fonts/fonts.css">
+    <!-- BASE CSS -->
+    <link rel="stylesheet" href="../../assets/css/base.css">
+    <!-- PLAN PREVIEW CSS -->
+    <link rel="stylesheet" href="../../assets/css/dashboard/user-dash/savings-preview.css">
+    <!-- MEDIA QUERIES (DASHBOARD) -->
+    <link rel="stylesheet" href="../../assets/css/media-queries/user-dash-mediaqueries.css">
+    <title>Plan Summary - StudentXtra</title>
+</head>
+
+<body>
+    <header class="plan-summary-header">
+        <a href="index.html" class="icon-container">
+            <i class="fa fa fa-arrow-left"></i>
+        </a>
+        <h2>Plan Summary</h2>
+    </header>
+
+    <section class="plan-summary-section">
+        <div class="plan-summary-container">
+            <div class="plan-infos">
+                <div class="plan-info plan-amount">
+                    <div class="plan-label">
+                        Amount
+                    </div>
+                    <div class="plan-value">
+                        <span class="currency">NGN</span>
+                        <span id="amount-to-save">5000</span>
+                    </div>
+                </div>
+                <div class="plan-info plan-amount">
+                    <div class="plan-label">
+                        Frequency
+                    </div>
+                    <div class="plan-value">
+                        Daily
+                    </div>
+                </div>
+                <div class="plan-info plan-amount">
+                    <div class="plan-label">
+                        Start date
+                    </div>
+                    <div class="plan-value">
+                        23 Sept 2022.
+                    </div>
+                </div>
+                <div class="plan-info plan-amount">
+                    <div class="plan-label">
+                        End date
+                    </div>
+                    <div class="plan-value">
+                        28 Sept 2022
+                    </div>
+                </div>
+                <div class="plan-info plan-amount">
+                    <div class="plan-label">
+                        Lock Status
+                    </div>
+                    <div class="plan-value">
+                        Locked
+                    </div>
+                </div>
+            </div>
+            <div class="continue-btn-container">
+                <button class="btn">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- FONT AWESOME JIT SCRIPT-->
+    <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
+    <!-- JQUERY SCRIPT -->
+    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
+    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <script>
+        // CHANGE DEFAULT NUMBER TO READABLE FORM 
+        //CHANGE THE BALANCE TO A READABLE FORM
+        $(".amount-to-save").text("NGN "
+            +
+            $(".amount-to-save")
+                .text()
+                .replace(/\D/g, "")
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        );
+        function makePayment(x, final_amt) {
+            FlutterwaveCheckout({
+                public_key: "FLWPUBK_TEST-9907ef66591a80edfb5c7ea51208031d-X",
+                tx_ref: x,
+                amount: final_amt,
+                currency: "NGN",
+                payment_options: "card, banktransfer, ussd",
+                redirect_url: `https://studentxtra.codeweb.ng/student/controllers/process`,
+
+                customer: {
+                    email: "info@codeweb.ng",
+                    phone_number: "123456789",
+                    name: "CODEWEB",
+                },
+                customizations: {
+                    title: "Savings Deposit",
+                    description: '',
+                    logo: "https://laptopshop.codeweb.ng/images/icons/logo.jpg",
+                },
+            });
+        }
+
+        function generateTransaction_ref() {
+            var randm = Math.floor((Math.random() * 100000000) + 1);
+            var tran = "TRX-";
+            return tran + randm;
+        }
+        $(".continue-btn-container button").on("click", function () {
+            // GENERATING TRANSACTION REF:
+            const tranx_ref = generateTransaction_ref();
+
+            const formData = new FormData();
+
+            formData.append("submit", true);
+            formData.append("tx_ref", tranx_ref);
+
+            for ([key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            $.ajax({
+                url: '../controllers/create-savings.php',
+                type: 'post',
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function () {
+                    $(this).html("loading...");
+                },
+                success: function (response) {
+                    response = JSON.parse(response);
+
+                    if (response.success === 1) {
+
+                        makePayment(tranx_ref, response.amount_charged);
+
+                    } else {
+                        // ALERT THE USER UPON FAILED REQUEST/RESPONSE
+                        console.error(response.error_message);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+.dashboard-actions{
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-action-group{
+    flex: 0 0 31%;
+    background-color: #E7F7FD;
+    text-align: center;
+    color: #96DCF5;
+    border-radius: 20px;
+    text-decoration: none;
+}
+
+.dashboard-action-group figure{
+    padding: 3rem;
+}
+
+.dashboard-action-group figure i{
+    font-size: 8rem;
+}
+
+.dashboard-action-group figure figcaption{
+    font-size: 2rem;
+    margin-top: 40px;
+    color: var(--black);
+    font-weight: bold;
+}
+
+.dashboard-action-group:hover{
+    color: #96DCF5;
+}

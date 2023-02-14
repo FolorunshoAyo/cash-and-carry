@@ -1,0 +1,21 @@
+header{
+    display: block;
+}
+
+.form-header{
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    flex: 0 0 100%;
+}
+
+#add-form{
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+}
+
+.form-group-container{
+    flex: 0 0 48%;
+    margin-bottom: 20px;
+}

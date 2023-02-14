@@ -1,0 +1,376 @@
+@keyframes rotate{
+    from{
+        transform: rotate(0deg);
+    }to{
+        transform: rotate(360deg);
+    }
+}
+
+.form-page-wrapper{
+    margin: 30px auto 60px;
+    width: 90%;
+}
+
+header{
+    padding: 1rem 2rem;
+    display: flex;
+}
+
+.form-logo-container{
+    text-decoration: none;
+    flex: 0 0 250px;
+    display: flex;
+}
+
+.form-logo-img-container{
+    flex: 0 0 60px;
+    margin-right: 5px;
+}
+
+.form-logo-img-container img{
+    width: 100%;
+    height: 100%;
+}
+
+.form-logo-text-container{
+    flex: 1;
+    color: var(--primary-color);
+}
+
+.form-logo-text-container .logo-text{
+    display: block;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.form-logo-text-container .logo-text + span{
+    font-size: 1.5rem;
+}
+
+
+.form-section{
+    margin-top: 40px;
+    border: 2px solid var(--primary-color);
+    padding: 7rem 5rem;
+}
+
+.form-container{
+    width: 90%;
+    margin: 0 auto;
+    color: var(--primary-color);
+}
+
+.form-title{
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.form-text{
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+.form-group-container{
+    margin-bottom: 30px;
+}
+
+.form-group{
+    position: relative;
+    height: 50px;
+}
+
+.form-group input{
+    width: 100%;
+    height: 100%;
+    font-size: 1.5rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    outline: none;
+    padding: 1rem;
+    background-color: none;
+}
+
+input[type="file"]#pimages{
+    font-size: 14px;
+}
+
+
+.form-group.animate input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    transition: .3s;
+}
+
+.form-group.animate label{
+    font-size: 1.5rem;
+    position: absolute;
+    left: 1rem;
+    top: 2rem;
+    padding: 0 .25rem;
+    transition: .3s;
+    z-index: 2;
+}
+
+.form-group.animate select + label{
+    top: -.5rem;
+    left: .8rem;
+    color: var(--primary-color);
+    background-color: var(--white);
+    font-weight: 500;
+    opacity: 1;
+} 
+
+.form-group.animate input:focus + label,
+.form-group.animate select:focus + label,
+.form-group.animate textarea:focus + label{
+    top: -.5rem;
+    left: .8rem;
+    color: var(--primary-color);
+    background-color: var(--white);
+    font-weight: 500;
+    opacity: 1;
+} 
+
+.just-validate-error-label{
+    position: absolute;
+    bottom: -22px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.form-group.textarea .just-validate-error-label{
+    bottom: -170px;
+}
+
+.form-group select{
+    font: inherit;
+    font-size: 1.5rem;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    border: 1px solid var(--primary-color);
+    padding: 1rem;
+    outline: none;
+}
+
+.form-group textarea{
+    font: inherit;
+    font-size: 1.5rem;
+    width: 100%;
+    height: 200px;
+    border-radius: 5px;
+    border: 1px solid var(--primary-color);
+    padding: 2rem;
+    outline: none;
+}
+
+.form-group.textarea{
+    margin-bottom: 180px;
+}
+
+
+.form-group select + label{
+    opacity: 0;
+}
+
+
+.form-input:not(:placeholder-shown).form-input:not(:focus) + label{
+    top: -.5rem;
+    left: .8rem;
+    color: var(--primary-color);
+    background-color: var(--white);
+    font-weight: 500;
+}
+
+.form-input:focus, .form-group select:focus, .form-group textarea:focus, .password-form-group-container.focused{
+    border: 2px solid  var(--primary-color);
+}
+
+.password-form-group-container{
+    display: flex;
+    height: 50px;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+.password-form-group-container.first{
+    margin-bottom: 30px;
+}
+
+.password-form-group{
+    flex: 0 0 90%;
+    position: relative;
+}
+
+.visibility-container{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.password-form-group input{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+}
+
+.password-form-group label{
+    font-size: 1.5rem;
+    position: absolute;
+    top: 1rem;
+    padding: 0 .25rem;
+    transition: .3s;
+    z-index: 2;
+}
+
+.password-form-group input:focus + label{
+    top: -1.8rem;
+    left: -0.2rem;
+    color: var(--primary-color);
+    background-color: var(--white);
+    font-weight: 500;
+    opacity: 1;
+}
+
+.password-form-input:not(:placeholder-shown).password-form-input:not(:focus) + label{
+    top: -1.8rem;
+    left: -0.2rem;
+    color: var(--primary-color);
+    background-color: var(--white);
+    font-weight: 500;
+}
+
+.password-form-group .just-validate-error-label{
+    bottom: -30px;
+
+}
+.action-container{
+    margin-top: 30px;
+    text-align: center;
+}
+
+.action-container button{
+    width: 50%;
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    font-size: 2rem;
+    border: none;
+    color: var(--white);
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.link-container{
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.link-container a{
+    color: var(--primary-color);
+    font-size: 2rem;
+}
+
+.check-image-container{
+    text-align: center;
+}
+
+.check-icon-container{
+    margin: 2rem 0;
+    text-align: center;
+    font-size: 8rem;
+    color: var(--primary-color);
+}
+
+.otp-group{
+    width: 300px;
+    margin: 0 auto;
+}
+
+.submit-btn-container{
+    margin-top: 50px;
+}
+
+.submit-btn-container button{
+    width: 250px;
+    padding: 2rem 2rem;
+    color: var(--white);
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    border: 0;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.submit-btn-container button i{
+    font-size: 2rem;
+}
+
+.submit-btn-container button i.rotate{
+    animation: rotate .5s linear infinite;
+}
+
+.existing-account-block{
+    border-top: 2px solid var(--primary-color);
+    padding-top: 2rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.existing-account-block a{
+    color: var(--secondary-color);
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.existing-account-block a i{
+    margin-left: 10px;
+}
+
+.agreement-container{
+    font-size: 1.5rem;
+}
+
+.agreement-container label{
+    display: flex;
+    align-items: center;
+}
+
+.agreement-container label input{
+    margin-right: 10px;
+    accent-color: var(--primary-color);
+}
+
+.agreement-container .just-validate-error-label{
+    position: static;
+    padding: 1rem;
+}
+
+.static-label{
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.static-value{
+    font-size: 1.5rem;
+}
+
+.note-text{
+    margin-top: 10px;
+    font-size: 1.5rem;
+    color: var(--danger);
+}

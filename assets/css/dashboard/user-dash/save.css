@@ -1,0 +1,56 @@
+.dash-header-container{
+    width: 100%;
+}
+
+.dashboard-main-title{
+    font-size: 2.5rem;
+}
+
+.current-balance-container{
+    width: 60%;
+    padding: 2rem 3rem;
+    border: 1px solid var(--primary-color);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    font-size: 1.5rem;
+}
+
+.current-balance-container:not(:last-child){
+    margin-bottom: 20px;
+}
+
+.current-balance-text{
+    color: #d0d0d0;
+    margin-bottom: 5px;
+    font-size: 2rem;
+}
+
+.current-balance-container .balance{
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.current-balance-container .balance.success{
+    color: var(--success);
+}
+
+.add-savings-container{
+    margin-top: 50px;
+}
+
+.submit-btn-container{
+    text-align: end;
+}
+
+.add-savings-container button{
+    text-align: center;
+    display: inline-block;
+    padding: 2rem 3rem;
+    width: 200px;
+    background-color: var(--white);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+    font-size: 1.5rem;
+}

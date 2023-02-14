@@ -1,0 +1,140 @@
+.order-details-container{
+    border: 1px solid #ededed;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+.order-meta{
+    padding: 0.5rem;
+    margin-bottom: 10px;
+}
+
+.order-no{
+    font-weight: 800;
+    font-size: 1.5rem;
+}
+
+.order-products-details{
+    margin-top: 5px;
+    color: #75757a;
+    font-size: 1.3rem;
+}
+
+.order-product-details span:not(:last-child){
+    display: block;
+    margin-bottom: 2px;
+}
+
+.order-details-title{
+    text-transform: uppercase;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.order-item{
+    border: 1px solid #ededed;
+    padding: 1rem 0.5rem;
+}
+
+.product-status{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    color: var(--white);
+}
+
+.product-status.pending{
+    background-color: #0275d8;
+}
+
+.product-status.shipped{
+    background-color: #cd02d8;
+}
+
+.product-status.awaiting-shipment{
+    background-color: #d80202;
+}
+
+.product-status.completed{
+    background-color: #6dbd28;
+}
+
+.product-status.cancelled{
+    background-color: #000000;
+}
+
+.product-info{
+    display: flex;
+    margin-top: 1rem
+}
+
+.product-image-container{
+    flex: 0 0 150px;
+    margin-right: 15px;
+}
+
+.product-image-container img{
+    width: 100%;
+}
+
+.product-details{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 1.5rem;
+}
+
+.product-name{
+    font-weight: 500;
+}
+
+.product-qty{
+    color: #75757a;
+}
+
+.order-info-cards{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-info-card{
+    flex: 0 0 49%;
+    border: 1px solid #ededed;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.order-card-title{
+    padding: 1rem 0.5rem;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #ededed;
+}
+
+.order-card-body{
+    padding: 1.5rem;
+}
+
+.order-card-body-group:not(:last-child){
+    margin-bottom: 15px;
+}
+
+.order-card-body h3{
+    text-transform: capitalize;
+    font-weight: 800;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.order-card-body p:not(:last-child){
+    margin-bottom: 5px;
+}
+
+
+

@@ -1,0 +1,64 @@
+.add-to-account-wrapper, .loader-wrapper{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0,0,0,.8);
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 300;
+}
+
+.add-to-account-container{
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 20px;
+    flex: 0 0 60%;
+}
+
+.close-button{
+    width: 40px;
+    height: 40px;
+    float: right;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 2.5rem;
+    justify-content: center;
+}
+
+.add-to-account-container form{
+    clear: both;
+    margin-top: 10px;
+}
+
+.form-title{
+    font-size: 2.5rem;
+}
+
+.form-text{
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.static-label{
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.static-value{
+    font-size: 1.5 rem;
+}
+
+.saved-amount-alert{
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #6dbd28;
+}
+
+.debt-data{
+    color: var(--danger);
+}

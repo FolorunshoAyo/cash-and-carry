@@ -1,0 +1,124 @@
+.table-wrapper{
+    margin: 5rem 0 2rem;
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 2rem 0;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.table-title{
+    padding: 2rem;
+    font-size: 2.5rem;
+}
+
+.table-container{
+    width: 95%;
+    margin: 0 auto;
+}
+
+table.dataTable thead th{
+    color: #d0d0d0;
+    font-size: 1.5rem;
+    font-weight: 400;
+    border-bottom: 1px solid #d0d0d0;
+}
+
+.dataTables_wrapper .dataTables_filter{
+    margin-bottom: 20px;
+}
+
+table.dataTable tbody td{
+    padding: 15px 10px;
+    border-bottom: 2px solid #d0d0d0;
+}
+
+.dataTables_wrapper .dataTables_paginate{
+    margin-top: 30px;
+}
+
+.dataTables_wrapper .dataTables_info{
+    margin-top: 30px;
+}
+
+.status-badge{
+    display: inline-block;
+    padding: 8px;
+    border-radius: 20px;
+    color: var(--white);
+    text-align: center;
+}
+
+.status-badge.danger{
+    background-color: var(--danger);
+}
+
+.status-badge.success{
+    background-color: var(--primary-color);
+}
+
+.status-badge.progress{
+    background-color: var(--primary-color);
+}
+
+.status-badge.completed{
+    background-color: var(--success);
+}
+
+.dropdown{
+    width: 100%;
+}
+
+.dropdown-toggle{
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 5px;
+    border-radius: 50%;
+    transition: .3s;
+    color: #d0d0d0;
+}
+
+.dropdown-toggle:hover{
+    background-color: rgba(0, 0, 0, 0.24);
+    color: var(--white)
+}
+
+
+.dropdown-menu{
+    left: -40px;
+    padding: 0;
+}
+
+.dropdown-menu__link{
+    text-align: center;
+}
+
+.dropdown-menu__link:not(:last-child){
+    border-bottom: 1px solid #d0d0d0;
+}
+
+.add-container{
+    text-align: end;
+    margin-top: 20px;
+    padding-right: 5%;
+}
+
+.add-container a, .no-wallet-container a{
+    display: inline-block;
+    text-decoration: none;
+    color: var(--white);
+    width: 100px;
+    text-align: center;
+    background-color: var(--secondary-color);
+    padding: 10px 5px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
