@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="assets/css/index.css" type="text/css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="assets/css/media-queries/main-media-queries.css">
-    <title>Home - Confidence Daily Savings (CDS)</title>
+    <title>Home - Cash and carry (CN)</title>
 </head>
 
 <body>
@@ -41,31 +41,47 @@
         <div class="top-header">
             <a href="index.html" class="logo-container">
                 <div class="logo-image-container">
-                    <img src="assets/images/logo-small.png" alt="Header Logo">
+                    <img src="assets/images/logo.jpg" alt="Header Logo">
                 </div>
                 <div class="logo-text">
-                    <span class="title">CDS</span>
-                    <span>Confidence daily savings</span>
+                    <span class="title">PAYHALFNOW</span>
+                    <span>Pay half now - pay half later</span>
                 </div>
             </a>
 
             <nav class="navigation-menu">
                 <ul class="nav-links">
                     <li class="nav-link-item">
-                        <a href="#">Purchases</a>
+                        <a href="#">
+                            <i class="fa fa-money"></i>    
+                            Purchases
+                        </a>
                     </li>
                     <li class="nav-link-item">
-                        <a href="#">Package deals</a>
+                        <a href="#">
+                            <i class="fa fa-rocket"></i>
+                            Packages
+                        </a>
                     </li>
                     <li class="nav-link-item">
-                        <a href="#">Help</a>
+                        <a href="#">
+                            <i class="fa fa-info"></i>
+                            Help
+                        </a>
                     </li>
-                    <li class="nav-link-item">
+                    <li class="nav-link-item cart-link">
+                        <a href="">
+                            <span class="cart-badge">0</span>
+                            <i class="fa fa-shopping-cart"></i>
+                            Cart
+                        </a>
+                    </li>
+                    <!-- <li class="nav-link-item">
                         <div class="dark-mode-container">
                             <span>Dark Mode</span>
                             <img src="assets/images/toggle-off.png" alt="toggle-off">
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
             </nav>
         </div>
@@ -184,14 +200,14 @@
                     <img src="assets/images/banner-main.png" alt="Male jollying with money in his hands">
                 </div>
                 <div class="hero-logo-container">
-                    <img src="assets/images/logo-small.png" alt="#">
+                    <img src="assets/images/logo.jpg" alt="Logo">
                 </div>
             </div>
         </section>
         <section class="available-goods-section">
             <div class="available-goods-container">
                 <div class="available-goods-text-box">
-                    <h2 class="available-goods-title">Available goods this month</h2>
+                    <h2 class="available-goods-title">Top deals</h2>
                     <p class="available-goods-text">According to in-demand purchases, get yours now!</p>
                 </div>
                 <div class="available-goods">
@@ -206,26 +222,21 @@
                     ?>
                     <a href="product?pid=<?php echo($productID) ?>" class="available-good">
                         <figure>
+                            <span class="product-badge half">Pay half (₦300,000)</span>
+                            <span class="product-badge month">Pay per month (₦50,000)</span>
                             <img src="a/admin/images/<?php echo(explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo($rowProduct['name']) ?>">
                             <figcaption>
-                                <span class="product-desc product-category-name"><?php echo($rowProduct['name']) ?></span>
-                                <span class="product-desc product-category-duration">
-                                    N<?php 
-                                        // echo($human_readable->format(intval($rowProduct['price']))) 
-                                        echo($rowProduct['price'])
-                                      ?> 
-                                    X 
-                                    <?php echo($productMetaRecord['duration_in_months']) ?> 
-                                    Months
-                                </span>
+                                <span class="product-desc product-category-name"><?php echo($rowProduct['name']) ?></span>                                  
                                 <span class="product-desc product-category-price">
-                                    N<?php 
-                                    // echo($human_readable->format($productMetaRecord['daily_payment']))
-                                    echo($productMetaRecord['daily_payment']) 
-                                    ?> 
-                                    Daily
+                                ₦ <?php 
+                                            // echo($human_readable->format(intval($rowProduct['price']))) 
+                                            echo((number_format($rowProduct['price'], 2)))
+                                        ?> 
                                 </span>
                             </figcaption>
+                            <div class="add-to-cart-btn">
+                                <button>Add to Cart</button>
+                            </div>
                         </figure>
                     </a>
                     <?php 
@@ -280,11 +291,11 @@
                 <div class="banner-text-box-container">
                     <div class="banner-text-box">
                         <h2 class="text-box-title">
-                            Pay in installments
+                            Buy now and pay later!!
                         </h2>
                         <p class="banner-text">
-                            Confidence Daily Savings is a platform that recognises the economic state and promises to
-                            deliver you with what you need at the onvenience of your pocket.
+                            Cash and carry is a platform that recognises the economic state and promises to
+                            deliver you with what you need at the convenience of your pocket.
                         </p>
                         <div class="banner-btn-container">
                             <a href="#">Learn more</a>
@@ -294,72 +305,80 @@
                 <div class="circle"></div>
             </div>
         </section>
-        <section class="avilable-goods-section">
-            <div class="available-goods-container">
-                <div class="available-goods-text-box">
-                    <h2 class="available-goods-title">Available goods this month</h2>
-                    <p class="available-goods-text">According to in-demand purchases, get yours now!</p>
+        <section class="top-categories-section">
+            <div class="top-categories-container">
+                <div class="top-categories-text-box">
+                    <h2 class="top-categories-title">Top categories</h2>
+                    <p class="top-categories-text">These are the hottest categories right now!!</p>
                 </div>
-                <div class="available-goods">
-                <?php 
-                    $recentProductsSql = $db->query("SELECT * FROM products LIMIT 8");
-
-                    while($rowProduct = $recentProductsSql->fetch_assoc()){
-                        $productID = $rowProduct['product_id'];
-                        $productMetaSql = $db->query("SELECT * FROM product_meta WHERE product_id={$productID}");
-            
-                        $productMetaRecord = $productMetaSql->fetch_assoc();
-                ?>
-                    <a href="#" class="available-good">
+                <div class="top-categories">
+                    <a href="#" class="top-category">
                         <figure>
-                            <img src="a/admin/images/<?php echo(explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo($rowProduct['name']) ?>">
+                            <img src="assets/images/bed-21.jpg" alt="#">
                             <figcaption>
-                                <span class="product-desc product-category-name"><?php echo($rowProduct['name']) ?></span>
-                                <span class="product-desc product-category-duration">
-                                    N<?php 
-                                        // echo($human_readable->format(intval($rowProduct['price']))) 
-                                        echo($rowProduct['price'])
-                                      ?> 
-                                    X 
-                                    <?php echo($productMetaRecord['duration_in_months']) ?> 
-                                    Months
-                                </span>
-                                <span class="product-desc product-category-price">
-                                    N<?php 
-                                    // echo($human_readable->format($productMetaRecord['daily_payment']))
-                                    echo($productMetaRecord['daily_payment']) 
-                                    ?> 
-                                    Daily
-                                </span>
+                                Electronics
                             </figcaption>
                         </figure>
                     </a>
-                    <?php 
-                        }
-                    ?>
+                    <a href="#" class="top-category">
+                        <figure>
+                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <figcaption>
+                                Home and kitchen
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="top-category">
+                        <figure>
+                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <figcaption>
+                                Phones and tablet
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="top-category">
+                        <figure>
+                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <figcaption>
+                                Computers and accessories
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="top-category">
+                        <figure>
+                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <figcaption>
+                                Furniture
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="top-category">
+                        <figure>
+                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <figcaption>
+                                Groceries
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="top-category">
+                        <figure>
+                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <figcaption>
+                                Fashion
+                            </figcaption>
+                        </figure>
+                    </a>
+                    <a href="#" class="top-category">
+                        <figure>
+                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <figcaption>
+                                Health and Beauty
+                            </figcaption>
+                        </figure>
+                    </a>
                 </div>
                 <div class="view-all-container">
                     <a href="#">view all</a>
-                </div>
-            </div>
-        </section>
-        <section class="owner-message-section">
-            <div class="owner-message-container">
-                <div class="owner-message-textbox">
-                    <h1 class="owner-message-title">
-                        Your satisfaction is our concern!
-                    </h1>
-                    <p class="owner-message">
-                        Confidence Daily Savings is a platform that helps the common man to save (small-small, obere, di
-                        e di e, kandan-kandan) to acquire items such as food items, properties, electrical appliances,
-                        building materials etc. <br>
-                        With our savings platforms, your savings are secured and timely withdrawal guaranteed.
-                    </p>
-                </div>
-                <div class="owner-image-container">
-                    <div class="owner-image-wrapper">
-                        <img src="assets/images/confidence-miss.jpeg" alt="Owner of confidence">
-                    </div>
                 </div>
             </div>
         </section>
@@ -369,14 +388,16 @@
             <div class="footer-row">
                 <div class="footer-group-container">
                     <div class="footer-logo-container">
-                        <img src="assets/images/logo-small.png" alt="Footer logo">
+                        <div class="footer-logo-image-container">
+                            <img src="assets/images/logo.jpg" alt="Footer logo">
+                        </div>
                         <div class="footer-logo-text">
-                            <span class="logo-title">CDS</span>
-                            <span>Confidence daily savings</span>
+                            <span class="logo-title">PAYHALF</span>
+                            <span>Buy now pay later</span>
                         </div>
                     </div>
                     <p class="footer-message">
-                        Confywills Nigeria Limited was founded in 2012, since then we have continue to produce a
+                        Codeweb project solutions was founded in 2019, since then we have continued to produce
                         reliable services in all sectors of production and consumption.
                     </p>
                 </div>
@@ -412,7 +433,7 @@
             </div>
             <div class="copyright-message">
                 <div>C</div>
-                <span>Copyright CDS 2022</span>
+                <span>Copyright Codeweb 2022</span>
             </div>
         </div>
     </footer>

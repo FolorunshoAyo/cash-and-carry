@@ -5,8 +5,8 @@
 }
 
 :root{
-    --primary-color: #1270B0;
-    --secondary-color: #2366B5;
+    --primary-color: #FF5C00;
+    --secondary-color: #FF8124;
     --success: #28a745;
     --danger: #dc3545;
     --white: #FFF;
@@ -17,6 +17,9 @@
 
 body{
     font-family: 'Inter', sans-serif !important;
+    background-image: url(../images/body.png);
+    background-repeat: no-repeat;
+    background-size: cover; 
 }
 
 ::selection{

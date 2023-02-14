@@ -100,7 +100,7 @@
 /* < 900px */ 
 @media only screen and (max-width: 56.25em){
     .logo-container{
-        flex: 0 0 25%;
+        flex: 0 0 30%;
     }
 
     .navigation-menu{
@@ -141,7 +141,7 @@
     }
 
     .available-good{
-        flex: 0 0 48%;
+        flex: 0 0 40%;
     }
 
     .product-category div span{
@@ -157,12 +157,13 @@
     }
 
     .banner-img-container{
-        flex: 0 0 300px;
         margin-bottom: 20px;
+        margin-right: 0px;
     }
 
     .banner-img-container img{
-        height: 300px;
+        display: block;
+        margin: 0px auto;
     }
 
     .banner-text-box,
@@ -236,7 +237,7 @@
     }
 
     .available-goods-text-box{
-        margin-left: 30px;
+        margin-left: 10px;
     }
 
     .services-offered{
@@ -332,6 +333,11 @@
         height: 30px;
     }
 
+    .nav-link-item.cart-link a .cart-badge{
+        top: -15px;
+        right: -20px;
+    }
+
     .categories-btn-container button{
         padding: 1rem 2rem;
     }
@@ -343,9 +349,15 @@
     .hero-container{
         flex-direction: column;
     }
+
     .hero-logo-container{
         text-align: initial;
         order: 0;
+    }
+
+    .hero-logo-container img{
+        width: 120px;
+        height: 100%;
     }
 
     .hero-text-box{
@@ -362,7 +374,8 @@
 
     .available-good{
         display: block;
-        margin-bottom: 30px;
+        max-width: 250px;
+        margin: 0 auto 50px;
     }
 
     .view-all-container a{
@@ -397,10 +410,6 @@
 
 /* < 400px */
 @media only screen and (max-width: 25em){   
-    .logo-text .title{
-        font-size: 4rem;
-    }
-
     .logo-text .title + span{
         font-size: 1.5rem;
     }

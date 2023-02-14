@@ -7,27 +7,35 @@ header{
 .top-header{
     display: flex;
     justify-content: space-between;
+    padding: 1.5rem 0;
 }
 
 .logo-container{
     text-decoration: none;
     display: flex;
-    flex: 0 0 20%;
+    flex: 0 0 30%;
 }
 
 .logo-image-container{
-    flex: 0 0 50px;
+    flex: 0 0 60px;
     align-self: center;
 }
 
+.logo-image-container img{
+    width: 100%;
+    height: 100%;
+}
+
 .logo-text{
+    align-self: center;
     flex: 1;
     font-weight: bold;
     color: var(--primary-color);
+    margin-left: 5px;
 }
 
 .logo-text .title{
-    font-size: 3rem;
+    font-size: 1.5rem;
     display: block;
     text-transform: uppercase;
 }
@@ -37,7 +45,7 @@ header{
 }
 
 .navigation-menu{
-    flex: 0 0 500px;
+    flex: 0 0 450px;
     display: flex;
     align-items: center;
 }
@@ -54,16 +62,40 @@ header{
     align-items: center;
 }
 
+.nav-link-item a i{
+    font-size: 1.5rem;
+    margin-right: 5px;
+}
+
 .nav-link-item a{
     display: flex;
     align-items: center;
-    justify-content: center;
     padding: 1rem 2rem;
     text-decoration: none;
-    color: var(--grey);
-    font-size: 1.4rem;
+    color: var(--primary-color);
+    font-size: 1.5rem;
     font-weight: 500;
     letter-spacing: 1px;
+}
+
+.nav-link-item.cart-link{
+    position: relative;
+}
+
+.nav-link-item.cart-link a .cart-badge{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: var(--white);
+    top: -5px;
+    right: -5px;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dark-mode-container{
@@ -77,7 +109,7 @@ header{
     margin-right: 10px;
     align-self: center; 
     letter-spacing: 1px;
-    color: var(--grey);
+    color: var(--primary-color);
     font-weight: 500;
 }
 
@@ -112,7 +144,7 @@ header{
 }
 
 .search-box{
-    border: 2px solid var(--grey);
+    border: 2px solid var(--primary-color);
     border-radius: 5px;
     height: 100%;
     display: flex;
@@ -158,7 +190,7 @@ header{
 }
 
 .other-links-container .menu-container a{
-    color: var(--grey);
+    color: var(--primary-color);
     font-size: 1.5rem;
     text-decoration: none;
     letter-spacing: 1px;
@@ -205,7 +237,7 @@ header{
 }
 
 .product-category div{
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -264,6 +296,10 @@ header{
     text-align: right;
 }
 
+.hero-logo-container img{
+    width: 100%;
+}
+
 .available-goods-section{
     margin: 60px 0;
 }
@@ -294,45 +330,124 @@ header{
 }
 
 .available-good{
-    flex: 0 0 31%;
+    flex: 0 0 22%;
     margin-bottom: 30px;
     text-decoration: none;
     color: var(--black);
 }
 
+.available-good figure{
+    position: relative;
+}
+
 .available-good figure img{
-    width: 100%;
     height: 250px;
     display: block;
-    margin-bottom: 10px;
-    border: 1px solid #d0d0d0;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+}
+
+.available-good figure .product-badge{
+    position: absolute;
+    width: fit-content;
+    padding: 0.5em 1em;
+    font-size: 10px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.available-good figure .product-badge.half{
+    top: 10px;
+    right: -15px;
+}
+
+.available-good figure .product-badge.month{
+    top: 40px;
+    right: -20px;
 }
 
 figcaption{
-    text-align: center;
     font-size: 1.5rem;
     font-weight: 500;
 }
 
 .product-desc{
     display: block;
+    text-align: center;
 }
 
 .product-desc:not(:last-child){
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .product-category-name{
     font-size: 2rem;
-}
-
-.product-category-duration{
-    color: var(--secondary-color);
+    font-weight: 500;
 }
 
 .product-category-price{
     color: var(--secondary-color);
+    font-size: 2rem;
 }
+
+.add-to-cart-btn{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.add-to-cart-btn button{
+  appearance: button;
+  background-color: var(--primary-color);
+  background-image: none;
+  border: 1px solid #000;
+  border-radius: 4px;
+  box-shadow: #fff 4px 4px 0 0,#000 4px 4px 0 1px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: ITCAvantGardeStd-Bk, Arial ,sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  margin: 0 5px 10px 0;
+  overflow: visible;
+  padding: 12px 40px;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.add-to-cart-btn button:focus {
+  text-decoration: none;
+}
+
+.add-to-cart-btn button:hover {
+  text-decoration: none;
+}
+
+.add-to-cart-btn button:active {
+  box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
+  outline: 0;
+}
+
+.add-to-cart-btn button:not([disabled]):active {
+  box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+  transform: translate(2px, 2px);
+}
+
+/* @media (min-width: 768px) {
+  .button-50 {
+    padding: 12px 50px;
+  }
+} */
 
 .view-all-container{
     margin-top: 20px;
@@ -386,7 +501,7 @@ figcaption{
 .banner-section-container{
     position: relative;
     overflow: hidden;
-    background-color: #FFC701;
+    background: radial-gradient(80px, var(--primary-color), var(--secondary-color));
     padding: 2rem 3rem;
     display: flex;
 }
@@ -399,7 +514,7 @@ figcaption{
 
 .banner-img-container img{
     width: 100%;
-    height: 100%;;
+    height: 100%;
 }
 
 .banner-text-box-container{
@@ -438,54 +553,61 @@ figcaption{
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    border: 10px solid var(--primary-color);
+    border: 10px solid var(--white);
     position: absolute;
-    background-color: var(--white);
+    background-color: var(--secondary-color);
     right: -30px;
     bottom: -50px;
 }
 
-
-.owner-message-section{
+.top-categories-section{
     margin: 60px 0;
 }
 
-.owner-message-container{
-    display: flex;
-    justify-content: space-between;
-    background-color: #F5F5F5;
-    padding: 10rem 8rem;
+.top-categories-container{
+    padding: 0 4rem;
 }
 
-.owner-message-textbox{
-    flex: 0 0 55%;
+.top-categories-text-box{
+    margin-left: 50px;
 }
 
-.owner-message-title{
-    align-self: center;
-    font-size: 4rem;
-    color: #FFC701;
+.top-categories-title{
+    font-size: 3rem;
+    color: var(--primary-color);
     margin-bottom: 10px;
 }
 
-.owner-message{
-    font-size: 2rem;
+.top-categories-text{
+    font-size: 1.5rem;
 }
 
-.owner-image-container{
-    flex: 0 0 250px;
+.top-categories{
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-flow: row wrap;
 }
 
-.owner-image-wrapper{
-    width: 250px;
+.top-category{
+    flex: 0 0 22%;
+    margin-bottom: 30px;
+    text-decoration: none;
+    color: var(--black);
+}
+
+.top-category figure img{
     height: 250px;
-    border-radius: 50%;
-    overflow: hidden;
+    display: block;
+    width: 100%;
+    margin-bottom: 30px;
+    border-radius: 20px;
 }
 
-.owner-image-wrapper img{
-    width: 100%;
-    height: 100%;
+.top-categories figure figcaption{
+    text-align: center;
+    font-size: 2rem;
+    color: var(--primary-color);
 }
 
 .footer-container{
@@ -513,23 +635,30 @@ figcaption{
     margin-bottom: 20px;
 }
 
-.footer-logo-container img{
-    flex: 0 0 30px;
+.footer-logo-container .footer-logo-image-container{
+    flex: 0 0 100px;
     margin-right: 10px;
 }
 
+.footer-logo-container .footer-logo-image-container img{
+    max-width: 100%;
+    height: 100%;
+}
+
 .footer-logo-text{
+    align-self: center;
     color: var(--primary-color);
     flex: 1;
 }
 
-.footer-logo-text + span{
-    font-size: 1.5rem;
+.footer-logo-text .logo-title{
+    font-size: 2rem;
+    display: block;
+    font-weight: 800;
 }
 
-.footer-logo-text .logo-title{
-    font-size: 3rem;
-    display: block;
+.footer-logo-text .logo-title + span{
+    font-size: 1.5rem;
 }
 
 .footer-message{
