@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="assets/css/index.css" type="text/css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="assets/css/media-queries/main-media-queries.css">
-    <title>Home - Cash and carry (CN)</title>
+    <title>Home - Codeweb store</title>
 </head>
 
 <body>
@@ -44,7 +44,7 @@
                     <img src="assets/images/logo.jpg" alt="Header Logo">
                 </div>
                 <div class="logo-text">
-                    <span class="title">PAYHALFNOW</span>
+                    <span class="title">codeweb store</span>
                     <span>Pay half now - pay half later</span>
                 </div>
             </a>
@@ -98,7 +98,7 @@
                 </form>
             </div>
             <div class="other-links-container">
-                <button class="installment-btn">Installments</button>
+                <!-- <button class="installment-btn">Installments</button> -->
                 <div class="menu-container">
                     <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo($inSession?  explode(" ", $user_name)[0] : "Account") ?></a>
                     <?php
@@ -220,25 +220,27 @@
             
                             $productMetaRecord = $productMetaSql->fetch_assoc();
                     ?>
-                    <a href="product?pid=<?php echo($productID) ?>" class="available-good">
-                        <figure>
-                            <span class="product-badge half">Pay half (₦300,000)</span>
-                            <span class="product-badge month">Pay per month (₦50,000)</span>
-                            <img src="a/admin/images/<?php echo(explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo($rowProduct['name']) ?>">
-                            <figcaption>
-                                <span class="product-desc product-category-name"><?php echo($rowProduct['name']) ?></span>                                  
-                                <span class="product-desc product-category-price">
-                                ₦ <?php 
-                                            // echo($human_readable->format(intval($rowProduct['price']))) 
-                                            echo((number_format($rowProduct['price'], 2)))
-                                        ?> 
-                                </span>
-                            </figcaption>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </figure>
-                    </a>
+                    <div class="available-good">
+                        <a href="product?pid=<?php echo($productID) ?>">
+                            <figure>
+                                <span class="product-badge half">Pay half (₦300,000)</span>
+                                <span class="product-badge month">Pay per month (₦50,000)</span>
+                                <img src="a/admin/images/<?php echo(explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo($rowProduct['name']) ?>">
+                                <figcaption>
+                                    <span class="product-desc product-category-name"><?php echo($rowProduct['name']) ?></span>                                  
+                                    <span class="product-desc product-category-price">
+                                    ₦ <?php 
+                                                // echo($human_readable->format(intval($rowProduct['price']))) 
+                                                echo((number_format($rowProduct['price'], 2)))
+                                            ?> 
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        </a>
+                        <div class="add-to-cart-btn">
+                            <button>Add to Cart</button>
+                        </div>
+                    </div>
                     <?php 
                         }
                     ?>
@@ -377,10 +379,51 @@
                         </figure>
                     </a>
                 </div>
-                <div class="view-all-container">
-                    <a href="#">view all</a>
-                </div>
             </div>
+        </section>
+        <section class="our-brands-section">
+            <div class="our-brands-container">
+                <div class="our-brands-text-box">
+                    <h2 class="our-brands-title">Our Official Brands</h2>
+                    <p class="our-brands-text">Here are our supported brands/dealers</p>
+                </div>
+                <div class="scroll-container">
+                    <div class="scroll-element scroll-element-first">
+                        <div class="scroll-image">
+                            <img src="assets/images/bed-21.jpg" alt="">
+                        </div>
+                        <div class="scroll-image">
+                            <img src="assets/images/bed-21.jpg" alt="">
+                        </div>
+                        <div class="scroll-image">
+                            <img src="assets/images/bed-21.jpg" alt="">
+                        </div>
+                        <div class="scroll-image">
+                            <img src="assets/images/bed-21.jpg" alt="">
+                        </div>
+                        <div class="scroll-image">
+                            <img src="assets/images/bed-21.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="scroll-element scroll-element-second">
+                        <div class="scroll-image">
+                            <img src="assets/images/bed-21.jpg" alt="">
+                        </div>
+                        <div class="scroll-image">
+                            <img src="assets/images/bed-21.jpg" alt="">
+                        </div>
+                        <div class="scroll-image">
+                            <img src="assets/images/bed-21.jpg" alt="">
+                        </div>
+                        <div class="scroll-image">
+                            <img src="assets/images/bed-21.jpg" alt="">
+                        </div>
+                        <div class="scroll-image">
+                            <img src="assets/images/bed-21.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>  
         </section>
     </main>
     <footer>
@@ -406,7 +449,7 @@
                     <div class="call-center-container">
                         <div class="call-center-textbox">
                             <span class="call-center-text">Call Center</span>
-                            <a href="tel:09045840662" class="call-center-no">09045840662</a>
+                            <a href="tel:+2349045840662" class="call-center-no">+234 9045840662</a>
                         </div>
                         <div class="tel-icon-container">
                             <i class="fa fa-phone"></i>

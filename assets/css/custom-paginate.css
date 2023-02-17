@@ -1,0 +1,39 @@
+.paginate-pagination ul{
+    width: fit-content;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.paginate-pagination ul > li{
+    float: none;
+}
+
+.paginate-pagination ul > li > a.page{
+    border: 2px solid var(--secondary-color);
+    display: block;
+    font: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    height: auto;
+    font-size: 2rem;
+    width: auto;
+    color: var(--primary-color);
+    cursor: pointer;
+    opacity: 1;
+}
+
+.paginate-pagination ul > li > a.page.active{
+    background-color: var(--primary-color);
+    color: var(--white);
+    opacity: 1;
+    cursor: pointer;
+}
+
+.paginate-pagination ul > li > a.page:hover{
+    opacity: 1;
+}
+

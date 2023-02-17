@@ -1,6 +1,6 @@
 <?php
-  require(__DIR__ . '/auth-library/resources.php');
-  Auth::User("./login");
+  require(dirname(__DIR__) . '/auth-library/resources.php');
+  /*Auth::User("./login");
 
   $userID = $_SESSION['user_id'];
 
@@ -23,7 +23,7 @@
     $_SESSION['email'] = $email;
   }else{
     header("Location: ./");
-  }
+  } */
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,13 +32,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Custom Fonts (Inter) -->
-    <link rel="stylesheet" href="assets/fonts/fonts.css">
+    <link rel="stylesheet" href="../assets/fonts/fonts.css">
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
     <!-- CONFIRMATION CSS -->
-    <link rel="stylesheet" href="assets/css/checkout.css">
+    <link rel="stylesheet" href="../assets/css/checkout.css">
     <!-- MEDIA QUERIES -->
-    <link rel="stylesheet" href="assets/css/media-queries/main-media-queries.css">
+    <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css">
     <title>Checkout - Confidence Daily Savings (CDS)</title>
 </head>
 <body>
@@ -50,7 +50,7 @@
             <h1>Confirm & Order</h1>
         </div>
         <div class="cancel-container">
-            <a href="./product?pid=<?php echo $selectedProductDetails['pid'] ?>">
+            <a href="./cart">
                 <i class="fa fa-times"></i>
             </a>
         </div>
@@ -58,14 +58,46 @@
     <main>
         <div class="order-container">
             <section class="product-info-container">
-                <div class="product-info">
-                    <div class="product-image-container">
-                        <img src="<?php echo $image ?>" alt="Iphone Green">
+                <div class="products">
+                    <div class="product">
+                        <div class="product-image-container">
+                            <img src="../assets/images/web-cam-1.jpg" alt="Iphone Green">
+                        </div>
+                        <div class="order-information">
+                            <span class="product-name">Iphone Green</span>
+                            <span class="product-quantity">Quantity: 3</span>
+                            <span class="product-price-single">₦ 300,000.00</span>
+                        </div>
                     </div>
-                    <div class="order-information">
-                        <span class="product-name"><?php echo $product_name ?></span>
-                        <span class="product-quantity">Qty: <?php echo $qty ?></span>
-                        <span class="product-price-single">₦<?php echo number_format(intval($price)) ?></span>
+                    <div class="product">
+                        <div class="product-image-container">
+                            <img src="../assets/images/web-cam-1.jpg" alt="Iphone Green">
+                        </div>
+                        <div class="order-information">
+                            <span class="product-name">Iphone Green</span>
+                            <span class="product-quantity">Quantity: 3</span>
+                            <span class="product-price-single">₦ 300,000.00</span>
+                        </div>
+                    </div>
+                    <div class="product">
+                        <div class="product-image-container">
+                            <img src="../assets/images/web-cam-1.jpg" alt="Iphone Green">
+                        </div>
+                        <div class="order-information">
+                            <span class="product-name">Iphone Green</span>
+                            <span class="product-quantity">Quantity: 3</span>
+                            <span class="product-price-single">₦ 300,000.00</span>
+                        </div>
+                    </div>
+                    <div class="product">
+                        <div class="product-image-container">
+                            <img src="../assets/images/web-cam-1.jpg" alt="Iphone Green">
+                        </div>
+                        <div class="order-information">
+                            <span class="product-name">Iphone Green</span>
+                            <span class="product-quantity">Quantity: 3</span>
+                            <span class="product-price-single">₦ 300,000.00</span>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -77,7 +109,8 @@
                     <div class="card-body">
                         <p>
                             <i class="fa fa-home"></i>
-                            <?php echo $email;?>
+                            <?php // echo $email; ?>
+                            folushoayomide11@hmail.com
                         </p>
                     </div>
                 </div>
@@ -87,27 +120,30 @@
                     </h2>
                     <div class="card-body">
                         <?php
-                            if($sql_user_address->num_rows === 0){
+                           // if($sql_user_address->num_rows === 0){
                         ?>
-                        <p>You do not have an address yet. Click <a href="user/add-address">here</a> to create one.</p>
+                        <!-- <p>You do not have an address yet. Click <a href="user/add-address">here</a> to create one.</p> -->
                         <?php
-                            }else{
-                                $address_details = $sql_user_address->fetch_assoc();
+                           // }else{
+                               // $address_details = $sql_user_address->fetch_assoc();
                         ?>
                         <p>
                             <i class="fa fa-user"></i>
-                            <?php echo $address_details['recipient_name'] ?>
+                            Shodiya Folorunsho
+                            <?php //  echo $address_details['recipient_name'] ?>
                         </p>
                         <p>
                             <i class="fa fa-home"></i>
-                            <?php echo $address_details['delivery_address'] . ", " . $address_details['city_name'] . ". " . $address_details['address_state'] . "." ?>
+                            Plot 3a, Ajijola Estate, Ikorodu. Ogun State
+                            <?php // echo $address_details['delivery_address'] . ", " . $address_details['city_name'] . ". " . $address_details['address_state'] . "." ?>
                         </p>
                         <p>
                             <i class="fa fa-phone"></i>
-                            <?php echo $address_details['recipient_phone_no'] ?>
+                            +234 7087857141
+                            <?php // echo $address_details['recipient_phone_no'] ?>
                         </p>
                         <?php
-                            }
+                           // }
                         ?>
                     </div>
                 </div>
@@ -118,7 +154,7 @@
                     <div class="card-body">
                         <p>
                             <i class="fa fa-money"></i>
-                            Cash on delivery (default)
+                            Pay by credit card (default)
                         </p>
                     </div>
                 </div>
@@ -126,17 +162,17 @@
                     <p>
                         <span class="title">Subtotal:</span>
                         <?php 
-                            $total = intval($qty) * intval($price);
+                            // $total = intval($qty) * intval($price);
                         ?>
-                        ₦<?php echo number_format(intval($total)) ?>
+                        ₦ 300,000.00 <?php //echo number_format(intval($total)) ?>
                     </p>
                     <p>
                         <span class="title"><b>Total Price:</b></span>
-                        <b>₦<?php echo number_format(intval($total)) ?></b>
+                        <b>₦ 300,000.00<?php // echo number_format(intval($total)) ?></b>
                     </p>
                 </div>
                 <div class="order-btn-container">
-                    <button class="order-btn">
+                    <button>
                         <i class="fa fa-shopping-cart"></i>
                         Place Your Order
                     </button>
@@ -147,9 +183,9 @@
     <!-- FONT AWESOME JIT SCRIPT-->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
-    <script src="assets/js/jquery/jquery-3.6.min.js"></script>
+    <script src="../assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
-    <script src="assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <script src="../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <script>
         $(".order-btn-container button").on("click", function(){
             const formData = new FormData();
