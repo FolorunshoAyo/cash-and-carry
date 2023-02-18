@@ -43,13 +43,110 @@ if ($inSession) {
     <link rel="stylesheet" href="../assets/css/product.css" type="text/css" />
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" />
-    <title>Home - Confidence Daily Savings (CDS)</title>
+    <title>{product name} - Codeweb store</title>
 </head>
 
 <body>
     <div class="full-loader">
         <div class="spinner"></div>
     </div>
+    <div class="cart-backdrop"></div>
+    <aside class="cart-menu">
+        <div class="close-container">
+            <i class="fa fa-times"></i>
+        </div>
+        <div class="cart-menu-items-container">
+            <div class="cart-menu-items">
+                <div class="cart-menu-item">
+                    <div class="cart-menu-item-image-container">
+                        <img src="../assets/images/web-cam-1.jpg" />
+                    </div>
+                    <div class="cart-product-details">
+                        <a href="#" class="cart-product-name">Web cam 2.0</a>
+                        <div class="cart-item-meta">
+                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
+                        </div>
+                    </div>
+                    <div class="close-btn-container">
+                        <button>
+                            <i class="fa fa-cross"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="cart-menu-item">
+                    <div class="cart-menu-item-image-container">
+                        <img src="../assets/images/web-cam-1.jpg" />
+                    </div>
+                    <div class="cart-product-details">
+                        <a href="#" class="cart-product-name">Web cam 2.0</a>
+                        <div class="cart-item-meta">
+                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
+                        </div>
+                    </div>
+                    <div class="close-btn-container">
+                        <button>
+                            <i class="fa fa-cross"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="cart-menu-item">
+                    <div class="cart-menu-item-image-container">
+                        <img src="../assets/images/web-cam-1.jpg" />
+                    </div>
+                    <div class="cart-product-details">
+                        <a href="#" class="cart-product-name">Web cam 2.0</a>
+                        <div class="cart-item-meta">
+                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
+                        </div>
+                    </div>
+                    <div class="close-btn-container">
+                        <button>
+                            <i class="fa fa-cross"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="cart-menu-item">
+                    <div class="cart-menu-item-image-container">
+                        <img src="../assets/images/web-cam-1.jpg" />
+                    </div>
+                    <div class="cart-product-details">
+                        <a href="#" class="cart-product-name">Web cam 2.0</a>
+                        <div class="cart-item-meta">
+                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
+                        </div>
+                    </div>
+                    <div class="close-btn-container">
+                        <button>
+                            <i class="fa fa-cross"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="cart-menu-item">
+                    <div class="cart-menu-item-image-container">
+                        <img src="../assets/images/web-cam-1.jpg" />
+                    </div>
+                    <div class="cart-product-details">
+                        <a href="#" class="cart-product-name">Web cam 2.0</a>
+                        <div class="cart-item-meta">
+                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
+                        </div>
+                    </div>
+                    <div class="close-btn-container">
+                        <button>
+                            <i class="fa fa-cross"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-total-container">
+                Subtotal: <span class="subtotal-amount">N 300,000</span>
+            </div>
+            <div class="cart-menu-action-btns">
+                <a href="../cart/" class="btn">View Cart</a>
+                <a href="../checkout/" class="btn">Checkout</a>
+            </div>
+        </div>
+    </aside>
     <header>
         <div class="top-header">
             <a href="index.html" class="logo-container">
@@ -83,7 +180,7 @@ if ($inSession) {
                         </a>
                     </li>
                     <li class="nav-link-item cart-link">
-                        <a href="">
+                        <a href="javascript:void(0)">
                             <span class="cart-badge">0</span>
                             <i class="fa fa-shopping-cart"></i>
                             Cart
@@ -329,6 +426,26 @@ if ($inSession) {
         $(function() {
             const menuContainer = document.querySelector(".menu-container a");
             menuContainer.addEventListener("click", toggle);
+
+            const cartBtn = document.querySelector(".cart-link");
+            const cartBackdrop = document.querySelector(".cart-backdrop");
+            const cartMenu = document.querySelector(".cart-menu");
+            const cartClose = document.querySelector(".close-container i");
+
+            cartBtn.addEventListener("click", function() {
+                cartMenu.classList.toggle("active");
+                cartBackdrop.classList.toggle("active");
+            });
+
+            cartClose.addEventListener("click", function() {
+                cartMenu.classList.toggle("active");
+                cartBackdrop.classList.toggle("active");
+            });
+
+            cartBackdrop.addEventListener("click", function(){
+                cartMenu.classList.toggle("active");
+                cartBackdrop.classList.toggle("active");
+            }, false);
 
             function toggle(e) {
                 e.stopPropagation();

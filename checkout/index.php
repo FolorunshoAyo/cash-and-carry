@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="../assets/css/checkout.css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css">
-    <title>Checkout - Confidence Daily Savings (CDS)</title>
+    <title>Checkout - Codeweb store</title>
 </head>
 <body>
     <div class="full-loader">
@@ -152,10 +152,22 @@
                         Payment
                     </h2>
                     <div class="card-body">
-                        <p>
-                            <i class="fa fa-money"></i>
-                            Pay by credit card (default)
-                        </p>
+                        <form id="payment-form">
+                            <p>
+                                <label for="card-radio">
+                                    <input type="radio" name="payment-method" value="card" id="card-radio" checked>
+                                    <i class="fa fa fa-credit-card"></i>
+                                    Pay by credit card (default)
+                                </label>
+                            </p>
+                            <p>
+                                <label for="cash-radio">
+                                    <input type="radio" name="payment-method" id="cash-radio" value="cash">
+                                    <i class="fa fa-money"></i>
+                                    Cash on delivery
+                                </label>
+                            </p>
+                        </form>
                     </div>
                 </div>
                 <div class="sum-container">
@@ -173,7 +185,11 @@
                 </div>
                 <div class="order-btn-container">
                     <button>
-                        <i class="fa fa-shopping-cart"></i>
+                        <i class="fa fa-credit-card"></i>
+                        Process your order
+                    </button>
+                    <button style="display: none;">
+                        <i class="fa fa-money"></i>
                         Place Your Order
                     </button>
                 </div>
@@ -187,14 +203,36 @@
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
     <script src="../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <script>
-        $(".order-btn-container button").on("click", function(){
+        let selectedOrder = "";
+        const processBtn = $(".order-btn-container button:nth-of-type(1)");
+        const placeOrderBtn = $(".order-btn-container button:nth-of-type(2)");
+
+        $("[name='payment-method']").each(function (){
+            const radioBtn = $(this);
+
+            radioBtn.click(function(){
+                if(radioBtn.val() === "cash"){
+                    selectedOrder = "cash";
+                    processBtn.css("display", "none");
+                    placeOrderBtn.css("display", "inline-block");
+                }else{
+                    selectedOrder = "card";
+                    processBtn.css("display", "inline-block");
+                    placeOrderBtn.css("display", "none");
+                }
+            });
+        });
+
+        placeOrderBtn.on("click", function(){
+            if(selectedOrder === "card") return;
+
             const formData = new FormData();
 
             formData.append("submit", true);
-            formData.append("pid", <?php echo $selectedProductDetails['pid'] ?>);
-            formData.append("uid", <?php echo $userID ?>);
-            formData.append("amount", <?php echo $qty ?>);
-            formData.append("total", <?php echo $total ?>);
+            formData.append("pid", <?php //echo $selectedProductDetails['pid'] ?>);
+            formData.append("uid", <?php //echo $userID ?>);
+            formData.append("amount", <?php //echo $qty ?>);
+            formData.append("total", <?php //echo $total ?>);
 
             $.ajax({
               url: "./controllers/process-order.php",

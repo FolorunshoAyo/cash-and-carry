@@ -43,7 +43,7 @@ if ($inSession) {
     <link rel="stylesheet" href="../assets/css/cart.css" type="text/css" />
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" />
-    <title>Home - Confidence Daily Savings (CDS)</title>
+    <title>Cart - Codeweb store</title>
 </head>
 
 <body>

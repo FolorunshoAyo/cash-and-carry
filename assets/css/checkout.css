@@ -109,7 +109,6 @@ header{
     font-size: 1.5rem;
     color: var(--primary-color);
 }
-
 .info-card .card-body{
     margin-top: 10px;
 }
@@ -125,6 +124,10 @@ header{
 .card-body p i{
     color: var(--primary-color);
     margin-right: 5px;
+}
+
+#payment-form p input{
+    accent-color: var(--primary-color);
 }
 
 .sum-container{
