@@ -18,19 +18,19 @@
       href="assets/css/media-queries/main-media-queries.css"
       type="text/css"
     />
-    <title>Register and start saving - CDS</title>
+    <title>Register and start saving - codeweb store</title>
   </head>
 
   <body>
     <div class="form-page-wrapper">
       <header>
-        <a href="index.html" class="form-logo-container">
+        <a href="./" class="form-logo-container">
           <div class="form-logo-img-container">
-            <img src="assets/images/logo-small.png" alt="Small Logo" />
+            <img src="assets/images/logo.jpg" alt="Small Logo" />
           </div>
           <div class="form-logo-text-container">
-            <span class="logo-text">CDS</span>
-            <span>Confidence daily savings</span>
+            <span class="logo-text">CODEWEB STORE</span>
+            <span>buy now - pay later</span>
           </div>
         </a>
       </header>
@@ -40,8 +40,7 @@
             <h1 class="form-title">Set up your account</h1>
 
             <p class="form-text">
-              Get started with saving and spending by signing up with confidence
-              daily savings
+              Get started with saving and spending by signing up with us
             </p>
 
             <div class="form-groupings">
@@ -265,45 +264,45 @@
           formData.append("submit", true);
 
           //SENDING FORM DATA TO THE SERVER
-          $.ajax({
-            type: "post",
-            url: "authentication/register.php",
-            data: formData,
-            cache: false,
-            contentType: false,
-            enctype: "multipart/form-data",
-            processData: false,
-            dataType: "json",
-            beforeSend: function () {
-              $(".submit-btn-container button").html("Registering...");
-              $(".submit-btn-container button").attr("disabled", true);
-            },
-            success: function (response) {
-              setTimeout(() => {
-                if (response.success === 1) {
-                  // REDIRECT USER TO THE VERIFICATION PAGE
-                  window.location = "authentication/send-code?a=send";
-                } else {
-                  $(".submit-btn-container button").attr("disabled", false);
-                  $(".submit-btn-container button").html("Register");
+          // $.ajax({
+          //   type: "post",
+          //   url: "authentication/register.php",
+          //   data: formData,
+          //   cache: false,
+          //   contentType: false,
+          //   enctype: "multipart/form-data",
+          //   processData: false,
+          //   dataType: "json",
+          //   beforeSend: function () {
+          //     $(".submit-btn-container button").html("Registering...");
+          //     $(".submit-btn-container button").attr("disabled", true);
+          //   },
+          //   success: function (response) {
+          //     setTimeout(() => {
+          //       if (response.success === 1) {
+          //         // REDIRECT USER TO THE VERIFICATION PAGE
+          //         window.location = "authentication/send-code?a=send";
+          //       } else {
+          //         $(".submit-btn-container button").attr("disabled", false);
+          //         $(".submit-btn-container button").html("Register");
 
-                  if (response.error_title === "fatal") {
-                    // REFRESH CURRENT PAGE
-                    location.reload();
-                  } else {
-                    // ALERT USER
-                    Swal.fire({
-                      title: response.error_title,
-                      icon: "error",
-                      text: response.error_message,
-                      allowOutsideClick: false,
-                      allowEscapeKey: false,
-                    });
-                  }
-                }
-              }, 1500);
-            },
-          });
+          //         if (response.error_title === "fatal") {
+          //           // REFRESH CURRENT PAGE
+          //           location.reload();
+          //         } else {
+          //           // ALERT USER
+          //           Swal.fire({
+          //             title: response.error_title,
+          //             icon: "error",
+          //             text: response.error_message,
+          //             allowOutsideClick: false,
+          //             allowEscapeKey: false,
+          //           });
+          //         }
+          //       }
+          //     }, 1500);
+          //   },
+          // });
         });
     </script>
   </body>

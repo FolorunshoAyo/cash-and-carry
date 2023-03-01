@@ -1,18 +1,22 @@
 <?php
-  require(dirname(__DIR__) . '/auth-library/resources.php');
+require(dirname(__DIR__) . '/auth-library/resources.php');
 
-  // NUMBER FORMATTER
-  // $human_readable = new \NumberFormatter(
-  //   'en_US', 
-  //   \NumberFormatter::PADDING_POSITION
-  // );
+// NUMBER FORMATTER
+// $human_readable = new \NumberFormatter(
+//   'en_US', 
+//   \NumberFormatter::PADDING_POSITION
+// );
 
-  $inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
+$inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
 
-  if($inSession){
+if ($inSession) {
     $user_id = $_SESSION['user_id'];
     $user_name = $_SESSION['user_name'];
-  }
+}
+
+if(isset($_GET['category']) && !empty($_GET['category'])){
+    $category = $_GET['category'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +30,7 @@
     <!-- BASE CSS -->
     <link rel="stylesheet" href="../assets/css/base.css">
     <!-- PAGINATE CSS -->
-    <link rel="stylesheet" href="../assets/css/jquery.paginate.css">
+    <link rel="stylesheet" href="../assets/css/pagination.css" />
     <!-- CUSTOM PAGINATE CSS -->
     <link rel="stylesheet" href="../assets/css/custom-paginate.css">
     <!-- CUSTOM CSS (HOME) -->
@@ -39,7 +43,7 @@
 </head>
 
 <body>
-<div class="cart-backdrop"></div>
+    <div class="cart-backdrop"></div>
     <aside class="cart-menu">
         <div class="close-container">
             <i class="fa fa-times"></i>
@@ -138,7 +142,7 @@
     </aside>
     <header>
         <div class="top-header">
-            <a href="index.html" class="logo-container">
+            <a href="../" class="logo-container">
                 <div class="logo-image-container">
                     <img src="../assets/images/logo.jpg" alt="Header Logo">
                 </div>
@@ -152,7 +156,7 @@
                 <ul class="nav-links">
                     <li class="nav-link-item">
                         <a href="#">
-                            <i class="fa fa-money"></i>    
+                            <i class="fa fa-money"></i>
                             Purchases
                         </a>
                     </li>
@@ -199,23 +203,23 @@
             <div class="other-links-container">
                 <button class="installment-btn">Installments</button>
                 <div class="menu-container">
-                    <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo($inSession?  explode(" ", $user_name)[0] : "Account") ?></a>
+                    <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo ($inSession ?  explode(" ", $user_name)[0] : "Account") ?></a>
                     <?php
-                        if(!$inSession){
+                    if (!$inSession) {
                     ?>
                     <ul class="menu">
                         <li><a href="login">Sign In</a></li>
                     </ul>
                     <?php
-                        }else{
+                    } else {
                     ?>
                     <ul class="menu">
                         <li><a href="user/">Dashboard</a></li>
                         <li><a href="user/orders">Orders</a></li>
                         <li><a href="logout?rd=home">Log out</a></li>
                     </ul>
-                    <?php 
-                        }
+                    <?php
+                    }
                     ?>
                 </div>
             </div>
@@ -224,394 +228,131 @@
     <main>
         <section class="shop-section">
             <div class="shop-container">
-                <div class="search-container">
-                    <div class="search-btn-container">
-                        <button>Search</button>
-                    </div>
-                    <div class="input-container">
-                        <input type="text" name="q" placeholder="Enter search query"/>
-                        <button>
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                    <div class="menu-container">
-                        <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo($inSession?  explode(" ", $user_name)[0] : "Account") ?></a>
-                        <?php
-                            if(!$inSession){
-                        ?>
-                        <ul class="menu">
-                            <li><a href="login">Sign In</a></li>
-                        </ul>
-                        <?php
-                            }else{
-                        ?>
-                        <ul class="menu">
-                            <li><a href="user/">Dashboard</a></li>
-                            <li><a href="user/orders">Orders</a></li>
-                            <li><a href="logout?rd=home">Log out</a></li>
-                        </ul>
-                        <?php 
+                <form action="../search/">
+                    <div class="search-container">
+                        <div class="search-btn-container">
+                            <button type="submit">Search</button>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" name="q" placeholder="Enter search query" />
+                            <button type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="menu-container">
+                            <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo ($inSession ?  explode(" ", $user_name)[0] : "Account") ?></a>
+                            <?php
+                            if (!$inSession) {
+                            ?>
+                                <ul class="menu">
+                                    <li><a href="login">Sign In</a></li>
+                                </ul>
+                            <?php
+                            } else {
+                            ?>
+                                <ul class="menu">
+                                    <li><a href="user/">Dashboard</a></li>
+                                    <li><a href="user/orders">Orders</a></li>
+                                    <li><a href="logout?rd=home">Log out</a></li>
+                                </ul>
+                            <?php
                             }
-                        ?>
+                            ?>
+                        </div>
                     </div>
-                </div>
+                </form>
                 <div class="filter-container">
                     <span class="filter-text">Filter search</span>
 
                     <div class="filter-select-container">
                         <span>By Category</span>
-                        <select>
+                        <select id="category-select" class="filter-select">
                             <option>Select &nbsp; &nbsp; &nbsp;</option>
-                            <option>Genrator</option>
+                            <?php
+                            $sql_get_all_categories = $db->query("SELECT * FROM product_categories");
+
+                            while ($rowCategory = $sql_get_all_categories->fetch_assoc()) {
+                                if(isset($category)){
+                                    $convertedCategory = explode("-", $category)[0];
+                                    $dbConvCategory = explode(" ", $rowCategory['category_name'])[0];
+
+                                    $check_category = $convertedCategory === $dbConvCategory;
+
+                                    if($check_category){
+                                        echo "<option selected value='" . $rowCategory['category_id'] . "'>" . $rowCategory['category_name'] . "</option>";
+                                    }else{
+                                        echo "<option value='" . $rowCategory['category_id'] . "'>" . $rowCategory['category_name'] . "</option>";
+                                    }
+                                }else{
+                                    echo "<option value='" . $rowCategory['category_id'] . "'>" . $rowCategory['category_name'] . "</option>";
+                                }
+                            }
+                            ?>
                         </select>
                     </div>
 
                     <div class="filter-select-container">
                         <span>By Price</span>
-                        <select>
+                        <select id="price-select" class="filter-select">
                             <option>Select &nbsp; &nbsp; &nbsp;</option>
+                            <option value="asc">lowest to highest</option>
+                            <option value="desc">highest to lowest</option>
                         </select>
                     </div>
 
                     <div class="filter-select-container">
                         <span>By Order</span>
-                        <select>
+                        <select id="order-select" class="filter-select">
                             <option>Select &nbsp; &nbsp; &nbsp;</option>
+                            <option value="asc">oldest to newest</option>
+                            <option value="desc">newest to oldest</option>
                         </select>
                     </div>
                 </div>
-                <div class="quick-links-container">
+                <div class="quick-links-container" style="display: none;">
                     <div class="quick-link">
                         <span>Automobiles</span>
                         <a href="../products/">
-                            <img src="../assets/images/corolla.jpg"/>
+                            <img src="../assets/images/corolla.jpg" />
                         </a>
                         <a href="../products/">
-                            <img src="../assets/images/na-pep.jpg"/>
+                            <img src="../assets/images/na-pep.jpg" />
                         </a>
                     </div>
                     <div class="quick-link">
                         <span>Communication devices</span>
                         <a href="../products/">
-                            <img src="../assets/images/hp-15.jpg"/>
+                            <img src="../assets/images/hp-15.jpg" />
                         </a>
                         <a href="../products/">
-                            <img src="../assets/images/iphone-13.jpg"/>
+                            <img src="../assets/images/iphone-13.jpg" />
                         </a>
                     </div>
                     <div class="quick-link">
                         <span>Technology and gadgets</span>
                         <a href="../products/">
-                            <img src="../assets/images/nikon-d90.jpg"/>
+                            <img src="../assets/images/nikon-d90.jpg" />
                         </a>
                         <a href="../products/">
-                            <img src="../assets/images/alienware.jpg"/>
+                            <img src="../assets/images/alienware.jpg" />
                         </a>
                     </div>
                     <div class="quick-link">
                         <span>Home appliances and other</span>
                         <a href="../products/">
-                            <img src="../assets/images/hisense-ac.jpg"/>
+                            <img src="../assets/images/hisense-ac.jpg" />
                         </a>
                         <a href="../products/">
                             <img src="../assets/images/bed-3.jpeg">
                         </a>
                     </div>
                 </div>
-                <div class="results-container" style="display: none;">
+                <div class="results-container" style="display: block;">
+                    <div class="products-container-overlay"></div>
                     <div class="info-container">
-                        <span>Showing 210 results</span>
+                        <span>Retrieved 0 results</span>
                     </div>
-                    <div class="products">
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <a href="#">
-                                <figure>
-                                    <span class="product-badge half">Pay half (₦300,000)</span>
-                                    <span class="product-badge month">Pay per month (₦50,000)</span>
-                                    <img src="../a/admin/images/iphone13-green.jpg">
-                                    <figcaption>
-                                        <span class="product-desc product-category-name">Iphone 13 green</span>                                  
-                                        <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                        </span>
-                                    </figcaption>
-                                </figure>
-                            </a>
-                            <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="products-container"></div>
                 </div>
             </div>
         </section>
@@ -679,14 +420,122 @@
     <!-- SLICK SLIDER JS -->
     <script src="../assets/js/slick/slick.js"></script>
     <!-- JQUERY PAGINATE -->
-    <script src="../assets/js/jquery.paginate.js"></script>
+    <script src="../assets/js/pagination.min.js"></script>
     <script>
-        $(function () {
-            $(".products").paginate({
-                scope: $(".product-card"),
-                paginatePosition: ['bottom'],
-                perPage: 16
+        $(function() {
+            const allSelects = $('.filter-select');
+
+            allSelects.each(function(index) {
+                $(this).on("change", function() {
+                    loadData(1, 10);
+                });
             });
+
+            function loadData(currPage, pageSize) {
+                //RETRIEVE FILTER OPTIONS
+                const filterValues = [];
+                const allSelects = $('.filter-select');
+                const infoEl = $(".info-container span");
+
+                allSelects.each(function(index) {
+                    $(this).attr("disabled", true);
+
+                    filterValues[index] = $(this).val().trim() === 'Select' ? "" : $(this).val().trim();
+                });
+
+                // PREPARE FORM DATA
+                const formData = new FormData();
+                formData.append("submit", true);
+                formData.append("page_no", currPage);
+                formData.append("page_size", pageSize);
+                formData.append("category", filterValues[0]);
+                formData.append("price_range", filterValues[1]);
+                formData.append("order", filterValues[2]);
+
+                $.ajax({
+                    url: "./controllers/products-filter",
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function() {
+                        $(".products-container-overlay").toggleClass("loading");
+                    },
+                    success: function(response) {
+                        response = JSON.parse(response);
+
+                        if (response.success === 1) {
+                            allSelects.each(function(index) {
+                                $(this).attr("disabled", false);
+                            });
+
+                            infoEl.html(`Retrieved ${response.total_size} results`);
+                            // dyanmically set page
+                            $(".products-container").whjPaging("setPage", {
+                                currPage: response.curr_page,
+                                totalPage: response.total_page,
+                                totalSize: response.total_size
+                            });
+
+                            $(".products-container").prepend(`<div class="products">${response.data}</div>`);
+                            setTimeout(() => $(".products-container-overlay").toggleClass("loading"), 2000);
+                        }
+                    }
+                });
+
+                // $(".products-container").prepend("<div class='products'>A random text</div>");
+            }
+
+
+            $(".products-container").whjPaging({
+                css: 'css-4',
+                // the number of entries
+                totalSize: 10,
+                // the number of pages
+                totalPage: 18,
+                // shows pagesize select
+                isShowPageSizeOpt: true,
+                // allows to jump to a specific page
+                isShowSkip: false,
+                //
+                isResetPage: true,
+                // shows refresh page
+                isShowRefresh: false,
+                // shows total pages
+                isShowTotalPage: false,
+                // shows total entries
+                isShowTotalSize: false,
+                firstPage: 'first',
+                previousPage: 'previous',
+                nextPage: 'next',
+                lastPage: 'last',
+                skip: 'skip',
+                pageSizeOpt: [{
+                        value: 5,
+                        text: '5/page',
+                        selected: true
+                    },
+                    {
+                        value: 10,
+                        text: '10/page'
+                    },
+                    {
+                        value: 15,
+                        text: '15/page'
+                    },
+                    {
+                        value: 20,
+                        text: '20/page'
+                    }
+                ],
+                // callback
+                callBack: function(currPage, pageSize) {
+                    loadData(currPage, pageSize);
+                }
+            });
+
+            loadData(1, 5);
+
 
             const menuContainer = document.querySelector(".menu-container a");
             menuContainer.addEventListener("click", toggle);
@@ -706,29 +555,29 @@
                 cartBackdrop.classList.toggle("active");
             });
 
-            cartBackdrop.addEventListener("click", function(){
+            cartBackdrop.addEventListener("click", function() {
                 cartMenu.classList.toggle("active");
                 cartBackdrop.classList.toggle("active");
             }, false);
 
             function toggle(e) {
-                 e.stopPropagation();
-                var link=this;
+                e.stopPropagation();
+                var link = this;
                 var menu = link.nextElementSibling;
 
-                if(!menu) return;
+                if (!menu) return;
                 if (menu.style.display !== 'block') {
                     menu.style.display = 'block';
-                }  else {
+                } else {
                     menu.style.display = 'none';
                 }
             };
 
             function closeAll() {
-                menuContainer.nextElementSibling.style.display='none';
+                menuContainer.nextElementSibling.style.display = 'none';
             };
 
-            window.onclick=function(event){
+            window.onclick = function(event) {
                 closeAll.call(event.target);
             };
         });

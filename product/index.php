@@ -14,17 +14,15 @@ if ($inSession) {
     $user_name = $_SESSION['user_name'];
 }
 
-//   if(isset($_GET['pid']) && !empty($_GET['pid'])){
-//     $pid = $_GET['pid'];
+if (isset($_GET['pid']) && !empty($_GET['pid'])) {
+    $pid = $_GET['pid'];
 
-//     $sql_product = $db->query("SELECT * FROM products WHERE product_id={$pid}");
-//     $sql_product_meta = $db->query("SELECT * FROM product_meta WHERE product_id={$pid}");
+    $sql_product = $db->query("SELECT * FROM products INNER JOIN product_categories ON products.category=product_categories.category_id WHERE product_id={$pid}");
 
-//     $product_details = $sql_product->fetch_assoc();
-//     $product_meta_details = $sql_product_meta->fetch_assoc();
-//   }else{
-//     header("Location: ./");
-//   }
+    $product_details = $sql_product->fetch_assoc();
+} else {
+    header("Location: ../");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +41,7 @@ if ($inSession) {
     <link rel="stylesheet" href="../assets/css/product.css" type="text/css" />
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" />
-    <title>{product name} - Codeweb store</title>
+    <title><?php echo $product_details['name'] ?> - Codeweb store</title>
 </head>
 
 <body>
@@ -200,7 +198,7 @@ if ($inSession) {
                 <button>Categories</button>
             </div>
             <div class="search-container">
-                <form class="search-box" action="search/">
+                <form class="search-box" action="../search/">
                     <input type="text" name="q" placeholder="Search for an item" />
                     <button type="submit" class="search-icon-btn">
                         <i class="fa fa-search"></i>
@@ -236,35 +234,55 @@ if ($inSession) {
             <div class="product-section-container">
                 <div class="product-slider-container">
                     <div class="product-image-container">
-                        <img src="../assets/images/web-cam-1.jpg" alt="#" />
+                        <div class="product-image-slider-container view-1">
+                            <?php
+                            foreach (explode(",", $product_details['pictures']) as $key => $picture) {
+                                echo "<img src='../a/admin/images/$picture' alt='" . $product_details['name'] . " " . ($key + 1) . "' />";
+                            }
+                            ?>
+                        </div>
                     </div>
                     <div class="product-images">
-                        <img src="../assets/images/web-cam-1.jpg" alt="#">
-                        <img src="../assets/images/web-cam-1.jpg" alt="#">
-                        <img src="../assets/images/web-cam-1.jpg" alt="#">
+                        <?php
+                        foreach (explode(",", $product_details['pictures']) as $key => $picture) {
+                            echo "<img src='../a/admin/images/$picture' alt='" . $product_details['name'] . " " . ($key + 1) . "' data-image='" . ($key + 1) . "'/>";
+                        }
+                        ?>
                     </div>
                 </div>
                 <div class="product-info">
                     <div class="breadcrumbs">
-                        <a href="#">Home</a> / <a href="#">Electronics</a> / Iphone 13 Green
+                        <a href="../">Home</a> / <a href="../all-products/?category=<?php echo $product_details['category_name'] ?>"><?php echo $product_details['category_name'] ?></a> / <?php echo $product_details['name'] ?>
                     </div>
                     <h1 class="product-name">
-                        Iphone 13 Green
+                        <?php echo $product_details['name'] ?>
                     </h1>
                     <div class="product-info-group price">
                         <span class="product-value">
-                            ₦ 300,000.00
+                            ₦ <?php echo number_format($product_details['price'], 2) ?>
                         </span>
                     </div>
+                    <?php
+                    $interest_amount = (30 / 100) * $product_details['price'];
+
+                    $installment_price = $product_details['price'] + $interest_amount;
+
+                    $calculatedPeriods = getDaysWeeks($product_details['duration_of_payment']);
+
+                    $calculatedDays = $calculatedPeriods['days'];
+                    $calculatedWeeks = $calculatedPeriods['weeks'];
+                    $calculatedMonths = $calculatedPeriods['months'];
+                    ?>
                     <div class="product-info-group">
-                        <span class="product-badge">Pay N300,000 half</span>
-                        <span class="product-badge">Pay N50,000 per month</span>
+                        <span class="product-badge">Pay ₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?> daily</span>
+                        <span class="product-badge">Pay ₦<?php echo number_format(($installment_price / $calculatedWeeks), 2) ?> per week</span>
+                        <span class="product-badge">Pay ₦<?php echo number_format(($installment_price / $calculatedMonths), 2) ?> per month</span>
                     </div>
                     <div class="product-info-group">
                         <div class="product-details">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic modi illo facere molestiae, eveniet dicta maxime quia inventore labore totam?</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic modi illo facere molestiae, eveniet dicta maxime quia inventore labore totam?</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic modi illo facere molestiae, eveniet dicta maxime quia inventore labore totam?</p>
+                            <?php
+                            echo $product_details['details'];
+                            ?>
                         </div>
                     </div>
                     <div class="product-info-group amount-block">
@@ -278,85 +296,111 @@ if ($inSession) {
                 </div>
             </div>
         </section>
-        <section class="related-products-section">
-            <div class="related-products-container">
-                <h2>Related Products</h2>
-                <div class="products">
-                    <div class="product-card">
-                        <a href="#">
-                            <figure>
-                                <span class="product-badge half">Pay half (₦300,000)</span>
-                                <span class="product-badge month">Pay per month (₦50,000)</span>
-                                <img src="../a/admin/images/iphone13-green.jpg">
-                                <figcaption>
-                                    <span class="product-desc product-category-name">Iphone 13 green</span>
-                                    <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                    </span>
-                                </figcaption>
-                            </figure>
-                        </a>
-                        <div class="add-to-cart-btn">
-                            <button>Add to Cart</button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <a href="#">
-                            <figure>
-                                <span class="product-badge half">Pay half (₦300,000)</span>
-                                <span class="product-badge month">Pay per month (₦50,000)</span>
-                                <img src="../a/admin/images/iphone13-green.jpg">
-                                <figcaption>
-                                    <span class="product-desc product-category-name">Iphone 13 green</span>
-                                    <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                    </span>
-                                </figcaption>
-                            </figure>
-                        </a>
-                        <div class="add-to-cart-btn">
-                            <button>Add to Cart</button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <a href="#">
-                            <figure>
-                                <span class="product-badge half">Pay half (₦300,000)</span>
-                                <span class="product-badge month">Pay per month (₦50,000)</span>
-                                <img src="../a/admin/images/iphone13-green.jpg">
-                                <figcaption>
-                                    <span class="product-desc product-category-name">Iphone 13 green</span>
-                                    <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                    </span>
-                                </figcaption>
-                            </figure>
-                        </a>
-                        <div class="add-to-cart-btn">
-                            <button>Add to Cart</button>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <a href="#">
-                            <figure>
-                                <span class="product-badge half">Pay half (₦300,000)</span>
-                                <span class="product-badge month">Pay per month (₦50,000)</span>
-                                <img src="../a/admin/images/iphone13-green.jpg">
-                                <figcaption>
-                                    <span class="product-desc product-category-name">Iphone 13 green</span>
-                                    <span class="product-desc product-category-price">
-                                        ₦ 300,000.00
-                                    </span>
-                                </figcaption>
-                            </figure>
-                        </a>
-                        <div class="add-to-cart-btn">
-                            <button>Add to Cart</button>
-                        </div>
+        <?php
+        $category_id = $product_details['category'];
+        $sql_get_related_products = $db->query("SELECT * FROM products WHERE category = {$category_id} AND product_id NOT IN ($pid) ORDER BY RAND() LIMIT 4");
+
+        if ($sql_get_related_products->num_rows > 0) {
+        ?>
+            <section class="related-products-section">
+                <div class="related-products-container">
+                    <h2>Related Products</h2>
+                    <div class="products">
+                        <?php
+                        while ($related_product = $sql_get_related_products->fetch_assoc()) {
+
+                            $interest_amount = (30 / 100) * $related_product['price'];
+
+                            $installment_price = $related_product['price'] + $interest_amount;
+
+                            $calculatedPeriods = getDaysWeeks($related_product['duration_of_payment']);
+
+                            $calculatedDays = $calculatedPeriods['days'];
+                            $calculatedWeeks = $calculatedPeriods['weeks'];
+                            $calculatedMonths = $calculatedPeriods['months'];
+                        ?>
+                            <div class="product-card">
+                                <a href="./?pid=<?= $related_product['product_id'] ?>">
+                                    <figure>
+                                        <?php
+                                        $related_product_image_src = explode(",", $related_product['pictures'])[0];
+                                        ?>
+                                        <img src="../a/admin/images/<?= $related_product_image_src ?>">
+                                        <figcaption>
+                                            <div class="payment-plans">
+                                                <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?>/day</span>
+                                                <span class="product-badge weekly">₦<?php echo number_format(($installment_price / $calculatedWeeks), 2) ?>/week</span>
+                                                <span class="product-badge month">₦<?php echo number_format(($installment_price / $calculatedMonths), 2) ?>/month</span>
+                                            </div>
+                                            <span class="product-desc product-category-name"><?= $related_product['name'] ?></span>
+                                            <span class="product-desc product-category-price">
+                                                ₦ <?= number_format($related_product['price'], 2) ?>
+                                            </span>
+                                        </figcaption>
+                                    </figure>
+                                </a>
+                                <div class="add-to-cart-btn">
+                                    <button>Add to Cart</button>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        <?php
+        }
+        ?>
+        <div class="payment-plan-wrapper hide">
+            <section class="payment-plan-container">
+                <header>
+                    <h1>Choose your plan</h1>
+                    <a href="#">Back to dashboard</a>
+                </header>
+                <form>
+                    <div class="payment-plans">
+                        <input type="radio" name="payment-plan" value="1" id="payment-plan-1" checked/>
+                        <label for="payment-plan-1" class="payment-plan">
+                            <div class="radio-container">
+                                <div class="custom-radio"></div>
+                            </div>
+                            <div class="payment-plan-info">
+                                <h3>Daily payment</h3>
+                                <p>Save daily to aquire this product</p>
+                                <p><sup>₦</sup> <span>876.00</span><sub>/day</sub></p>
+                            </div>
+                        </label>
+                        <input type="radio" name="payment-plan" value="2" id="payment-plan-2"/>
+                        <label for="payment-plan-2" class="payment-plan">
+                            <div class="radio-container">
+                                <div class="custom-radio"></div>
+                            </div>
+                            <div class="payment-plan-info">
+                                <h3>Weekly payment</h3>
+                                <p>Save weekly to aquire this product</p>
+                                <p><sup>₦</sup> <span>6,500.00</span><sub>/week</sub></p>
+                            </div>
+                        </label>
+                        <input type="radio" name="payment-plan" value="3" id="payment-plan-3"/>
+                        <label for="payment-plan-3" class="payment-plan">
+                            <div class="radio-container">
+                                <div class="custom-radio"></div>
+                            </div>
+                            <div class="payment-plan-info">
+                                <h3>Monthly payment</h3>
+                                <p>Save monthly to aquire this product</p>
+                                <p><sup>₦</sup> <span>26,000.00</span><sub>/month</sub></p>
+                            </div>
+                        </label>
+                        <div class="payment-action-btns">
+                            <button class="btn" type="submit">Proceed</button>
+                            <a href="javascript:void(0)">close</a>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
     </main>
     <footer>
         <div class="footer-container">
@@ -431,18 +475,14 @@ if ($inSession) {
             const cartBackdrop = document.querySelector(".cart-backdrop");
             const cartMenu = document.querySelector(".cart-menu");
             const cartClose = document.querySelector(".close-container i");
+            const $paymentPlanDialog = $(".payment-plan-wrapper");
+            const $paymentPlanDialogCloseBtn = $(".payment-action-btns a");
 
-            cartBtn.addEventListener("click", function() {
-                cartMenu.classList.toggle("active");
-                cartBackdrop.classList.toggle("active");
+            $paymentPlanDialogCloseBtn.on("click", function(){
+                $paymentPlanDialog.toggleClass("hide");
             });
 
-            cartClose.addEventListener("click", function() {
-                cartMenu.classList.toggle("active");
-                cartBackdrop.classList.toggle("active");
-            });
-
-            cartBackdrop.addEventListener("click", function(){
+            cartBackdrop.addEventListener("click", function() {
                 cartMenu.classList.toggle("active");
                 cartBackdrop.classList.toggle("active");
             }, false);
@@ -462,6 +502,7 @@ if ($inSession) {
 
             function closeAll() {
                 menuContainer.nextElementSibling.style.display = 'none';
+
             };
 
             window.onclick = function(event) {
@@ -558,6 +599,13 @@ if ($inSession) {
             }
             ?>
 
+            $(".product-images img").each(function() {
+                $(this).click(function() {
+                    const imageNo = $(this).attr("data-image");
+
+                    $(".product-image-slider-container").attr("class", `product-image-slider-container view-${imageNo}`)
+                });
+            });
         });
     </script>
 </body>

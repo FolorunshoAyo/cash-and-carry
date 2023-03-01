@@ -6,10 +6,8 @@
     $pid = $_GET['pid'];
 
     $sql_product = $db->query("SELECT * FROM products WHERE product_id={$pid}");
-    $sql_product_meta = $db->query("SELECT * FROM product_meta WHERE product_id={$pid}");
 
     $product_details = $sql_product->fetch_assoc();
-    $product_meta_details = $sql_product_meta->fetch_assoc();
   }else{
     header("Location: ./products");
   }
@@ -29,11 +27,35 @@
     <link rel="stylesheet" href="../../assets/css/form.css" />
     <!-- ADMIN FORM CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-form.css">
+    <!-- SUMMERNOTE TEXT EDITOR CSS -->
+    <link rel="stylesheet" href="../../assets/css/summernote-lite.min.css" />
     <!-- ADMIN DASHBOARD MENU CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Edit <?php echo($product_details['name']); ?> - CDS ADMIN</title>
+    <title>Edit <?php echo($product_details['name']); ?> - Codeweb Store</title>
+    <style>
+        .summer-note-container.textarea{
+            all: revert;
+        }
+
+        .summer-note-container.textarea label[for="pdesc"]{
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+
+        .note-editable *, .note-editable *:hover{
+            all: revert !important;
+        }
+
+        .note-editable{
+            background-color: var(--white);
+            font-size: 1.5rem;
+        }
+
+    </style>
 </head>
 
 <body style="background-color: #fafafa">
@@ -47,7 +69,7 @@
                 </div>
                 <a href="./" class="logo">
                 <i class="fa fa-home"></i>
-                <span> CDS ADMIN </span>
+                <span> CODEWEB STORE </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
@@ -58,7 +80,7 @@
                 </a>
                 </li>
                 <li title="statistics" class="nav-item">
-                <a href="javascript:void(0">
+                <a href="javascript:void(0)">
                     <i class="fa fa-signal"></i>
                     <span>Statistics</span>
                 </a>
@@ -70,7 +92,7 @@
                 </a>
                 </li>
                 <li title="shipping" class="nav-item">
-                <a href="javascript:void(0">
+                <a href="javascript:void(0)">
                     <i class="fa fa-recycle"></i>
                     <span>Shipping</span>
                 </a>
@@ -81,20 +103,8 @@
                     <span>Products</span>
                 </a>
                 </li>
-                <li title="agents" class="nav-item">
-                    <a href="./agents">
-                        <i class="fa fa-users"></i>
-                        <span>Agents</span>
-                    </a>
-                </li>
-                <li title="debtors" class="nav-item">
-                    <a href="./debtors">
-                        <i class="fa fa-info-circle"></i>
-                        <span>Debtors</span>
-                    </a>
-                </li>
                 <li title="messages" class="nav-item">
-                    <a href="javascript:void(0">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-commenting-o"></i>
                         <span>Messages</span>
                     </a>
@@ -139,6 +149,14 @@
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
+                                        <input type="file" multiple name="pimages[]" id="pimages" class="form-input"
+                                            placeholder=" " required />
+                                        <label for="pimages">Upload media</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
                                         <input type="text" name="pprice" id="pprice" class="form-input format"
                                             placeholder=" " required value="<?php echo(round(intval($product_details['price']), 0)); ?>" />
                                         <label for="pprice">Price</label>
@@ -147,32 +165,21 @@
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="daily_payment" id="daily_payment"
-                                            class="form-input format" placeholder=" " required value="<?php echo($product_meta_details['daily_payment']); ?>" />
-                                        <label for="daily_payment">Daily Payment</label>
+                                        <select name="duration" id="duration" class="form-input">
+                                            <option value="">Choose option</option>
+                                            <option value="3" <?php echo $product_details['duration_of_payment'] === "3" ? "selected" : ""?>>3 months</option>
+                                            <option value="6" <?php echo $product_details['duration_of_payment'] === "6" ? "selected" : ""?>>6 months</option>
+                                            <option value="10" <?php echo $product_details['duration_of_payment'] === "10" ? "selected" : ""?>>10 months</option>
+                                        </select>
+                                        <label for="duration">Duration of installmental payments in months</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
-                                    <div class="form-group animate">
-                                        <input type="number" name="duration" id="duration" class="form-input"
-                                            placeholder=" " required value="<?php echo($product_meta_details['duration_in_months']); ?>" />
-                                        <label for="duration">Duration in months</label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group-container">
-                                    <div class="form-group textarea animate">
-                                        <textarea name="pdesc" id="pdesc" class="form-input" placeholder=" " required><?php echo($product_details['details']); ?></textarea>
+                                    <div class="summer-note-container textarea">
                                         <label for="pdesc">Enter product details here</label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group-container">
-                                    <div class="form-group animate">
-                                        <input type="file" multiple name="pimages[]" id="pimages" class="form-input"
-                                            placeholder=" " required />
-                                        <label for="pimages">Upload media</label>
+                                        <textarea name="pdesc" id="pdesc" class="form-input" placeholder=" " required>
+                                        </textarea>
                                     </div>
                                 </div>
 
@@ -189,7 +196,7 @@
                                                 }
                                             ?>
                                         </select>
-                                        <label for="active">Active</label>
+                                        <label for="category">Category</label>
                                     </div>
                                 </div>
 
@@ -200,8 +207,8 @@
                                         <?php
                                             $isProductActive = $product_details['active'];
                                         ?>
-                                        <option <?php echo($isProductActive == 1? "selected" : ""); ?> value="1">Yes</option>
-                                        <option <?php echo($isProductActive == 0? "selected" : ""); ?> value="0">No</option>
+                                        <option <?php echo($isProductActive == 1? "selected" : ""); ?> value="yes">Yes</option>
+                                        <option <?php echo($isProductActive == 0? "selected" : ""); ?> value="no">No</option>
                                        </select>
                                         <label for="active">Active</label>
                                     </div>
@@ -228,11 +235,32 @@
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- SWEET ALERT PLUGIN -->
     <script src="../../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
-      <!-- JUST VALIDATE LIBRARY -->
-  <script src="../../assets/js/just-validate/just-validate.js"></script>
+    <!-- JUST VALIDATE LIBRARY -->
+    <script src="../../assets/js/just-validate/just-validate.js"></script>
+    <!-- SUMMER NOTE JS -->
+    <script src="../../assets/js/summernote-lite.min.js"></script>
+    <!-- SUMMER NOTE LANG -->
+    <script src="../../assets/js/summernote-es-ES.min.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
+        $('#pdesc').summernote({
+            height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+            ],
+        });
+
+        // SET THE TEXT EDITOR WITH SAVED PRODUCT DETAILS
+        $(".note-editable").html('<?php echo $product_details['details'] ?>');
+
         // CHANGE DEFAULT NUMBER TO READABLE FORM 
         $("input.format").val(function (index, value) {
             return value
@@ -297,19 +325,7 @@
                     errorMessage: "Field is required",
                 },
             ])
-            .addField("#daily_payment", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
             .addField("#duration", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#pdesc", [
                 {
                     rule: "required",
                     errorMessage: "Field is required",
@@ -343,6 +359,8 @@
                 },
             ])
             .onSuccess((event) => {
+                const pdesc = $(".note-editable").html().trim();
+                if(pdesc.length === 0) { alert("Please provide a product description"); return; }
                 const form = document.getElementById("product-upload-form");
 
                 // GATHERING FORM DATA
@@ -354,7 +372,7 @@
                 const formatedFields = [];
 
                 for (let [key, value] of formData.entries()) {
-                    if (key === "daily_payment" || key === "pprice") {
+                    if (key === "pprice") {
                         formatedFields.push(value);
                     }
                 }
@@ -362,7 +380,6 @@
                 const modifiedFormatedFields = formatedFields.map(value => value.replace(/,/g, ""));
 
                 formData.set("pprice", modifiedFormatedFields[0]);
-                formData.set("daily_payment", modifiedFormatedFields[1]);
 
                 for (let [key, value] of formData.entries()) {
                     console.log(`${key}: ${value}`);

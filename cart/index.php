@@ -103,7 +103,7 @@ if ($inSession) {
                 <button>Categories</button>
             </div>
             <div class="search-container">
-                <form class="search-box" action="search/">
+                <form class="search-box" action="../search/">
                     <input type="text" name="q" placeholder="Search for an item" />
                     <button type="submit" class="search-icon-btn">
                         <i class="fa fa-search"></i>

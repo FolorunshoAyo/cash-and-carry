@@ -363,17 +363,12 @@ header{
 .search-icon-btn{
     font-size: 1.5rem;
     flex: 1;
-    background-color: transparent;
+    background-color: var(--secondary-color);
     border: none;
-    color: var(--primary-color);
+    color: var(--white);
     cursor: pointer;
-    transition: all .3s ease-in;
 }
 
-.search-icon-btn:hover{
-    background-color: var(--secondary-color);
-    color: var(--white);
-}
 
 .other-links-container{
     margin-left: auto;
@@ -412,7 +407,7 @@ header{
     display: none;
     position: absolute;
     top: 30px;
-    left: -10px;
+    left: -30px;
     width: 120px;
     list-style-type: none;
     background-color: var(--white);
@@ -575,25 +570,45 @@ header{
     border-radius: 10px;
 }
 
-.available-good figure .product-badge{
-    position: absolute;
+figcaption{
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+figcaption .payment-plans{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+}
+
+figcaption .payment-plans .product-badge{
     width: fit-content;
     padding: 0.5em 1em;
-    font-size: 10px;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
     background-color: var(--primary-color);
     color: var(--white);
     border-radius: 10px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.available-good figure .product-badge.half{
-    top: 10px;
-    right: -15px;
+/* figcaption .payment-plans .product-badge.daily{
+    top: 5px;
 }
 
-.available-good figure .product-badge.month{
-    top: 40px;
-    right: -20px;
+figcaption .payment-plans .product-badge.weekly{
+    top: 32px;
+}
+
+figcaption .payment-plans .product-badge.month{
+    top: 60px;
+} */
+
+
+.product-desc{
+    text-align: center;
+    display: block;
 }
 
 figcaption{
@@ -604,6 +619,7 @@ figcaption{
 .product-desc{
     display: block;
     text-align: center;
+    font-size: 2rem;
 }
 
 .product-desc:not(:last-child){
@@ -611,14 +627,12 @@ figcaption{
 }
 
 .product-category-name{
-    font-size: 2rem;
     font-weight: 500;
     color: var(--black);
 }
 
 .product-category-price{
     color: var(--secondary-color);
-    font-size: 2rem;
 }
 
 .add-to-cart-btn{
@@ -868,6 +882,7 @@ figcaption{
 
 
 .scroll-container{
+    margin: 4rem 0;
     padding: 2rem 0;
     position: relative;
     width: 100%;
@@ -887,7 +902,7 @@ figcaption{
 }
 
 .scroll-image{
-    flex: 0 0 10%;
+    flex: 0 0 15%;
 }
 
 .scroll-image img{

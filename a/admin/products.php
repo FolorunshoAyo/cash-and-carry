@@ -45,6 +45,28 @@
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
     <title>Products - CDS</title>
+    <style>
+        .summer-note-container.textarea{
+            all: revert;
+        }
+
+        .summer-note-container.textarea label[for="pdesc"]{
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            display: inline-block;
+        }
+
+        .note-editable *, .note-editable *:hover{
+            all: revert !important;
+        }
+
+        .note-editable{
+            background-color: var(--white);
+            font-size: 1.5rem;
+        }
+
+    </style>
 </head>
 
 <body style="background-color: #fafafa">
@@ -61,7 +83,7 @@
                 </div>
                 <a href="./" class="logo">
                 <i class="fa fa-home"></i>
-                <span> CDS ADMIN </span>
+                <span> CODEWEB STORE </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">

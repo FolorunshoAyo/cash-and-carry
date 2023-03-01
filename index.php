@@ -1,18 +1,18 @@
 <?php
-  require(__DIR__ . '/auth-library/resources.php');
+require(__DIR__ . '/auth-library/resources.php');
 
-  // NUMBER FORMATTER
-  // $human_readable = new \NumberFormatter(
-  //   'en_US', 
-  //   \NumberFormatter::PADDING_POSITION
-  // );
+// NUMBER FORMATTER
+// $human_readable = new \NumberFormatter(
+//   'en_US', 
+//   \NumberFormatter::PADDING_POSITION
+// );
 
-  $inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
+$inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
 
-  if($inSession){
+if ($inSession) {
     $user_id = $_SESSION['user_id'];
     $user_name = $_SESSION['user_name'];
-  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -150,7 +150,7 @@
                 <ul class="nav-links">
                     <li class="nav-link-item">
                         <a href="#">
-                            <i class="fa fa-money"></i>    
+                            <i class="fa fa-money"></i>
                             Purchases
                         </a>
                     </li>
@@ -197,23 +197,23 @@
             <div class="other-links-container">
                 <!-- <button class="installment-btn">Installments</button> -->
                 <div class="menu-container">
-                    <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo($inSession?  explode(" ", $user_name)[0] : "Account") ?></a>
+                    <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo ($inSession ?  explode(" ", $user_name)[0] : "Account") ?></a>
                     <?php
-                        if(!$inSession){
+                    if (!$inSession) {
                     ?>
-                    <ul class="menu">
-                        <li><a href="login">Sign In</a></li>
-                    </ul>
+                        <ul class="menu">
+                            <li><a href="login">Sign In</a></li>
+                        </ul>
                     <?php
-                        }else{
+                    } else {
                     ?>
-                    <ul class="menu">
-                        <li><a href="user/">Dashboard</a></li>
-                        <li><a href="user/orders">Orders</a></li>
-                        <li><a href="logout?rd=home">Log out</a></li>
-                    </ul>
-                    <?php 
-                        }
+                        <ul class="menu">
+                            <li><a href="user/">Dashboard</a></li>
+                            <li><a href="user/orders">Orders</a></li>
+                            <li><a href="logout?rd=home">Log out</a></li>
+                        </ul>
+                    <?php
+                    }
                     ?>
                 </div>
             </div>
@@ -308,42 +308,52 @@
                     <p class="available-goods-text">According to in-demand purchases, get yours now!</p>
                 </div>
                 <div class="available-goods">
-                    <?php 
-                        $recentProductsSql = $db->query("SELECT * FROM products ORDER BY product_id desc LIMIT 8");
+                    <?php
+                    $recentProductsSql = $db->query("SELECT * FROM products ORDER BY product_id desc LIMIT 8");
 
-                        while($rowProduct = $recentProductsSql->fetch_assoc()){
-                            $productID = $rowProduct['product_id'];
-                            $productMetaSql = $db->query("SELECT * FROM product_meta WHERE product_id={$productID}");
-            
-                            $productMetaRecord = $productMetaSql->fetch_assoc();
+                    while ($rowProduct = $recentProductsSql->fetch_assoc()) {
+                        $interest_amount = (30 / 100) * $rowProduct['price'];
+                        
+                        $installment_price = $rowProduct['price'] + $interest_amount;
+
+                        $calculatedPeriods = getDaysWeeks($rowProduct['duration_of_payment']);
+
+                        $calculatedDays = $calculatedPeriods['days']; 
+                        $calculatedWeeks = $calculatedPeriods['weeks'];
+                        $calculatedMonths = $calculatedPeriods['months'];
                     ?>
-                    <div class="available-good">
-                        <a href="product?pid=<?php echo($productID) ?>">
-                            <figure>
-                                <span class="product-badge half">Pay half (₦300,000)</span>
-                                <span class="product-badge month">Pay per month (₦50,000)</span>
-                                <img src="a/admin/images/<?php echo(explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo($rowProduct['name']) ?>">
-                                <figcaption>
-                                    <span class="product-desc product-category-name"><?php echo($rowProduct['name']) ?></span>                                  
-                                    <span class="product-desc product-category-price">
-                                    ₦ <?php 
-                                                // echo($human_readable->format(intval($rowProduct['price']))) 
-                                                echo((number_format($rowProduct['price'], 2)))
-                                            ?> 
-                                    </span>
-                                </figcaption>
-                            </figure>
-                        </a>
-                        <div class="add-to-cart-btn">
-                            <button>Add to Cart</button>
+                        <div class="available-good">
+                            <?php
+                            //    $product_name_bits = explode(" ", strtolower($rowProduct['name']));
+
+                            //    $refinedProductName = join("-", $product_name_bits);
+                            ?>
+                            <a href="product/?pid=<?= $rowProduct['product_id'] ?>">
+                                <figure>
+                                    <img src="a/admin/images/<?php echo explode(",", $rowProduct['pictures'])[0] ?>" alt="web cam">
+                                    <figcaption>
+                                        <div class="payment-plans">
+                                            <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2)?>/day</span>
+                                            <span class="product-badge weekly">₦<?php echo number_format(($installment_price / $calculatedWeeks), 2)?>/week</span>
+                                            <span class="product-badge month">₦<?php echo number_format(($installment_price / $calculatedMonths), 2)?>/month</span>
+                                        </div>
+                                        <span class="product-desc product-category-name"><?= $rowProduct['name'] ?></span>
+                                        <span class="product-desc product-category-price">
+                                            ₦ <?php echo number_format($rowProduct['price'], 2) ?>
+                                        </span>
+                                    </figcaption>
+                                </figure>
+                            </a>
+                            <div class="add-to-cart-btn">
+                                <button>Add to Cart</button>
+                            </div>
                         </div>
-                    </div>
-                    <?php 
-                        }
+                    <?php
+                    }
                     ?>
                 </div>
                 <div class="view-all-container">
-                    <a href="#">view all</a>
+                    <a href="./all-products/">view all</a>
                 </div>
             </div>
         </section>
@@ -393,7 +403,7 @@
                             Buy now and pay later!!
                         </h2>
                         <p class="banner-text">
-                            Cash and carry is a platform that recognises the economic state and promises to
+                            codeweb store is a marketplace that recognises the economic state and promises to
                             deliver you with what you need at the convenience of your pocket.
                         </p>
                         <div class="banner-btn-container">
@@ -411,7 +421,7 @@
                     <p class="top-categories-text">These are the hottest categories right now!!</p>
                 </div>
                 <div class="top-categories">
-                    <a href="#" class="top-category">
+                    <a href="./all-products/?category=electronics" class="top-category">
                         <figure>
                             <img src="assets/images/bed-21.jpg" alt="#">
                             <figcaption>
@@ -419,23 +429,23 @@
                             </figcaption>
                         </figure>
                     </a>
-                    <a href="#" class="top-category">
+                    <a href="./all-products/?category=home-kitchen" class="top-category">
                         <figure>
-                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <img src="assets/images/kitchen-interior.jpg" alt="#">
                             <figcaption>
                                 Home and kitchen
                             </figcaption>
                         </figure>
                     </a>
-                    <a href="#" class="top-category">
+                    <a href="./all-products/?category=phone-tablets" class="top-category">
                         <figure>
-                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <img src="assets/images/modern-stationary-collection-arrangement.jpg" alt="#">
                             <figcaption>
                                 Phones and tablet
                             </figcaption>
                         </figure>
                     </a>
-                    <a href="#" class="top-category">
+                    <a href="./all-products/?category=computer-accessories" class="top-category">
                         <figure>
                             <img src="assets/images/bed-21.jpg" alt="#">
                             <figcaption>
@@ -443,7 +453,7 @@
                             </figcaption>
                         </figure>
                     </a>
-                    <a href="#" class="top-category">
+                    <a href="./all-products/?category=furniture" class="top-category">
                         <figure>
                             <img src="assets/images/bed-21.jpg" alt="#">
                             <figcaption>
@@ -451,7 +461,7 @@
                             </figcaption>
                         </figure>
                     </a>
-                    <a href="#" class="top-category">
+                    <a href="./all-products/?category=groceries" class="top-category">
                         <figure>
                             <img src="assets/images/bed-21.jpg" alt="#">
                             <figcaption>
@@ -459,7 +469,7 @@
                             </figcaption>
                         </figure>
                     </a>
-                    <a href="#" class="top-category">
+                    <a href="./all-products/?category=fashion" class="top-category">
                         <figure>
                             <img src="assets/images/bed-21.jpg" alt="#">
                             <figcaption>
@@ -467,7 +477,7 @@
                             </figcaption>
                         </figure>
                     </a>
-                    <a href="#" class="top-category">
+                    <a href="./all-products/?category=health-beauty" class="top-category">
                         <figure>
                             <img src="assets/images/bed-21.jpg" alt="#">
                             <figcaption>
@@ -520,7 +530,7 @@
                         </div>
                     </div>
                 </div>
-            </div>  
+            </div>
         </section>
     </main>
     <footer>
@@ -585,7 +595,7 @@
     <script src="assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <script src="assets/js/slick/slick.js"></script>
     <script>
-        $(function () {
+        $(function() {
             // const burgerMenu = $(".burger-menu");
             // const mobileNav = $(".mobile-menu");
 
@@ -596,8 +606,7 @@
                 slidesToScroll: 1,
                 autoplay: true,
                 autoplaySpeed: 2000,
-                responsive: [
-                    {
+                responsive: [{
                         breakpoint: 600,
                         settings: {
                             slidesToShow: 5,
@@ -633,29 +642,29 @@
                 cartBackdrop.classList.toggle("active");
             });
 
-            cartBackdrop.addEventListener("click", function(){
+            cartBackdrop.addEventListener("click", function() {
                 cartMenu.classList.toggle("active");
                 cartBackdrop.classList.toggle("active");
             }, false);
 
             function toggle(e) {
-                 e.stopPropagation();
-                var link=this;
+                e.stopPropagation();
+                var link = this;
                 var menu = link.nextElementSibling;
 
-                if(!menu) return;
+                if (!menu) return;
                 if (menu.style.display !== 'block') {
                     menu.style.display = 'block';
-                }  else {
+                } else {
                     menu.style.display = 'none';
                 }
             };
 
             function closeAll() {
-                menuContainer.nextElementSibling.style.display='none';
+                menuContainer.nextElementSibling.style.display = 'none';
             };
 
-            window.onclick=function(event){
+            window.onclick = function(event) {
                 closeAll.call(event.target);
             };
 

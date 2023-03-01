@@ -153,6 +153,7 @@
 
 .results-container{
     margin-top: 80px;
+    position: relative;
 }
 
 .info-container{
@@ -162,10 +163,29 @@
     font-weight: 600;
 }
 
+.products-container-overlay{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 20;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease-in;
+    background-color: rgba(255,255,255,.7);
+}
+
+.products-container-overlay.loading{
+    opacity: 1;
+    visibility: visible;
+}
+
 .products{
     display: flex;
     justify-content: space-evenly;
     flex-flow: row wrap;
+    margin-bottom: 40px;
 }
 
 .product-card{
@@ -195,30 +215,27 @@
     border-radius: 10px;
 }
 
-.product-card figure .product-badge{
-    position: absolute;
+figcaption{
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+figcaption .payment-plans{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+}
+
+figcaption .payment-plans .product-badge{
     width: fit-content;
     padding: 0.5em 1em;
-    font-size: 10px;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
     background-color: var(--primary-color);
     color: var(--white);
     border-radius: 10px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.product-card figure .product-badge.half{
-    top: 5px;
-    right: -5px;
-}
-
-.product-card figure .product-badge.month{
-    top: 35px;
-    right: -10px;
-}
-
-figcaption{
-    font-size: 1.5rem;
-    font-weight: 500;
 }
 
 .product-desc{

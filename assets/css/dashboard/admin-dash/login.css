@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to bottom left, #2366B5, #1270B0);
+    background: linear-gradient(to bottom left, var(--primary-color), var(--secondary-color));
 }
 
 .login-container{
@@ -60,7 +60,7 @@
 }
 
 label.active{
-    background-color: #1270B0;
+    background-color: var(--primary-color);
     color: var(--white);
 }
 

@@ -80,6 +80,18 @@
         margin: 0 auto 100px;
     }
 
+    .product-image-slider-container.view-2{
+        transform: translateX(calc((-500px * 1) + 10px));
+    }
+    
+    .product-image-slider-container.view-3{
+        transform: translateX(calc((-500px * 2) + 10px));
+    }
+    
+    .product-image-slider-container img{
+        flex: 0 0 500px;
+    }
+
     .product-slider{
         width: 100%;
     }
@@ -153,7 +165,7 @@
 /* < 750px */ 
 @media only screen and (max-width: 46.875em){ 
     .bottom-header{
-        width: 95%;
+        width: 100%;
         padding: 2rem 1rem 0;
     }
 
@@ -440,10 +452,23 @@
         width: 180px;
         height: 180px;
     }
+
+    .scroll-container{
+        margin: 2rem 0;
+    }
+
+    .scroll-image{
+        flex: 0 0 17%;
+    }
+
+    .product-image-slider-container.view-2 {
+        transform: translateX(calc((-106% * 1) + 10px));
+    }
+
+    .product-image-slider-container.view-3 {
+        transform: translateX(calc((-106% * 2) + 10px));
+    }
 }
-
-
-
 
 /* < 500px */ 
 @media only screen and (max-width: 31.25em){ 
@@ -560,12 +585,16 @@
     .cart-action-btn-container div:last-child a{
         margin-bottom: 20px;
     }
+
+    .payment-plans label{
+        gap: 15px;
+    }
 }
 
 /* < 400px */
 @media only screen and (max-width: 25em){   
     .logo-text .title + span{
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
 
     .search-box input{
@@ -596,7 +625,8 @@
     }
 
     .menu-container .menu{
-        left: -50px;
+        left: -20px;
+        width: 80px;
     }
 
     .input-container{
@@ -605,6 +635,10 @@
 
     .quick-link a{
         flex: 0 0 45%;
+    }
+
+    .product-desc{
+        font-size: 2.5rem;
     }
 
     .quick-link a img{
@@ -628,6 +662,16 @@
         flex: 0 0 100%;
         margin-right: 0px;
         margin-bottom: 15px;
+    }
+
+    figcaption .payment-plans .product-badge{
+        font-size: 1.6rem;
+    }
+
+    .payment-plan-container{
+        width: 350px;
+        max-width: 350px;
+        margin: 0 30px;
     }
 }
 

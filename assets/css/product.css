@@ -20,6 +20,26 @@
     padding: 0.8rem;
     border: 1px solid var(--primary-color);
     border-radius: 10px;
+    overflow: hidden;
+}
+
+.product-image-slider-container{
+    display: flex;
+    gap: 10px;
+    height: 100%;
+    transition: transform .5s ease-in;
+}
+
+.product-image-slider-container.view-2{
+    transform: translateX(calc((-400px * 1) + 10px));
+}
+
+.product-image-slider-container.view-3{
+    transform: translateX(calc((-400px * 2) + 10px));
+}
+
+.product-image-slider-container img{
+    flex: 0 0 400px;
 }
 
 .product-image-container img{
@@ -31,7 +51,7 @@
     width: 80%;
     margin: 30px auto 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .product-images img{
@@ -121,6 +141,10 @@
     color: var(--white);
     border-radius: 10px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.product-badge:not(:last-child){
+    margin-bottom: 10px;
 }
 
 .product-details{
@@ -252,10 +276,6 @@
     text-decoration: none;
 }
 
-.product-card figure{
-    position: relative;
-}
-
 .product-card figure img{
     display: block;
     width: 100%;
@@ -267,35 +287,45 @@
     border-radius: 10px;
 }
 
-.product-card figure .product-badge{
-    position: absolute;
-    width: fit-content;
-    padding: 0.5em 1em;
-    font-size: 1.3rem;
-    background-color: var(--primary-color);
-    color: var(--white);
-    border-radius: 10px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.product-card figure .product-badge.half{
-    top: 5px;
-    right: -5px;
-}
-
-.product-card figure .product-badge.month{
-    top: 35px;
-    right: -10px;
-}
-
 figcaption{
     font-size: 1.5rem;
     font-weight: 500;
 }
 
+figcaption .payment-plans{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+}
+
+figcaption .payment-plans .product-badge{
+    width: fit-content;
+    padding: 0.5em 1em;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    background-color: var(--white);
+    color: var(--primary-color);
+    border-radius: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/* figcaption .payment-plans .product-badge.daily{
+    top: 5px;
+}
+
+figcaption .payment-plans .product-badge.weekly{
+    top: 32px;
+}
+
+figcaption .payment-plans .product-badge.month{
+    top: 60px;
+} */
+
+
 .product-desc{
-    display: block;
     text-align: center;
+    display: block;
 }
 
 .product-desc:not(:last-child){
@@ -349,3 +379,169 @@ figcaption{
     from {opacity: 0; }
     to { opacity: 1;}
   }
+
+  .payment-plan-wrapper{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: rgba(0, 0, 0, .125);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .payment-plan-wrapper.hide{
+    display: none;
+  }
+
+  .payment-plan-container{
+    width: 450px;
+    max-width: 450px;
+    margin: 0 50px;
+    border-radius: 20px;
+    padding: 3rem 4rem;
+    background-color: var(--white);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+
+  .payment-plan-container header{
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 10px;
+    width: 100%;
+  }
+
+  .payment-plan-container header h1{
+    font-size: 1.5rem;
+  }
+
+  .payment-plan-container header a{
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+  }
+
+  .payment-plans label{
+    display: block;
+    padding: 2.5rem 2rem;
+    display: flex;
+    border: 2px solid var(--primary-color);
+    gap: 30px;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+  .payment-plans label .radio-container{
+    flex: 0 0 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .payment-plans label .radio-container .custom-radio{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    outline: 2px solid var(--primary-color);
+    transition: all .3s ease;
+  }
+
+  .payment-plans input:checked + label .radio-container .custom-radio{
+    outline: 8px solid var(--primary-color);
+  }
+
+  .payment-plans label .payment-plan-info{
+    flex: 1;
+    color: var(--primary-color);
+  }
+  
+  .payment-plan-info h3{
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .payment-plan-info p{
+    font-size: 1.2rem;
+  }
+
+  .payment-plan-info p sup{
+    font-size: 1.5rem;
+  }
+
+  .payment-plan-info p:not(:last-child){
+    margin-bottom: 10px;
+  }
+
+  .payment-plan-info p span{
+    font-size: 2rem;
+  }
+
+  .payment-plans label:not(:last-child){
+    margin-bottom: 20px;
+  }
+
+  .payment-plans input{
+    display: none;
+  }
+
+  .payment-action-btns .btn{
+    appearance: button;
+    background-color: var(--primary-color);
+    background-image: none;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-shadow: #fff 4px 4px 0 0,#000 4px 4px 0 1px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0 5px 10px 0;
+    overflow: visible;
+    padding: 12px 40px;
+    text-align: center;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    transition: background-color .3s ease-in;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.payment-action-btns .btn:hover {
+    background-color: var(--black);
+}
+  
+.payment-action-btns .btn:active {
+    box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
+    outline: 0;
+}
+
+.payment-action-btns .btn:disabled{
+    opacity: 0.7;   
+}
+
+.payment-action-btns{
+    text-align: center;
+}
+
+.payment-action-btns .btn:not([disabled]):active {
+    box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+    transform: translate(2px, 2px);
+}
+
+.payment-action-btns a{
+    color: var(--primary-color);
+    font-size: 1.2rem; 
+    text-decoration: none;
+    transition: all .3s ease-in ;
+}
+
+.payment-action-btns a:hover{
+    text-decoration: underline;
+}

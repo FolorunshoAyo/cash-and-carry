@@ -34,6 +34,8 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
   <link rel="stylesheet" href="../assets/css/base.css" />
   <!-- PAGINATE CSS -->
   <link rel="stylesheet" href="../assets/css/jquery.paginate.css">
+  <!-- CUSTOM PAGINATE CSS -->
+  <link rel="stylesheet" href="../assets/css/pagination.css">
   <!-- CUSTOM CSS (HOME) -->
   <link rel="stylesheet" href="../assets/css/index.css" />
   <!-- CUSTOM STYLESHEET -->
@@ -46,7 +48,7 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
 <body>
   <header>
     <div class="top-header">
-      <a href="index.html" class="logo-container">
+      <a href="../" class="logo-container">
         <div class="logo-image-container">
           <img src="../assets/images/logo.jpg" alt="Header Logo">
         </div>
@@ -55,6 +57,7 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
           <span>pay half now - pay half later</span>
         </div>
       </a>
+
       <nav class="navigation-menu">
         <ul class="nav-links">
           <li class="nav-link-item">
@@ -76,18 +79,18 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
             </a>
           </li>
           <li class="nav-link-item cart-link">
-            <a href="">
+            <a href="javascript:void(0)">
               <span class="cart-badge">0</span>
               <i class="fa fa-shopping-cart"></i>
               Cart
             </a>
           </li>
           <!-- <li class="nav-link-item">
-                <div class="dark-mode-container">
-                  <span>Dark Mode</span>
-                  <img src="../assets/images/toggle-off.png" alt="toggle-off">
-                </div>
-                </li> -->
+                        <div class="dark-mode-container">
+                            <span>Dark Mode</span>
+                            <img src="../assets/images/toggle-off.png" alt="toggle-off">
+                        </div>
+                    </li> -->
         </ul>
       </nav>
     </div>
@@ -96,7 +99,7 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
         <button>Categories</button>
       </div>
       <div class="search-container">
-        <form class="search-box" action="./">
+        <form class="search-box" action="../search/">
           <input type="text" name="q" placeholder="Search for an item" />
           <button type="submit" class="search-icon-btn">
             <i class="fa fa-search"></i>
@@ -104,22 +107,21 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
         </form>
       </div>
       <div class="other-links-container">
-        <button class="installment-btn">Installments</button>
         <div class="menu-container">
           <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo ($inSession ?  explode(" ", $user_name)[0] : "Account") ?></a>
           <?php
           if (!$inSession) {
           ?>
             <ul class="menu">
-              <li><a href="../login">Sign In</a></li>
+              <li><a href="login">Sign In</a></li>
             </ul>
           <?php
           } else {
           ?>
             <ul class="menu">
-              <li><a href="../user/">Dashboard</a></li>
-              <li><a href="../user/orders">Orders</a></li>
-              <li><a href="../logout?rd=home">Log out</a></li>
+              <li><a href="user/">Dashboard</a></li>
+              <li><a href="user/orders">Orders</a></li>
+              <li><a href="logout?rd=home">Log out</a></li>
             </ul>
           <?php
           }
@@ -148,28 +150,29 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
           <div id="available-goods" class="available-goods">
             <?php
             while ($rowProduct = $searchProducts->fetch_assoc()) {
-              $productID = $rowProduct['product_id'];
-              $productMetaSql = $db->query("SELECT * FROM product_meta WHERE product_id={$productID}");
+              $interest_amount = (30 / 100) * $rowProduct['price'];
 
-              $productMetaRecord = $productMetaSql->fetch_assoc();
+              $installment_price = $rowProduct['price'] + $interest_amount;
+
+              $calculatedPeriods = getDaysWeeks($rowProduct['duration_of_payment']);
+
+              $calculatedDays = $calculatedPeriods['days'];
+              $calculatedWeeks = $calculatedPeriods['weeks'];
+              $calculatedMonths = $calculatedPeriods['months'];
             ?>
               <a href="../product?pid=<?php echo ($productID) ?>" class="available-good">
                 <figure>
-                  <img src="../a/admin/images/<?php echo (explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo ($rowProduct['name'])
-                                                                                                            ?>" />
+                  <img src="../a/admin/images/<?php echo (explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo ($rowProduct['name']) ?>" />
                   <figcaption>
-                    <span class="product-desc product-category-name"><?php echo ($rowProduct['name'])
-                                                                      ?></span>
-                    <span class="product-desc product-category-duration">N<?php
-                                                                          // echo($human_readable->format(intval($rowProduct['price']))) 
-                                                                          echo ($rowProduct['price'])
-                                                                          ?>
-                      X
-                      <?php echo ($productMetaRecord['duration_in_months']) ?> Months</span>
-                    <span class="product-desc product-category-price">N<?php
-                                                                        // echo($human_readable->format($productMetaRecord['daily_payment']))
-                                                                        echo ($productMetaRecord['daily_payment'])
-                                                                        ?> Daily</span>
+                    <div class="payment-plans">
+                      <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?>/day</span>
+                      <span class="product-badge weekly">₦<?php echo number_format(($installment_price / $calculatedWeeks), 2) ?>/week</span>
+                      <span class="product-badge month">₦<?php echo number_format(($installment_price / $calculatedMonths), 2) ?>/month</span>
+                    </div>
+                    <span class="product-desc product-category-name"><?= $rowProduct['name'] ?></span>
+                    <span class="product-desc product-category-price">
+                      ₦ <?php echo number_format($rowProduct['price'], 2) ?>
+                    </span>
                   </figcaption>
                 </figure>
               </a>
@@ -186,16 +189,17 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
       <div class="footer-row">
         <div class="footer-group-container">
           <div class="footer-logo-container">
-            <img src="../assets/images/logo-small.png" alt="Footer logo" />
+            <div class="footer-logo-image-container">
+              <img src="../assets/images/logo.jpg" alt="Footer logo">
+            </div>
             <div class="footer-logo-text">
-              <span class="logo-title">CDS</span>
-              <span>Confidence daily savings</span>
+              <span class="logo-title">CODEWEB STORE</span>
+              <span>Buy now pay later</span>
             </div>
           </div>
           <p class="footer-message">
-            Confywills Nigeria Limited was founded in 2012, since then we have
-            continue to produce a reliable services in all sectors of
-            production and consumption.
+            Codeweb project solutions was founded in 2019, since then we have continued to produce
+            reliable services in all sectors of production and consumption.
           </p>
         </div>
 
@@ -203,7 +207,7 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
           <div class="call-center-container">
             <div class="call-center-textbox">
               <span class="call-center-text">Call Center</span>
-              <a href="tel:09045840662" class="call-center-no">09045840662</a>
+              <a href="tel:+2349045840662" class="call-center-no">+234 9045840662</a>
             </div>
             <div class="tel-icon-container">
               <i class="fa fa-phone"></i>
@@ -230,7 +234,7 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
       </div>
       <div class="copyright-message">
         <div>C</div>
-        <span>Copyright CDS 2022</span>
+        <span>Copyright Codeweb 2022</span>
       </div>
     </div>
   </footer>
