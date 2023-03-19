@@ -4,12 +4,11 @@
     box-shadow: 0px 10px 10px rgba(0,0,0,.24);
 }
 
-.search-result-header-container{
-    background: linear-gradient(to bottom left, var(--primary-color), var(--secondary-color));
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.info-container{
+    width: 90%;
+    margin: 50px auto;
+    font-size: 1.5rem;
+    color: var(--primary-color);
 }
 
 .search-result-heading{
@@ -35,15 +34,20 @@
     font-size: 2rem;
 }
 
+figcaption .payment-plans .product-badge{
+    font-size: 1.2rem;
+}
+
+
 .available-goods{
     margin-top: 30px;
-    display: flex;
-    justify-content: space-evenly;
-    flex-flow: row wrap;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 300px));
 }
 
 .available-good{
-    flex: 0 0 31%;
+    /* flex: 0 0 31%; */
     margin-bottom: 30px;
     text-decoration: none;
     color: var(--black);
@@ -54,13 +58,13 @@
     height: 250px;
     display: block;
     margin-bottom: 10px;
-    border: 1px solid #d0d0d0;
 }
 
-figcaption{
+.available-good figure figcaption{
     text-align: center;
     font-size: 1.5rem;
     font-weight: 500;
+    margin-bottom: auto;
 }
 
 .product-desc{
@@ -71,16 +75,14 @@ figcaption{
     margin-bottom: 5px;
 }
 
-.product-category-name{
-    font-size: 2rem;
-}
-
 .product-category-duration{
     color: var(--secondary-color);
 }
 
 .product-category-price{
+    font-size: 2rem;
     color: var(--secondary-color);
+    margin-top: 10px;
 }
 
 .paginate-pagination ul > li > a.page{

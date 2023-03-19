@@ -19,12 +19,12 @@ if ($_POST['submit']) {
 
     $total_records_per_page = $_POST['page_size'];
 
-    $offset = (($page_no - 1) * $total_records_per_page) == "0" ? "" : ", " . ($page_no - 1) * $total_records_per_page;
+    $offset = (($page_no - 1) * $total_records_per_page) == "0" ? "" : ($page_no - 1) * $total_records_per_page . ",";
 
-    $products_filter_sql = $db->query("SELECT * FROM products $category_sql $price_sort_sql $order_sort_sql LIMIT $total_records_per_page $offset");
+    // echo "SELECT * FROM products $category_sql $price_sort_sql $order_sort_sql LIMIT $offset $total_records_per_page";
+
+    $products_filter_sql = $db->query("SELECT * FROM products $category_sql $price_sort_sql $order_sort_sql LIMIT $offset$total_records_per_page");
     $result_count = $db->query("SELECT COUNT(*) as total_records FROM products $category_sql $price_sort_sql $order_sort_sql");
-
-    // echo "SELECT * FROM products $category_sql $price_sort_sql $order_sort_sql LIMIT $total_records_per_page $offset";
 
     $total_records = $result_count->fetch_assoc()['total_records'];
 
@@ -44,25 +44,30 @@ if ($_POST['submit']) {
 
         $product_image_src = explode(",", $product_details['pictures'])[0];
 
+        $product_id = $product_details['product_id'];
+
         $productHTML .= "<div class='product-card'>
             <a href='../product/?pid=" . $product_details['product_id'] . "'>
             <figure>
-                <img src='../a/admin/images/" . $product_image_src . "'>
+                <img id='product-image-$product_id' src='".$url."a/admin/images/" . $product_image_src . "'>
                 <figcaption>
                     <div class='payment-plans'>
-                        <span class='product-badge daily'>₦" . number_format(($installment_price / $calculatedDays), 2) . "/day</span>
-                        <span class='product-badge weekly'>₦" . number_format(($installment_price / $calculatedWeeks), 2) . "/week</span>
-                        <span class='product-badge month'>₦" . number_format(($installment_price / $calculatedMonths), 2) . "/month</span>
+                        <span class='product-badge daily'>₦" . number_format(($installment_price / $calculatedDays), 2) . "/day " . "(" . $calculatedPeriods['days'] . " days)" . "</span>
+                        <span class='product-badge weekly'>₦" . number_format(($installment_price / $calculatedWeeks), 2) . "/week " . "(" . $calculatedPeriods['weeks'] . " weeks)" . "</span>
+                        <span class='product-badge month'>₦" . number_format(($installment_price / $calculatedMonths), 2) . "/month " . "(" . $calculatedPeriods['months'] . " days)" . "</span>
                     </div>
-                    <span class='product-desc product-category-name'>" . $product_details['name'] . "</span>
-                    <span class='product-desc product-category-price'>
+                    <span id='name-$product_id' data-name='{$product_details['name']}' class='product-desc product-category-name'>" . $product_details['name'] . "</span>
+                    <span id='price-$product_id' data-price='{$product_details['price']}' class='product-desc product-category-price'>
                         ₦ " . number_format($product_details['price'], 2) . "
                     </span>
                 </figcaption>
             </figure>
         </a>
+        <div class='add-to-cart-btn'>
+            <button data-product-id='$product_id'>Add to Cart</button>
+        </div>
         </div>";
     }
 
-    echo json_encode(array('success' => 1, 'curr_page' => $page_no, 'total_page' => $total_no_of_pages, 'total_size' => $total_records, 'data' => $productHTML));
+    echo json_encode(array('success' => 1, 'curr_page' => intval($page_no), 'total_page' => $total_no_of_pages, 'total_size' => intval($total_records), 'data' => $productHTML));
 }

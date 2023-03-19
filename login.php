@@ -18,19 +18,25 @@
       href="assets/css/media-queries/main-media-queries.css"
       type="text/css"
     />
-    <title>Login - codeweb store</title>
+    <title>Login - Halfcarry</title>
   </head>
 
   <body>
+    <!-- CUSTOM SPINNER/LOADER -->
+    <div class="spinner-wrapper">
+      <div class="spinner-container">
+        <img src="assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
+        <div class="spinner"></div>
+      </div>
+    </div>
     <div class="form-page-wrapper">
       <header>
         <a href="./" class="form-logo-container">
           <div class="form-logo-img-container">
-            <img src="assets/images/logo.jpg" alt="Logo" />
+            <img src="assets/images/halfcarry-logo.jpeg" alt="Logo" />
           </div>
           <div class="form-logo-text-container">
-            <span class="logo-text">CODEWEB STORE</span>
-            <span>buy now - pay later</span>
+            <span class="logo-text">buy now - pay later</span>
           </div>
         </a>
       </header>
@@ -141,62 +147,69 @@
             console.log(`${key}: ${value}`);
           }
 
-          // $.ajax({
-          //   url: "authentication/login.php",
-          //   type: "post",
-          //   data: formData,
-          //   processData: false,
-          //   contentType: false,
-          //   beforeSend: function () {
-          //     $(".submit-btn-container button").html("<i class='fa fa-spinner rotate'></i>");
-          //     $(".submit-btn-container button").attr("disabled", true);
-          //   },
-          //   success: function (response) {
-          //     response = JSON.parse(response);
+          $.ajax({
+            url: "authentication/login.php",
+            type: "post",
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+              $(".submit-btn-container button").html("<i class='fa fa-spinner rotate'></i>");
+              $(".submit-btn-container button").attr("disabled", true);
+              $(".spinner-wrapper").addClass("active");
+            },
+            success: function (response) {
+              response = JSON.parse(response);
 
-          //     if (response.success === 1) {
-          //       if (response.redirect === "home-page") {
-          //         //REDIRECT TO DASH
-          //         window.location = "./";
-          //       } else {
-          //         // REDIRECT TO EMAIL VERIFICATION'S PAGE
-          //         window.location = "authentication/send-code?a=send";
-          //       }
-          //     } else {
-          //       $(".submit-btn-container button").html("Log In");
-          //       $(".submit-btn-container button").attr("disabled", false);
+              if (response.success === 1) {
+                if (response.redirect === "home-page") {
+                  //REDIRECT TO DASH
+                  window.location = "./";
+                } else {
+                  // REDIRECT TO EMAIL VERIFICATION'S PAGE
+                  window.location = "authentication/send-code?a=send";
+                }
+              } else {
+                $(".submit-btn-container button").html("Log In");
+                $(".submit-btn-container button").attr("disabled", false);
+                $(".spinner-wrapper").removeClass("active");
 
-          //       if (response.error_title === "suspended") {
-          //         iziToast.error({
-          //           title:
-          //             "Your account has been suspended, contact our support.",
-          //           timeout: 4000,
-          //           backgroundColor: "red",
-          //           theme: "dark",
-          //           position: "topRight",
-          //         });
-          //       } else if (response.error_title === "incorrect password") {
-          //         iziToast.error({
-          //           title: "Your password is incorrect, please try again.",
-          //           timeout: 4000,
-          //           backgroundColor: "red",
-          //           theme: "dark",
-          //           position: "topRight",
-          //         });
-          //       } else if (response.error_title === "incorrect details") {
-          //         iziToast.error({
-          //           title: "Incorrect email and password, try again.",
-          //           timeout: 4000,
-          //           backgroundColor: "red",
-          //           theme: "dark",
-          //           position: "topRight",
-          //         });
-          //       } else {
-          //         location.reload();
-          //       }
-          //     }
-          //   },
-          // });
+                if (response.error_title === "suspended") {
+                  iziToast.error({
+                    title:
+                      "Your account has been suspended, contact our support.",
+                    timeout: 4000,
+                    backgroundColor: "red",
+                    theme: "dark",
+                    position: "topRight",
+                  });
+                } else if (response.error_title === "incorrect password") {
+                  iziToast.error({
+                    title: "Your password is incorrect, please try again.",
+                    timeout: 4000,
+                    backgroundColor: "red",
+                    theme: "dark",
+                    position: "topRight",
+                  });
+                  $("#pwd").focus();
+                  
+                } else if (response.error_title === "incorrect details") {
+                  iziToast.error({
+                    title: "Incorrect email and password, try again.",
+                    timeout: 4000,
+                    backgroundColor: "red",
+                    theme: "dark",
+                    position: "topRight",
+                  });
+
+                  $("#email").focus();
+                  $("#pwd").val("");
+                } else {
+                  location.reload();
+                }
+              }
+            },
+          });
         });
     </script>
   </body>

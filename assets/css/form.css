@@ -34,19 +34,20 @@ header{
 }
 
 .form-logo-text-container{
+    align-self: flex-end;
     flex: 1;
     color: var(--primary-color);
 }
 
 .form-logo-text-container .logo-text{
     display: block;
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.2rem;
+    font-weight: 800;
 }
 
-.form-logo-text-container .logo-text + span{
+/* .form-logo-text-container .logo-text + span{
     font-size: 1.2rem;
-}
+} */
 
 
 .form-section{

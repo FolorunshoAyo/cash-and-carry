@@ -35,7 +35,7 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
   <!-- PAGINATE CSS -->
   <link rel="stylesheet" href="../assets/css/jquery.paginate.css">
   <!-- CUSTOM PAGINATE CSS -->
-  <link rel="stylesheet" href="../assets/css/pagination.css">
+  <link rel="stylesheet" href="../assets/css/custom-paginate.css">
   <!-- CUSTOM CSS (HOME) -->
   <link rel="stylesheet" href="../assets/css/index.css" />
   <!-- CUSTOM STYLESHEET -->
@@ -46,15 +46,108 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
 </head>
 
 <body>
+  <div class="cart-backdrop"></div>
+  <aside class="cart-menu">
+    <div class="close-container">
+      <i class="fa fa-times"></i>
+    </div>
+    <div class="cart-menu-items-container">
+      <div class="cart-menu-items">
+        <div class="cart-menu-item">
+          <div class="cart-menu-item-image-container">
+            <img src="../assets/images/web-cam-1.jpg" />
+          </div>
+          <div class="cart-product-details">
+            <a href="#" class="cart-product-name">Web cam 2.0</a>
+            <div class="cart-item-meta">
+              <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
+            </div>
+          </div>
+          <div class="close-btn-container">
+            <button>
+              <i class="fa fa-cross"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cart-menu-item">
+          <div class="cart-menu-item-image-container">
+            <img src="../assets/images/web-cam-1.jpg" />
+          </div>
+          <div class="cart-product-details">
+            <a href="#" class="cart-product-name">Web cam 2.0</a>
+            <div class="cart-item-meta">
+              <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
+            </div>
+          </div>
+          <div class="close-btn-container">
+            <button>
+              <i class="fa fa-cross"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cart-menu-item">
+          <div class="cart-menu-item-image-container">
+            <img src="../assets/images/web-cam-1.jpg" />
+          </div>
+          <div class="cart-product-details">
+            <a href="#" class="cart-product-name">Web cam 2.0</a>
+            <div class="cart-item-meta">
+              <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
+            </div>
+          </div>
+          <div class="close-btn-container">
+            <button>
+              <i class="fa fa-cross"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cart-menu-item">
+          <div class="cart-menu-item-image-container">
+            <img src="../assets/images/web-cam-1.jpg" />
+          </div>
+          <div class="cart-product-details">
+            <a href="#" class="cart-product-name">Web cam 2.0</a>
+            <div class="cart-item-meta">
+              <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
+            </div>
+          </div>
+          <div class="close-btn-container">
+            <button>
+              <i class="fa fa-cross"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cart-menu-item">
+          <div class="cart-menu-item-image-container">
+            <img src="../assets/images/web-cam-1.jpg" />
+          </div>
+          <div class="cart-product-details">
+            <a href="#" class="cart-product-name">Web cam 2.0</a>
+            <div class="cart-item-meta">
+              <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
+            </div>
+          </div>
+          <div class="close-btn-container">
+            <button>
+              <i class="fa fa-cross"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="sub-total-container">
+        Subtotal: <span class="subtotal-amount">N 300,000</span>
+      </div>
+      <div class="cart-menu-action-btns">
+        <a href="../cart/" class="btn">View Cart</a>
+        <a href="../checkout/" class="btn">Checkout</a>
+      </div>
+    </div>
+  </aside>
   <header>
     <div class="top-header">
       <a href="../" class="logo-container">
         <div class="logo-image-container">
-          <img src="../assets/images/logo.jpg" alt="Header Logo">
-        </div>
-        <div class="logo-text">
-          <span class="title">Codeweb store</span>
-          <span>pay half now - pay half later</span>
+          <img src="../assets/images/halfcarry-logo.jpeg" alt="Header Logo">
         </div>
       </a>
 
@@ -96,7 +189,7 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
     </div>
     <div class="bottom-header">
       <div class="categories-btn-container">
-        <button>Categories</button>
+        <a href="../all-products/?view-categories">Categories</a>
       </div>
       <div class="search-container">
         <form class="search-box" action="../search/">
@@ -113,15 +206,15 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
           if (!$inSession) {
           ?>
             <ul class="menu">
-              <li><a href="login">Sign In</a></li>
+              <li><a href="../login">Sign In</a></li>
             </ul>
           <?php
           } else {
           ?>
             <ul class="menu">
-              <li><a href="user/">Dashboard</a></li>
-              <li><a href="user/orders">Orders</a></li>
-              <li><a href="logout?rd=home">Log out</a></li>
+              <li><a href="../user/">Dashboard</a></li>
+              <li><a href="../user/orders">Orders</a></li>
+              <li><a href="../logout?rd=home">Log out</a></li>
             </ul>
           <?php
           }
@@ -131,11 +224,9 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
     </div>
   </header>
   <main>
-    <section class="search-result-header">
-      <div class="search-result-header-container">
-        <h1 class="search-result-heading">Search Results for: <?php echo ($productQuery) ?></h1>
-      </div>
-    </section>
+    <div class="info-container">
+      <span>Searched for: <?= $productQuery ?>, Retrieved <?= $searchProducts->num_rows ?> results.</span>
+    </div>
     <section class="search-result-section">
       <div class="search-result-container">
         <?php
@@ -160,14 +251,14 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
               $calculatedWeeks = $calculatedPeriods['weeks'];
               $calculatedMonths = $calculatedPeriods['months'];
             ?>
-              <a href="../product?pid=<?php echo ($productID) ?>" class="available-good">
+              <a href="../product/?pid=<?php echo ($rowProduct['product_id']) ?>" class="available-good">
                 <figure>
                   <img src="../a/admin/images/<?php echo (explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo ($rowProduct['name']) ?>" />
                   <figcaption>
                     <div class="payment-plans">
-                      <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?>/day</span>
-                      <span class="product-badge weekly">₦<?php echo number_format(($installment_price / $calculatedWeeks), 2) ?>/week</span>
-                      <span class="product-badge month">₦<?php echo number_format(($installment_price / $calculatedMonths), 2) ?>/month</span>
+                      <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?>/day (<?= $calculatedPeriods['days'] ?> days)</span>
+                      <span class="product-badge weekly">₦<?php echo number_format(($installment_price / $calculatedWeeks), 2) ?>/week (<?= $calculatedPeriods['weeks'] ?> weeks)</span>
+                      <span class="product-badge month">₦<?php echo number_format(($installment_price / $calculatedMonths), 2) ?>/month (<?= $calculatedPeriods['months'] ?> months)</span>
                     </div>
                     <span class="product-desc product-category-name"><?= $rowProduct['name'] ?></span>
                     <span class="product-desc product-category-price">
@@ -176,106 +267,58 @@ $searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQ
                   </figcaption>
                 </figure>
               </a>
-          </div>
-      <?php
+            <?php
             }
-          }
-      ?>
+            ?>
+          </div>
+        <?php
+        }
+        ?>
       </div>
     </section>
   </main>
-  <footer>
-    <div class="footer-container">
-      <div class="footer-row">
-        <div class="footer-group-container">
-          <div class="footer-logo-container">
-            <div class="footer-logo-image-container">
-              <img src="../assets/images/logo.jpg" alt="Footer logo">
-            </div>
-            <div class="footer-logo-text">
-              <span class="logo-title">CODEWEB STORE</span>
-              <span>Buy now pay later</span>
-            </div>
-          </div>
-          <p class="footer-message">
-            Codeweb project solutions was founded in 2019, since then we have continued to produce
-            reliable services in all sectors of production and consumption.
-          </p>
-        </div>
+  <?php
+    include("../includes/footer.php");
+  ?>
+  <!-- FONT AWESOME JIT SCRIPT-->
+  <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
+  <!-- JQUERY SCRIPT -->
+  <script src="../assets/js/jquery/jquery-3.6.min.js"></script>
+  <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
+  <script src="../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+  <!-- JQUERY PAGINATE -->
+  <script src="../assets/js/jquery.paginate.js"></script>
+  <script>
+    $("#available-goods").paginate({
+      scope: $(".available-good"),
+      paginatePosition: ['top'],
+      perPage: 10
+    });
 
-        <div class="footer-group call-container">
-          <div class="call-center-container">
-            <div class="call-center-textbox">
-              <span class="call-center-text">Call Center</span>
-              <a href="tel:+2349045840662" class="call-center-no">+234 9045840662</a>
-            </div>
-            <div class="tel-icon-container">
-              <i class="fa fa-phone"></i>
-            </div>
-          </div>
-          <ul class="social-media-links">
-            <li>
-              <a href="#">
-                <i class="fa fa-facebook"></i>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa fa-instagram"></i>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fa fa-twitter"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="copyright-message">
-        <div>C</div>
-        <span>Copyright Codeweb 2022</span>
-      </div>
-    </div>
-  </footer>
+    const menuContainer = document.querySelector(".menu-container a");
+    menuContainer.addEventListener("click", toggle);
+
+    function toggle(e) {
+      e.stopPropagation();
+      var link = this;
+      var menu = link.nextElementSibling;
+
+      if (!menu) return;
+      if (menu.style.display !== 'block') {
+        menu.style.display = 'block';
+      } else {
+        menu.style.display = 'none';
+      }
+    };
+
+    function closeAll() {
+      menuContainer.nextElementSibling.style.display = 'none';
+    };
+
+    window.onclick = function(event) {
+      closeAll.call(event.target);
+    };
+  </script>
 </body>
-<!-- FONT AWESOME JIT SCRIPT-->
-<script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
-<!-- JQUERY SCRIPT -->
-<script src="../assets/js/jquery/jquery-3.6.min.js"></script>
-<!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
-<script src="../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
-<!-- JQUERY PAGINATE -->
-<script src="../assets/js/jquery.paginate.js"></script>
-<script>
-  $("#available-goods").paginate({
-    scope: $(".available-good"),
-    paginatePosition: ['top']
-  });
-
-  const menuContainer = document.querySelector(".menu-container a");
-  menuContainer.addEventListener("click", toggle);
-
-  function toggle(e) {
-    e.stopPropagation();
-    var link = this;
-    var menu = link.nextElementSibling;
-
-    if (!menu) return;
-    if (menu.style.display !== 'block') {
-      menu.style.display = 'block';
-    } else {
-      menu.style.display = 'none';
-    }
-  };
-
-  function closeAll() {
-    menuContainer.nextElementSibling.style.display = 'none';
-  };
-
-  window.onclick = function(event) {
-    closeAll.call(event.target);
-  };
-</script>
 
 </html>

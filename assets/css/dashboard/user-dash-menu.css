@@ -46,18 +46,18 @@ aside.mobile-menu{
     padding: 2rem 3rem;
     text-decoration: none;
     color: var(--black);
-    font-size: 2.5rem;
+    font-size: 2rem;
     transition: .5s;
 }
 
 .nav-link-item.active .nav-link{
     color: var(--primary-color);
-    background-color: #E7F7FD;
+    background-color: #fdeee7;
 }
 
 .nav-link-item .nav-link:hover{
     color: var(--primary-color);
-    background-color: #E7F7FD;
+    background-color: #fdeee7;
 }
 
 .nav-link-item .nav-link.logout{
@@ -66,7 +66,7 @@ aside.mobile-menu{
 
 .nav-link-item .nav-link.logout:hover{
     color: var(--white);
-    background-color: #E7F7FD;
+    background-color: var(--primary-color);
 }
 
 .mobile-backdrop{
@@ -84,6 +84,7 @@ aside.mobile-menu{
 .dash-header-container{
     display: flex;
     padding: 2rem 3rem;
+    height: 10vh;
 }
 
 .menu-icon-container{
@@ -127,7 +128,7 @@ aside.mobile-menu{
 .main-container{
     padding: 0 2rem;
     display: flex;
-    min-height: 100vh;
+    min-height: 90vh
 }
 
 .dashboard-links-wrapper{
@@ -182,13 +183,13 @@ ul{
 
 .dashboard-nav-link.active a{
     color: var(--primary-color);
-    background-color: #E7F7FD;
+    background-color: #fdeee7;
 }
 
 
 .dashboard-nav-links .dashboard-nav-link a:hover{
     color: var(--primary-color);
-    background-color: #E7F7FD;
+    background-color: #fdeee7;
 }
 
 .dashboard-nav-link.logout a{

@@ -9,7 +9,7 @@
     }
 
     .available-good figure img{
-        height: 400px;
+        height: 350px;
     }
 
     .top-category figure img{
@@ -23,6 +23,10 @@
     .owner-message-textbox{
         margin-right: 100px;
         align-self: center;
+    }
+
+    .cart-menu{
+        width: 500px;
     }
 } 
 
@@ -38,6 +42,14 @@
 
     .top-category figure img{
         height: 150px;
+    }
+
+    .hero-text-box{
+        font-size: 2rem;
+    }
+
+    .filter-container{
+        max-width: 700px;
     }
 }
 
@@ -115,10 +127,6 @@
 
 /* < 900px */ 
 @media only screen and (max-width: 56.25em){
-    .logo-container{
-        flex: 0 0 30%;
-    }
-
     .navigation-menu{
         flex: 0 0 400px
     }
@@ -170,7 +178,7 @@
     }
 
     .available-good, .top-category{
-        flex: 0 0 40%;
+        flex: 0 0 45%;
     }
 
     .product-category div span{
@@ -209,10 +217,6 @@
 
     .owner-image-wrapper{
         margin: 0 auto;
-    }
-
-    .menu-container .menu{
-       left: -30px;
     }
 
     .order-container{
@@ -286,6 +290,11 @@
         display: block;
     }
 
+    .logo-container{
+        display: block;
+        width: 100px;
+    }
+
     .navigation-menu{
         width: 85%;
         margin: 18px auto 0px;
@@ -305,11 +314,15 @@
     }
 
     .search-container{
-        flex: 0 0 80%;
+        flex: 0 0 90%;
         order: 1;
-        margin: 20px auto 0;
+        margin: 15px auto 0;
     }
 
+    .search-box input{
+        flex: 0 0 80%;
+    }
+    
     .search-box input{
         padding: 15px 5px;
     }
@@ -468,6 +481,10 @@
     .product-image-slider-container.view-3 {
         transform: translateX(calc((-106% * 2) + 10px));
     }
+
+    .cart-menu{
+        width: 400px;
+    }
 }
 
 /* < 500px */ 
@@ -525,9 +542,16 @@
     }
 
     .available-good, .top-category{
-        display: block;
-        max-width: 250px;
+        max-width: 300px;
         margin: 0 auto 50px;
+    }
+
+    .top-category{
+        display: block;
+    }
+
+    .available-good{
+        display: flex;
     }
 
     .view-all-container a{
@@ -577,6 +601,14 @@
         flex: 0 0 100%;
     }
 
+    .cart-menu-items .cart-menu-item .cart-product-details .cart-product-name{
+        font-size: 1.2rem;
+    }
+
+    .cart-menu-items .cart-menu-item .cart-product-details .cart-item-meta{
+        font-size: 1.2rem;
+    }
+
     .cart-action-btn-container div:last-child a,
     .cart-action-btn-container div:last-child button{
         width: 100%;
@@ -589,12 +621,27 @@
     .payment-plans label{
         gap: 15px;
     }
+
+    .cart-menu{
+        width: 300px;
+    }
 }
 
 /* < 400px */
 @media only screen and (max-width: 25em){   
     .logo-text .title + span{
         font-size: 1rem;
+    }
+
+    .nav-link-item a{
+        padding: 1rem;
+    }
+
+    .nav-link-item.cart-link a .cart-badge{
+        width: 10px;
+        height: 10px;
+        top: -8px;
+        font-size: .8rem;
     }
 
     .search-box input{
@@ -625,7 +672,7 @@
     }
 
     .menu-container .menu{
-        left: -20px;
+        top: 20px;
         width: 80px;
     }
 
@@ -635,10 +682,6 @@
 
     .quick-link a{
         flex: 0 0 45%;
-    }
-
-    .product-desc{
-        font-size: 2.5rem;
     }
 
     .quick-link a img{
@@ -665,13 +708,29 @@
     }
 
     figcaption .payment-plans .product-badge{
-        font-size: 1.6rem;
+        font-size: 1.2rem;
     }
 
     .payment-plan-container{
         width: 350px;
         max-width: 350px;
         margin: 0 30px;
+    }
+
+    .product-category-name{
+        font-size: 2rem;
+    }
+
+    .product-category-price{
+        font-size: 2.5rem;
+    }
+
+    .cart-menu{
+        width: 250px;
+    }
+
+    .cart-menu-items .cart-menu-item .cart-menu-item-image-container{
+        flex: 0 0 70px;
     }
 }
 
@@ -690,7 +749,7 @@
     }
 
     .available-good, .top-category{
-        flex: 0 0 23%;
+        flex: 0 0 21%;
     }
 
     .available-good figure img{
@@ -701,11 +760,15 @@
         height: 250px;
     }
 
+    .hero-text-box{
+        font-size: 2rem;
+    }
+
     .product-section-container{
         width: 1600px;
         margin: 0 auto;
     }
-
+    
     .form-logo-container{
         flex: 0 0 400px;
     }
@@ -716,6 +779,24 @@
 
     .form-group.animate label{
         top: 1rem;
+    }
+
+    .cart-menu{
+        width: 500px;
+    }
+
+    .available-goods.paginate{
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .menu-container.allproducts-menu-container .menu {
+        top: 60px;
+        left: -10px;
+        z-index: 20;
+    }
+
+    .filter-container{
+        max-width: 900px;
     }
 }
 

@@ -1,6 +1,5 @@
 <?php
 require(__DIR__ . '/auth-library/resources.php');
-
 // NUMBER FORMATTER
 // $human_readable = new \NumberFormatter(
 //   'en_US', 
@@ -25,6 +24,8 @@ if ($inSession) {
     <link rel="stylesheet" href="assets/fonts/fonts.css">
     <!-- BASE CSS -->
     <link rel="stylesheet" href="assets/css/base.css">
+    <!-- IZITOAST CSS -->
+    <link rel="stylesheet" href="auth-library/vendor/dist/css/iziToast.min.css">
     <!-- Slick plugin stylesheet -->
     <link rel="stylesheet" href="assets/css/slick/slick.css">
     <!-- CUSTOM SLIDER STYLING -->
@@ -33,7 +34,7 @@ if ($inSession) {
     <link rel="stylesheet" href="assets/css/index.css" type="text/css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="assets/css/media-queries/main-media-queries.css">
-    <title>Home - Codeweb store</title>
+    <title>Home - Halfcarry</title>
 </head>
 
 <body>
@@ -43,106 +44,19 @@ if ($inSession) {
             <i class="fa fa-times"></i>
         </div>
         <div class="cart-menu-items-container">
-            <div class="cart-menu-items">
-                <div class="cart-menu-item">
-                    <div class="cart-menu-item-image-container">
-                        <img src="assets/images/web-cam-1.jpg" />
-                    </div>
-                    <div class="cart-product-details">
-                        <a href="#" class="cart-product-name">Web cam 2.0</a>
-                        <div class="cart-item-meta">
-                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
-                        </div>
-                    </div>
-                    <div class="close-btn-container">
-                        <button>
-                            <i class="fa fa-cross"></i>
-                        </button>
-                    </div>
+            <div class="spinner-wrapper">
+                <div class="spinner-container">
+                    <img src="../assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
+                    <div class="spinner"></div>
                 </div>
-                <div class="cart-menu-item">
-                    <div class="cart-menu-item-image-container">
-                        <img src="assets/images/web-cam-1.jpg" />
-                    </div>
-                    <div class="cart-product-details">
-                        <a href="#" class="cart-product-name">Web cam 2.0</a>
-                        <div class="cart-item-meta">
-                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
-                        </div>
-                    </div>
-                    <div class="close-btn-container">
-                        <button>
-                            <i class="fa fa-cross"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="cart-menu-item">
-                    <div class="cart-menu-item-image-container">
-                        <img src="assets/images/web-cam-1.jpg" />
-                    </div>
-                    <div class="cart-product-details">
-                        <a href="#" class="cart-product-name">Web cam 2.0</a>
-                        <div class="cart-item-meta">
-                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
-                        </div>
-                    </div>
-                    <div class="close-btn-container">
-                        <button>
-                            <i class="fa fa-cross"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="cart-menu-item">
-                    <div class="cart-menu-item-image-container">
-                        <img src="assets/images/web-cam-1.jpg" />
-                    </div>
-                    <div class="cart-product-details">
-                        <a href="#" class="cart-product-name">Web cam 2.0</a>
-                        <div class="cart-item-meta">
-                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
-                        </div>
-                    </div>
-                    <div class="close-btn-container">
-                        <button>
-                            <i class="fa fa-cross"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="cart-menu-item">
-                    <div class="cart-menu-item-image-container">
-                        <img src="assets/images/web-cam-1.jpg" />
-                    </div>
-                    <div class="cart-product-details">
-                        <a href="#" class="cart-product-name">Web cam 2.0</a>
-                        <div class="cart-item-meta">
-                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
-                        </div>
-                    </div>
-                    <div class="close-btn-container">
-                        <button>
-                            <i class="fa fa-cross"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="sub-total-container">
-                Subtotal: <span class="subtotal-amount">N 300,000</span>
-            </div>
-            <div class="cart-menu-action-btns">
-                <a href="../cart/" class="btn">View Cart</a>
-                <a href="../checkout/" class="btn">Checkout</a>
             </div>
         </div>
     </aside>
     <header>
         <div class="top-header">
-            <a href="index.html" class="logo-container">
+            <a href="./" class="logo-container">
                 <div class="logo-image-container">
-                    <img src="assets/images/logo.jpg" alt="Header Logo">
-                </div>
-                <div class="logo-text">
-                    <span class="title">codeweb store</span>
-                    <span>Pay half now - pay half later</span>
+                    <img src="assets/images/halfcarry-logo.jpeg" alt="Header Logo">
                 </div>
             </a>
 
@@ -184,7 +98,7 @@ if ($inSession) {
         </div>
         <div class="bottom-header">
             <div class="categories-btn-container">
-                <button>Categories</button>
+                <a href="all-products?view-categories">Categories</a>
             </div>
             <div class="search-container">
                 <form class="search-box" action="search/">
@@ -256,14 +170,8 @@ if ($inSession) {
                         </div>
                         <div class="product-desc product-category">
                             <div>
-                                <span>Cameras</span>
-                                <img src="assets/images/nikon-d90.jpg" alt="#">
-                            </div>
-                        </div>
-                        <div class="product-desc product-category">
-                            <div>
-                                <span>Home Appliances</span>
-                                <img src="assets/images/hisense-ac.jpg" alt="#">
+                                <span>Furnitures</span>
+                                <img src="assets/images/bed-3.jpeg" alt="#">
                             </div>
                         </div>
                         <div class="product-desc product-category">
@@ -274,13 +182,7 @@ if ($inSession) {
                         </div>
                         <div class="product-desc product-category">
                             <div>
-                                <span>Home Appliances</span>
-                                <img src="assets/images/hisense-ac.jpg" alt="#">
-                            </div>
-                        </div>
-                        <div class="product-desc product-category">
-                            <div>
-                                <span>Home Appliances</span>
+                                <span>Appliances</span>
                                 <img src="assets/images/hisense-ac.jpg" alt="#">
                             </div>
                         </div>
@@ -290,15 +192,16 @@ if ($inSession) {
         </section>
         <section class="hero-section">
             <div class="hero-container">
-                <div class="hero-text-box">
+                <!-- <div class="hero-text-box">
                     The <br> <span>Smarter</span> way to spend and look <b>good doing it.</b>
                 </div>
                 <div class="hero-img-container">
                     <img src="assets/images/banner-main.png" alt="Male jollying with money in his hands">
                 </div>
                 <div class="hero-logo-container">
-                    <img src="assets/images/logo.jpg" alt="Logo">
-                </div>
+                    <img src="assets/images/halfcarry-logo.jpeg" alt="Logo">
+                </div> -->
+                <img src="assets/images/halfcarry-banner-1.jpeg" alt="Banner">
             </div>
         </section>
         <section class="available-goods-section">
@@ -313,12 +216,12 @@ if ($inSession) {
 
                     while ($rowProduct = $recentProductsSql->fetch_assoc()) {
                         $interest_amount = (30 / 100) * $rowProduct['price'];
-                        
+
                         $installment_price = $rowProduct['price'] + $interest_amount;
 
                         $calculatedPeriods = getDaysWeeks($rowProduct['duration_of_payment']);
 
-                        $calculatedDays = $calculatedPeriods['days']; 
+                        $calculatedDays = $calculatedPeriods['days'];
                         $calculatedWeeks = $calculatedPeriods['weeks'];
                         $calculatedMonths = $calculatedPeriods['months'];
                     ?>
@@ -330,22 +233,22 @@ if ($inSession) {
                             ?>
                             <a href="product/?pid=<?= $rowProduct['product_id'] ?>">
                                 <figure>
-                                    <img src="a/admin/images/<?php echo explode(",", $rowProduct['pictures'])[0] ?>" alt="web cam">
+                                    <img id="product-image-<?= $rowProduct['product_id'] ?>" src="<?php echo $url ?>a/admin/images/<?php echo explode(",", $rowProduct['pictures'])[0] ?>" alt="<?php echo $rowProduct['name'] ?>">
                                     <figcaption>
                                         <div class="payment-plans">
-                                            <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2)?>/day</span>
-                                            <span class="product-badge weekly">₦<?php echo number_format(($installment_price / $calculatedWeeks), 2)?>/week</span>
-                                            <span class="product-badge month">₦<?php echo number_format(($installment_price / $calculatedMonths), 2)?>/month</span>
+                                            <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?>/day (<?= $calculatedPeriods['days'] ?> days)</span>
+                                            <span class="product-badge weekly">₦<?php echo number_format(($installment_price / $calculatedWeeks), 2) ?>/week (<?= $calculatedPeriods['weeks'] ?> weeks)</span>
+                                            <span class="product-badge month">₦<?php echo number_format(($installment_price / $calculatedMonths), 2) ?>/month (<?= $calculatedPeriods['months'] ?> months)</span>
                                         </div>
-                                        <span class="product-desc product-category-name"><?= $rowProduct['name'] ?></span>
-                                        <span class="product-desc product-category-price">
+                                        <span id='name-<?php echo $rowProduct['product_id'] ?>' data-name='<?php echo $rowProduct['name'] ?>' class="product-desc product-category-name"><?= $rowProduct['name'] ?></span>
+                                        <span id='price-<?php echo $rowProduct['product_id'] ?>' data-price='<?php echo $rowProduct['price'] ?>' class="product-desc product-category-price">
                                             ₦ <?php echo number_format($rowProduct['price'], 2) ?>
                                         </span>
                                     </figcaption>
                                 </figure>
                             </a>
                             <div class="add-to-cart-btn">
-                                <button>Add to Cart</button>
+                                <button data-product-id="<?php echo $rowProduct['product_id'] ?>">Add to Cart</button>
                             </div>
                         </div>
                     <?php
@@ -403,7 +306,7 @@ if ($inSession) {
                             Buy now and pay later!!
                         </h2>
                         <p class="banner-text">
-                            codeweb store is a marketplace that recognises the economic state and promises to
+                            Half Carry is a marketplace that recognises the economic state and promises to
                             deliver you with what you need at the convenience of your pocket.
                         </p>
                         <div class="banner-btn-container">
@@ -423,7 +326,7 @@ if ($inSession) {
                 <div class="top-categories">
                     <a href="./all-products/?category=electronics" class="top-category">
                         <figure>
-                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <img src="a/admin/images/46.jpeg" alt="#">
                             <figcaption>
                                 Electronics
                             </figcaption>
@@ -447,21 +350,21 @@ if ($inSession) {
                     </a>
                     <a href="./all-products/?category=computer-accessories" class="top-category">
                         <figure>
-                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <img src="a/admin/images/adapter-1.jpg" alt="#">
                             <figcaption>
                                 Computers and accessories
                             </figcaption>
                         </figure>
                     </a>
-                    <a href="./all-products/?category=furniture" class="top-category">
+                    <!-- <a href="./all-products/?category=furniture" class="top-category">
                         <figure>
-                            <img src="assets/images/bed-21.jpg" alt="#">
+                            <img src="a/admin/images/bed-3.jpeg" alt="#">
                             <figcaption>
                                 Furniture
                             </figcaption>
                         </figure>
-                    </a>
-                    <a href="./all-products/?category=groceries" class="top-category">
+                    </a> -->
+                    <!-- <a href="./all-products/?category=groceries" class="top-category">
                         <figure>
                             <img src="assets/images/bed-21.jpg" alt="#">
                             <figcaption>
@@ -484,11 +387,11 @@ if ($inSession) {
                                 Health and Beauty
                             </figcaption>
                         </figure>
-                    </a>
+                    </a> -->
                 </div>
             </div>
         </section>
-        <section class="our-brands-section">
+        <!-- <section class="our-brands-section">
             <div class="our-brands-container">
                 <div class="our-brands-text-box">
                     <h2 class="our-brands-title">Our Official Brands</h2>
@@ -531,62 +434,11 @@ if ($inSession) {
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
     </main>
-    <footer>
-        <div class="footer-container">
-            <div class="footer-row">
-                <div class="footer-group-container">
-                    <div class="footer-logo-container">
-                        <div class="footer-logo-image-container">
-                            <img src="assets/images/logo.jpg" alt="Footer logo">
-                        </div>
-                        <div class="footer-logo-text">
-                            <span class="logo-title">CODEWEB STORE</span>
-                            <span>Buy now pay later</span>
-                        </div>
-                    </div>
-                    <p class="footer-message">
-                        Codeweb project solutions was founded in 2019, since then we have continued to produce
-                        reliable services in all sectors of production and consumption.
-                    </p>
-                </div>
-
-                <div class="footer-group call-container">
-                    <div class="call-center-container">
-                        <div class="call-center-textbox">
-                            <span class="call-center-text">Call Center</span>
-                            <a href="tel:+2349045840662" class="call-center-no">+234 9045840662</a>
-                        </div>
-                        <div class="tel-icon-container">
-                            <i class="fa fa-phone"></i>
-                        </div>
-                    </div>
-                    <ul class="social-media-links">
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright-message">
-                <div>C</div>
-                <span>Copyright Codeweb 2022</span>
-            </div>
-        </div>
-    </footer>
+    <?php
+    include("includes/footer.php");
+    ?>
     <!-- FONT AWESOME JIT SCRIPT-->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
@@ -594,6 +446,8 @@ if ($inSession) {
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
     <script src="assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <script src="assets/js/slick/slick.js"></script>
+    <!-- IZI TOAST SCRIPT -->
+    <script src="auth-library/vendor/dist/js/iziToast.min.js"></script>
     <script>
         $(function() {
             // const burgerMenu = $(".burger-menu");
@@ -668,35 +522,104 @@ if ($inSession) {
                 closeAll.call(event.target);
             };
 
-            // //CHANGING THE ARROW BUTTONS TO ARROWS
-            // $(".slick-next").html("<i class='fas fa-arrow-right'></i>");
-            // $(".slick-prev").html("<i class='fas fa-arrow-left'></i>");
 
-            //HEADER STICKY FUNCTIONALITY
-            // Jquery handler for displaying sticky header upon scroll.
-            // $(window).on("scroll", () => {
-            //     let header = $("header");
+            // CART FUNCTIONALITY
+            $(document).on('click', '.add-to-cart-btn button', function() {
+                var product_id = $(this).attr("data-product-id");
+                var product_name = $('#name-' + product_id).attr("data-name");
+                var product_price = $('#price-' + product_id).attr("data-price");
+                var product_image_src = $("#product-image-" + product_id).attr("src");
+                var product_quantity = 1;
+                var action = "add";
 
-            //     header[0].classList.toggle("sticky", $(window)[0].scrollY > 180);
-            // });
+                var add_to_cart_btn = $(this);
 
-            // Event Handler for Burger Menu Toggle
-            // burgerMenu.on("click", () => {
-            //     burgerMenu.toggleClass("active");
-            //     mobileNav.toggleClass("active");
-            // });
+                if (product_quantity > 0) {
+                    $.ajax({
+                        url: "controllers/cart-controller.php",
+                        method: "POST",
+                        data: {
+                            product_id: product_id,
+                            product_name: product_name,
+                            product_price: product_price,
+                            product_quantity: product_quantity,
+                            product_image: product_image_src,
+                            action: action
+                        },
+                        beforeSend: function() {
+                            $(".spinner-wrapper").addClass("active");
+                            add_to_cart_btn.html("<i class='fa fa-spinner rotate'></i>");
+                        },
+                        success: function(data) {
+                            add_to_cart_btn.html("Add to Cart");
+                            $(".spinner-wrapper").removeClass("active");
 
-            // SMOOTH SCROLL FUNCTIONALITY
-            // Smooth scroll function declaration for handling smooth document fragmenting.
-            // const smoothScroll = (buttonID, location, duration) => {
-            //     $(buttonID).on("click", (e) => {
-            //         $([document.documentElement, document.body]).animate({
-            //             scrollTop: $(location).offset().top
-            //         }, duration);
-            //     })
-            // };
+                            iziToast.success({
+                                title: "Item successfully added to cart",
+                                timeout: 3000,
+                                backgroundColor: 'green',
+                                theme: 'dark',
+                                position: 'topRight'
+                            });
+                            load_cart_data();
+                        }
+                    });
+                }
+            });
 
-            // smoothScroll(".collaborate-btn-container button", "#services", 3000)
+            $(document).on('click', '.close-btn-container button', function() {
+                var product_id = $(this).attr("data-product-id");
+                var action = 'remove';
+                if (confirm("Are you sure you want to remove this product?")) {
+                    $.ajax({
+                        url: "controllers/cart-controller.php",
+                        method: "POST",
+                        data: {
+                            product_id: product_id,
+                            action: action
+                        },
+                        beforeSend: function(){
+                            $(".spinner-wrapper").addClass("active");  
+                        },
+                        success: function() {
+                            $(".spinner-wrapper").removeClass("active");
+                            iziToast.error({
+                                title: "Item removed from cart",
+                                timeout: 3000,
+                                backgroundColor: 'red',
+                                theme: 'dark',
+                                position: 'topRight'
+                            });
+                            load_cart_data();
+                        }
+                    })
+                } else {
+                    return false;
+                }
+            });
+
+            load_cart_data();
+
+            function load_cart_data() {
+                $.ajax({
+                    url: "controllers/fetch-cart.php",
+                    method: "POST",
+                    dataType: "json",
+                    beforeSend: function(){
+                        $(".spinner-wrapper").addClass("active");
+                    },
+                    success: function(data) {
+                        $(".spinner-wrapper").removeClass("active");
+                        if (data.total_item === 0) {
+                            $(".cart-menu-items-container").html(data.cart_details);
+                            $('.cart-badge').text("0");
+                        } else {
+                            $('.cart-menu-items-container').html(data.cart_details);
+                            $('.cart-badge').text(data.total_item);
+                        }
+                    }
+                });
+            }
         });
     </script>
 </body>

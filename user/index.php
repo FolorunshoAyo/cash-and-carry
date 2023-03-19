@@ -31,7 +31,7 @@
       rel="stylesheet"
       href="../assets/css/media-queries/user-dash-mediaqueries.css"
     />
-    <title>Welcome <?php echo($user_name) ?> - CDS</title>
+    <title>Welcome <?php echo($user_name) ?> - Halfcarry</title>
   </head>
   <body>
     <div class="mobile-backdrop"></div>
@@ -49,8 +49,8 @@
           <li class="nav-link-item">
             <a href="#" class="nav-link"> Savings products </a>
           </li>
-          <li class="nav-item-link">
-            <a href="./orders">Orders</a>
+          <li class="nav-link-item">
+            <a href="./orders" class="nav-link">Orders</a>
           </li>
           <li class="nav-link-item">
             <a href="./addresses" class="nav-link"> Addresses </a>
@@ -127,7 +127,7 @@
             <h1 class="dashboard-main-title">Dashboard</h1>
 
             <p class="dashboard-main-text">
-              Dashboard From your account dashboard you can view your recent
+              From your account dashboard you can view your recent
               orders, manage your shipping and billing addresses, and edit your
               password and account details.
             </p>

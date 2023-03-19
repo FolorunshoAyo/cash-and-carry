@@ -193,11 +193,17 @@
     margin-bottom: 50px;
     text-decoration: none;
     color: var(--black);
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: rgba(99, 99, 99, 0.5) 0px 10px 15px 0px;
+    position: relative;
 }
 
 .product-card a{
     display: block;
     text-decoration: none;
+    margin-bottom: 80px;
 }
 
 .product-card figure{
@@ -211,13 +217,12 @@
     margin: 0 auto;
     height: 170px;
     margin-bottom: 20px;
-    border: 2px solid var(--primary-color);
-    border-radius: 10px;
 }
 
 figcaption{
     font-size: 1.5rem;
     font-weight: 500;
+    margin-bottom: auto;
 }
 
 figcaption .payment-plans{
@@ -231,7 +236,7 @@ figcaption .payment-plans .product-badge{
     width: fit-content;
     padding: 0.5em 1em;
     margin-bottom: 10px;
-    font-size: 1.3rem;
+    font-size: 1rem;
     background-color: var(--primary-color);
     color: var(--white);
     border-radius: 10px;
@@ -248,7 +253,7 @@ figcaption .payment-plans .product-badge{
 }
 
 .product-category-name{
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 500;
     color: var(--black);
 }
@@ -259,7 +264,11 @@ figcaption .payment-plans .product-badge{
 }
 
 .add-to-cart-btn{
-    margin-top: 10px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
     text-align: center;
 }
 

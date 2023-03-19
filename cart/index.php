@@ -54,11 +54,7 @@ if ($inSession) {
         <div class="top-header">
             <a href="index.html" class="logo-container">
                 <div class="logo-image-container">
-                    <img src="../assets/images/logo.jpg" alt="Header Logo">
-                </div>
-                <div class="logo-text">
-                    <span class="title">Codeweb store</span>
-                    <span>pay half now - pay half later</span>
+                    <img src="../assets/images/halfcarry-logo.jpeg" alt="Header Logo">
                 </div>
             </a>
 
@@ -160,7 +156,7 @@ if ($inSession) {
                             </div>
                         </div>
                         <div data-label="Quantity">
-                            <input type="number"  min="1" max="50" value="1" id="amount">
+                            <input type="number" min="1" max="50" value="1" id="amount">
                         </div>
                         <div data-label="Unit-price">
                             ₦ 300,000
@@ -180,7 +176,7 @@ if ($inSession) {
                             </div>
                         </div>
                         <div data-label="Quantity">
-                            <input type="number"  min="1" max="50" value="1" id="amount">
+                            <input type="number" min="1" max="50" value="1" id="amount">
                         </div>
                         <div data-label="Unit-price">
                             ₦ 300,000
@@ -200,7 +196,7 @@ if ($inSession) {
                             </div>
                         </div>
                         <div data-label="Quantity">
-                            <input type="number"  min="1" max="50" value="1" id="amount">
+                            <input type="number" min="1" max="50" value="1" id="amount">
                         </div>
                         <div data-label="Unit-price">
                             ₦ 300,000
@@ -220,7 +216,7 @@ if ($inSession) {
                             </div>
                         </div>
                         <div data-label="Quantity">
-                            <input type="number"  min="1" max="50" value="1" id="amount">
+                            <input type="number" min="1" max="50" value="1" id="amount">
                         </div>
                         <div data-label="Unit-price">
                             ₦ 300,000
@@ -240,7 +236,7 @@ if ($inSession) {
                             </div>
                         </div>
                         <div data-label="Quantity">
-                            <input type="number"  min="1" max="50" value="1" id="amount">
+                            <input type="number" min="1" max="50" value="1" id="amount">
                         </div>
                         <div data-label="Unit-price">
                             ₦ 300,000
@@ -271,60 +267,9 @@ if ($inSession) {
             </div>
         </section>
     </main>
-    <footer>
-        <div class="footer-container">
-            <div class="footer-row">
-                <div class="footer-group-container">
-                    <div class="footer-logo-container">
-                        <div class="footer-logo-image-container">
-                            <img src="../assets/images/logo.jpg" alt="Footer logo">
-                        </div>
-                        <div class="footer-logo-text">
-                            <span class="logo-title">CODEWEB STORE</span>
-                            <span>Buy now pay later</span>
-                        </div>
-                    </div>
-                    <p class="footer-message">
-                        Codeweb project solutions was founded in 2019, since then we have continued to produce
-                        reliable services in all sectors of production and consumption.
-                    </p>
-                </div>
-
-                <div class="footer-group call-container">
-                    <div class="call-center-container">
-                        <div class="call-center-textbox">
-                            <span class="call-center-text">Call Center</span>
-                            <a href="tel:+2349045840662" class="call-center-no">+234 9045840662</a>
-                        </div>
-                        <div class="tel-icon-container">
-                            <i class="fa fa-phone"></i>
-                        </div>
-                    </div>
-                    <ul class="social-media-links">
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright-message">
-                <div>C</div>
-                <span>Copyright Codeweb 2022</span>
-            </div>
-        </div>
-    </footer>
+    <?php
+        include("../includes/footer.php");
+    ?>
     <!-- FONT AWESOME JIT SCRIPT -->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->

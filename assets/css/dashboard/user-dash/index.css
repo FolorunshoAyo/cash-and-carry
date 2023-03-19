@@ -5,11 +5,12 @@
 
 .dashboard-action-group{
     flex: 0 0 31%;
-    background-color: #E7F7FD;
+    background-color: #fdeee7;
     text-align: center;
-    color: #96DCF5;
+    color: #f5c996;
     border-radius: 20px;
     text-decoration: none;
+    transition: all .3s ease;
 }
 
 .dashboard-action-group figure{
@@ -28,5 +29,5 @@
 }
 
 .dashboard-action-group:hover{
-    color: #96DCF5;
+    color: #f5b696;
 }

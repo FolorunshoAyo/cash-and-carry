@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) {
 				//Proceed to register if the email and phoneno does not exists
 			    $hash_pass = password_hash($confirm_password, PASSWORD_DEFAULT);
 			    //Save student information
-			    $statement_personal = $db->prepare("INSERT INTO users(first_name, last_name, email, phone_no, passkey) VALUES(?,?,?,?,?,?,?)");
+			    $statement_personal = $db->prepare("INSERT INTO users(first_name, last_name, email, phone_no, passkey) VALUES(?,?,?,?,?)");
 				$statement_personal->bind_param("sssss", $first_name, $last_name, $email, $phone_no, $hash_pass);
 					if($statement_personal->execute()){
 					    $_SESSION['email'] = $email;

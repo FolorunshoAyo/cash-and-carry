@@ -60,6 +60,7 @@
 
 .cart-menu-items-container{
     margin-top: 20px;
+    position: relative;
 }
 
 .cart-menu-items{
@@ -91,7 +92,6 @@
 .cart-menu-items .cart-menu-item .cart-product-details{
     flex: 1;
     display: flex;
-    margin: 10px 0;
     flex-direction: column;
     justify-content: space-between;
 }
@@ -126,8 +126,17 @@
     height: 20px;
     padding: 0.5em;
     border-radius: 50%;
-    color: #fafafa;
-    border: 1px solid #fafafa;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    cursor: pointer;
+    transition: all .3s ease-in;
+    display: flex;
+    justify-content: center;
+}
+
+.cart-menu-items .cart-menu-item .close-btn-container button:hover{
+    background-color: var(--primary-color);
+    color: var(--white);
 }
 
 .cart-menu-items-container .sub-total-container{
@@ -156,7 +165,7 @@
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
-    margin: 0 5px 10px 0;
+    margin-bottom: 10px;
     overflow: visible;
     padding: 12px 40px;
     text-align: center;
@@ -187,6 +196,7 @@ header{
     margin: 0 auto;
     width: 90%;
     padding: 2rem 0; 
+    display: block;
 }
 
 .top-header{
@@ -197,12 +207,11 @@ header{
 
 .logo-container{
     text-decoration: none;
-    display: flex;
-    flex: 0 0 30%;
+    flex: 0 0 100px;
 }
 
 .logo-image-container{
-    flex: 0 0 80px;
+    width: 100%;
     align-self: center;
 }
 
@@ -329,12 +338,15 @@ header{
     align-self: center;
 }
 
-.categories-btn-container button{
+.categories-btn-container a{
     padding: 1.5rem 3rem;
+    display: inline-block;
+    font-size: 1.2rem;
     border: 1px solid var(--primary-color);
     background-color: transparent;
     color: var(--primary-color);
     border-radius: 10px;
+    text-decoration: none;
 }
 
 .search-container{
@@ -406,8 +418,9 @@ header{
 .menu-container .menu{
     display: none;
     position: absolute;
-    top: 30px;
-    left: -30px;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 120px;
     list-style-type: none;
     background-color: var(--white);
@@ -478,21 +491,27 @@ header{
 }
 
 .hero-container{
-    border: 1px solid var(--secondary-color);
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
-    display: flex;
-    padding: 1rem 3rem;
-    border-radius: 10px;
+    /* display: flex; */
+    /* padding: 1rem 3rem; */
+    overflow: hidden;
 }
 
-.hero-text-box{
+.hero-container img{
+    border: 1px solid var(--secondary-color);
+    border-radius: 10px;
+    max-width: 100%;
+}
+
+
+/* .hero-text-box{
     flex: 0 0 20%;
     align-self: center;
     font-size: 3rem;
-}
+} */
 
-.hero-text-box span{
+/* .hero-text-box span{
     color: var(--primary-color);
     font-weight: bold;
 }
@@ -514,7 +533,7 @@ header{
 
 .hero-logo-container img{
     width: 100%;
-}
+} */
 
 .available-goods-section{
     margin: 60px 0;
@@ -546,14 +565,18 @@ header{
 }
 
 .available-good{
+    position: relative;
     flex: 0 0 22%;
     margin-bottom: 30px;
     text-decoration: none;
     color: var(--black);
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: rgba(99, 99, 99, 0.5) 0px 10px 15px 0px;
 }
 
 .available-good a{
-    display: block;
     text-decoration: none;
 }
 
@@ -566,11 +589,9 @@ header{
     display: block;
     width: 100%;
     margin-bottom: 20px;
-    border: 2px solid var(--primary-color);
-    border-radius: 10px;
 }
 
-figcaption{
+.available-good figure figcaption{
     font-size: 1.5rem;
     font-weight: 500;
 }
@@ -579,14 +600,14 @@ figcaption .payment-plans{
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 figcaption .payment-plans .product-badge{
     width: fit-content;
     padding: 0.5em 1em;
-    margin-bottom: 10px;
-    font-size: 1.3rem;
+    margin-bottom: 5px;
+    font-size: 1rem;
     background-color: var(--primary-color);
     color: var(--white);
     border-radius: 10px;
@@ -611,15 +632,14 @@ figcaption .payment-plans .product-badge.month{
     display: block;
 }
 
-figcaption{
-    font-size: 1.5rem;
+.available-good figure figcaption{
     font-weight: 500;
+    margin-bottom: 100px;
 }
 
 .product-desc{
     display: block;
     text-align: center;
-    font-size: 2rem;
 }
 
 .product-desc:not(:last-child){
@@ -628,15 +648,21 @@ figcaption{
 
 .product-category-name{
     font-weight: 500;
+    font-size: 1.5rem;
     color: var(--black);
 }
 
 .product-category-price{
+    font-size: 2rem;
     color: var(--secondary-color);
 }
 
-.add-to-cart-btn{
-    margin-top: 10px;
+.available-good .add-to-cart-btn{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
@@ -845,6 +871,7 @@ figcaption{
     font-size: 1.5rem;
     color: var(--primary-color);
     margin-top: -20px;
+    margin-bottom: auto;
     height: 80px;
     transition: all .3s ease-in;
 }
@@ -931,21 +958,23 @@ figcaption{
 }
 
 .footer-group-container{
-    flex: 0 0 60%;
+    flex: 0 0 50%;
+    align-self: center;
 }
 
 .footer-group.call-container{
-    flex: 0 0 30%;
+    flex: 0 0 35%;
 }
 
 .footer-logo-container{
     display: flex;
     margin-bottom: 20px;
+    text-decoration: none;
 }
 
 .footer-logo-container .footer-logo-image-container{
     flex: 0 0 100px;
-    margin-right: 10px;
+    /* margin-right: 10px; */
 }
 
 .footer-logo-container .footer-logo-image-container img{
@@ -954,7 +983,7 @@ figcaption{
 }
 
 .footer-logo-text{
-    align-self: center;
+    align-self: flex-end;
     color: var(--primary-color);
     flex: 1;
 }
@@ -965,8 +994,9 @@ figcaption{
     font-weight: 800;
 }
 
-.footer-logo-text .logo-title + span{
+.footer-logo-text span{
     font-size: 1.5rem;
+    font-weight: 800;
 }
 
 .footer-message{

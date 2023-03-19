@@ -29,7 +29,7 @@
     <div class="login-container">
       <h1 class="login-title">
         <i class="fa fa-home"></i>
-        CDS ADMIN
+        Halfcarry Admin
       </h1>
       <div class="login-form-container">
         <form id="admin-login-form">

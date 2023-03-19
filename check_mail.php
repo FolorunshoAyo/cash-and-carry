@@ -21,7 +21,7 @@
       href="assets/css/media-queries/main-media-queries.css"
       type="text/css"
     />
-    <title>Mail Sent - CDS</title>
+    <title>Mail Sent - Halfcarry</title>
   </head>
 
   <body>
@@ -29,11 +29,10 @@
       <header>
         <a href="index.html" class="form-logo-container">
           <div class="form-logo-img-container">
-            <img src="assets/images/logo-small.png" alt="Small Logo" />
+            <img src="assets/images/halfcarry-logo.jpeg" alt="Small Logo" />
           </div>
           <div class="form-logo-text-container">
-            <span class="logo-text">CDS</span>
-            <span>Confidence daily savings</span>
+            <span class="logo-text">buy now - pay later</span>
           </div>
         </a>
       </header>

@@ -14,8 +14,12 @@ if ($inSession) {
     $user_name = $_SESSION['user_name'];
 }
 
-if(isset($_GET['category']) && !empty($_GET['category'])){
+if (isset($_GET['category']) && !empty($_GET['category'])) {
     $category = $_GET['category'];
+}
+
+if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
+    $view_categories = 1;
 }
 ?>
 <!DOCTYPE html>
@@ -27,6 +31,8 @@ if(isset($_GET['category']) && !empty($_GET['category'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="../assets/fonts/fonts.css">
+    <!-- IZITOAST CSS -->
+    <link rel="stylesheet" href="../auth-library/vendor/dist/css/iziToast.min.css">
     <!-- BASE CSS -->
     <link rel="stylesheet" href="../assets/css/base.css">
     <!-- PAGINATE CSS -->
@@ -49,94 +55,9 @@ if(isset($_GET['category']) && !empty($_GET['category'])){
             <i class="fa fa-times"></i>
         </div>
         <div class="cart-menu-items-container">
-            <div class="cart-menu-items">
-                <div class="cart-menu-item">
-                    <div class="cart-menu-item-image-container">
-                        <img src="../assets/images/web-cam-1.jpg" />
-                    </div>
-                    <div class="cart-product-details">
-                        <a href="#" class="cart-product-name">Web cam 2.0</a>
-                        <div class="cart-item-meta">
-                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
-                        </div>
-                    </div>
-                    <div class="close-btn-container">
-                        <button>
-                            <i class="fa fa-cross"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="cart-menu-item">
-                    <div class="cart-menu-item-image-container">
-                        <img src="../assets/images/web-cam-1.jpg" />
-                    </div>
-                    <div class="cart-product-details">
-                        <a href="#" class="cart-product-name">Web cam 2.0</a>
-                        <div class="cart-item-meta">
-                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
-                        </div>
-                    </div>
-                    <div class="close-btn-container">
-                        <button>
-                            <i class="fa fa-cross"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="cart-menu-item">
-                    <div class="cart-menu-item-image-container">
-                        <img src="../assets/images/web-cam-1.jpg" />
-                    </div>
-                    <div class="cart-product-details">
-                        <a href="#" class="cart-product-name">Web cam 2.0</a>
-                        <div class="cart-item-meta">
-                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
-                        </div>
-                    </div>
-                    <div class="close-btn-container">
-                        <button>
-                            <i class="fa fa-cross"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="cart-menu-item">
-                    <div class="cart-menu-item-image-container">
-                        <img src="../assets/images/web-cam-1.jpg" />
-                    </div>
-                    <div class="cart-product-details">
-                        <a href="#" class="cart-product-name">Web cam 2.0</a>
-                        <div class="cart-item-meta">
-                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
-                        </div>
-                    </div>
-                    <div class="close-btn-container">
-                        <button>
-                            <i class="fa fa-cross"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="cart-menu-item">
-                    <div class="cart-menu-item-image-container">
-                        <img src="../assets/images/web-cam-1.jpg" />
-                    </div>
-                    <div class="cart-product-details">
-                        <a href="#" class="cart-product-name">Web cam 2.0</a>
-                        <div class="cart-item-meta">
-                            <span class="quantity">2</span> &times; <span class="price">N 300,000</span>
-                        </div>
-                    </div>
-                    <div class="close-btn-container">
-                        <button>
-                            <i class="fa fa-cross"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="sub-total-container">
-                Subtotal: <span class="subtotal-amount">N 300,000</span>
-            </div>
-            <div class="cart-menu-action-btns">
-                <a href="../cart/" class="btn">View Cart</a>
-                <a href="../checkout/" class="btn">Checkout</a>
+            <div class="spinner-container">
+                <img src="../assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
+                <div class="spinner"></div>
             </div>
         </div>
     </aside>
@@ -144,12 +65,12 @@ if(isset($_GET['category']) && !empty($_GET['category'])){
         <div class="top-header">
             <a href="../" class="logo-container">
                 <div class="logo-image-container">
-                    <img src="../assets/images/logo.jpg" alt="Header Logo">
+                    <img src="../assets/images/halfcarry-logo.jpeg" alt="Header Logo">
                 </div>
-                <div class="logo-text">
+                <!-- <div class="logo-text">
                     <span class="title">Codeweb store</span>
                     <span>pay half now - pay half later</span>
-                </div>
+                </div> -->
             </a>
 
             <nav class="navigation-menu">
@@ -239,7 +160,7 @@ if(isset($_GET['category']) && !empty($_GET['category'])){
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
-                        <div class="menu-container">
+                        <div class="menu-container allproducts-menu-container">
                             <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo ($inSession ?  explode(" ", $user_name)[0] : "Account") ?></a>
                             <?php
                             if (!$inSession) {
@@ -272,18 +193,18 @@ if(isset($_GET['category']) && !empty($_GET['category'])){
                             $sql_get_all_categories = $db->query("SELECT * FROM product_categories");
 
                             while ($rowCategory = $sql_get_all_categories->fetch_assoc()) {
-                                if(isset($category)){
+                                if (isset($category)) {
                                     $convertedCategory = explode("-", $category)[0];
                                     $dbConvCategory = explode(" ", $rowCategory['category_name'])[0];
 
                                     $check_category = $convertedCategory === $dbConvCategory;
 
-                                    if($check_category){
+                                    if ($check_category) {
                                         echo "<option selected value='" . $rowCategory['category_id'] . "'>" . $rowCategory['category_name'] . "</option>";
-                                    }else{
+                                    } else {
                                         echo "<option value='" . $rowCategory['category_id'] . "'>" . $rowCategory['category_name'] . "</option>";
                                     }
-                                }else{
+                                } else {
                                     echo "<option value='" . $rowCategory['category_id'] . "'>" . $rowCategory['category_name'] . "</option>";
                                 }
                             }
@@ -309,45 +230,45 @@ if(isset($_GET['category']) && !empty($_GET['category'])){
                         </select>
                     </div>
                 </div>
-                <div class="quick-links-container" style="display: none;">
+                <div class="quick-links-container" style="<?php echo (isset($view_categories)) ? "display: block;" : "display: none"; ?>">
                     <div class="quick-link">
                         <span>Automobiles</span>
-                        <a href="../products/">
+                        <a href="./?category=automotive-industrial">
                             <img src="../assets/images/corolla.jpg" />
                         </a>
-                        <a href="../products/">
+                        <a href="./?category=automotive-industrial">
                             <img src="../assets/images/na-pep.jpg" />
                         </a>
                     </div>
                     <div class="quick-link">
                         <span>Communication devices</span>
-                        <a href="../products/">
+                        <a href="./?category=phone-tablets">
                             <img src="../assets/images/hp-15.jpg" />
                         </a>
-                        <a href="../products/">
+                        <a href="./?category=phone-tablets">
                             <img src="../assets/images/iphone-13.jpg" />
                         </a>
                     </div>
                     <div class="quick-link">
                         <span>Technology and gadgets</span>
-                        <a href="../products/">
+                        <a href="./?category=electronics">
                             <img src="../assets/images/nikon-d90.jpg" />
                         </a>
-                        <a href="../products/">
+                        <a href="./?category=phone-tablets">
                             <img src="../assets/images/alienware.jpg" />
                         </a>
                     </div>
                     <div class="quick-link">
                         <span>Home appliances and other</span>
-                        <a href="../products/">
+                        <a href="./?category=electronics">
                             <img src="../assets/images/hisense-ac.jpg" />
                         </a>
-                        <a href="../products/">
+                        <a href="./?category=furniture">
                             <img src="../assets/images/bed-3.jpeg">
                         </a>
                     </div>
                 </div>
-                <div class="results-container" style="display: block;">
+                <div class="results-container" style="<?php echo (isset($view_categories)) ? "display: none;" : "display: block"; ?>">
                     <div class="products-container-overlay"></div>
                     <div class="info-container">
                         <span>Retrieved 0 results</span>
@@ -357,60 +278,9 @@ if(isset($_GET['category']) && !empty($_GET['category'])){
             </div>
         </section>
     </main>
-    <footer>
-        <div class="footer-container">
-            <div class="footer-row">
-                <div class="footer-group-container">
-                    <div class="footer-logo-container">
-                        <div class="footer-logo-image-container">
-                            <img src="../assets/images/logo.jpg" alt="Footer logo">
-                        </div>
-                        <div class="footer-logo-text">
-                            <span class="logo-title">PAYHALF</span>
-                            <span>Buy now pay later</span>
-                        </div>
-                    </div>
-                    <p class="footer-message">
-                        Codeweb project solutions was founded in 2019, since then we have continued to produce
-                        reliable services in all sectors of production and consumption.
-                    </p>
-                </div>
-
-                <div class="footer-group call-container">
-                    <div class="call-center-container">
-                        <div class="call-center-textbox">
-                            <span class="call-center-text">Call Center</span>
-                            <a href="tel:+2349045840662" class="call-center-no">+234 9045840662</a>
-                        </div>
-                        <div class="tel-icon-container">
-                            <i class="fa fa-phone"></i>
-                        </div>
-                    </div>
-                    <ul class="social-media-links">
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright-message">
-                <div>C</div>
-                <span>Copyright Codeweb 2022</span>
-            </div>
-        </div>
-    </footer>
+    <?php
+    include("../includes/footer.php");
+    ?>
     <!-- FONT AWESOME JIT SCRIPT-->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
@@ -421,13 +291,20 @@ if(isset($_GET['category']) && !empty($_GET['category'])){
     <script src="../assets/js/slick/slick.js"></script>
     <!-- JQUERY PAGINATE -->
     <script src="../assets/js/pagination.min.js"></script>
+    <!-- IZI TOAST SCRIPT -->
+    <script src="../auth-library/vendor/dist/js/iziToast.min.js"></script>
     <script>
         $(function() {
             const allSelects = $('.filter-select');
+            const quickLinksContainer = $(".quick-links-container");
+            const resultsContainer = $(".results-container")
 
             allSelects.each(function(index) {
+
                 $(this).on("change", function() {
-                    loadData(1, 10);
+                    quickLinksContainer.css("display", "none");
+                    resultsContainer.css("display", "block");
+                    loadData(1, 5);
                 });
             });
 
@@ -580,6 +457,104 @@ if(isset($_GET['category']) && !empty($_GET['category'])){
             window.onclick = function(event) {
                 closeAll.call(event.target);
             };
+
+            // CART FUNCTIONALITY
+            $(document).on('click', '.add-to-cart-btn button', function() {
+                var product_id = $(this).attr("data-product-id");
+                var product_name = $('#name-' + product_id).attr("data-name");
+                var product_price = $('#price-' + product_id).attr("data-price");
+                var product_image_src = $("#product-image-" + product_id).attr("src");
+                var product_quantity = 1;
+                var action = "add";
+
+                var add_to_cart_btn = $(this);
+
+                if (product_quantity > 0) {
+                    $.ajax({
+                        url: "../controllers/cart-controller.php",
+                        method: "POST",
+                        data: {
+                            product_id: product_id,
+                            product_name: product_name,
+                            product_price: product_price,
+                            product_quantity: product_quantity,
+                            product_image: product_image_src,
+                            action: action
+                        },
+                        beforeSend: function() {
+                            $(".spinner-wrapper").addClass("active");
+                            add_to_cart_btn.html("<i class='fa fa-spinner rotate'></i>");
+                        },
+                        success: function(data) {
+                            add_to_cart_btn.html("Add to Cart");
+                            $(".spinner-wrapper").removeClass("active");
+
+                            iziToast.success({
+                                title: "Item successfully added to cart",
+                                timeout: 3000,
+                                backgroundColor: 'green',
+                                theme: 'dark',
+                                position: 'topRight'
+                            });
+                            load_cart_data();
+                        }
+                    });
+                }
+            });
+
+            $(document).on('click', '.close-btn-container button', function() {
+                var product_id = $(this).attr("data-product-id");
+                var action = 'remove';
+                if (confirm("Are you sure you want to remove this product?")) {
+                    $.ajax({
+                        url: "../controllers/cart-controller.php",
+                        method: "POST",
+                        data: {
+                            product_id: product_id,
+                            action: action
+                        },
+                        beforeSend: function () {
+                            $(".spinner-wrapper").addClass("active");
+                        },
+                        success: function() {
+                            $(".spinner-wrapper").removeClass("active");
+                            iziToast.error({
+                                title: "Item removed from cart",
+                                timeout: 3000,
+                                backgroundColor: 'red',
+                                theme: 'dark',
+                                position: 'topRight'
+                            });
+                            load_cart_data();
+                        }
+                    })
+                } else {
+                    return false;
+                }
+            });
+
+            load_cart_data();
+
+            function load_cart_data() {
+                $.ajax({
+                    url: "../controllers/fetch-cart.php",
+                    method: "POST",
+                    dataType: "json",
+                    beforeSend: function(){
+                        $(".spinner-wrapper").addClass("active");
+                    },
+                    success: function(data) {
+                        $(".spinner-wrapper").removeClass("active");
+                        if (data.total_item === 0) {
+                            $(".cart-menu-items-container").html(data.cart_details);
+                            $('.cart-badge').text("0");
+                        } else {
+                            $('.cart-menu-items-container').html(data.cart_details);
+                            $('.cart-badge').text(data.total_item);
+                        }
+                    }
+                });
+            }
         });
     </script>
 </body>

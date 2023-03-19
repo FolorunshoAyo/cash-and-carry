@@ -13,8 +13,8 @@ if (isset($_POST['login'])) {
 		if ($sql->num_rows == 1) {
 			$row = $sql->fetch_assoc();
 			$passcode = $row['passkey'];
-			// if (password_verify($password, $passcode)) {
-			if ($password === $passcode) {
+			if (password_verify($password, $passcode)) {
+			// if ($password === $passcode) {
 				if($row['is_email_verified'] == 0) {
 					//Redirect to authentication/send-code?a=send
 					echo json_encode(array('success' => 1, 'redirect' => 'email-auth'));
@@ -31,8 +31,8 @@ if (isset($_POST['login'])) {
 				echo json_encode(array('success' => 0, "error_title" => "incorrect password"));
 			}
 		}else {
-		//Error incorrect credentials
-		echo json_encode(array('success' => 0, "error_title" => "incorrect details"));
+			//Error incorrect credentials
+			echo json_encode(array('success' => 0, "error_title" => "incorrect details"));
 		}
 	}
 }else {

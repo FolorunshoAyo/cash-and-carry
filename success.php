@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="assets/css/success.css" type="text/css">
     <!-- MEDIA QUERIES (MAIN) -->
     <link rel="stylesheet" href="assets/css/media-queries/main-media-queries.css">
-    <title>Registeration successful - CDS</title>
+    <title>Registeration successful - Halfcarry</title>
 </head>
 <body>
     <div class="success-wrapper">
         <div class="success-container">
             <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-            <h2 class="success-title">Nice! Welcome to <span>CDS!</span></h2>
+            <h2 class="success-title">Nice! Welcome to <span>Halfcarry!!</span></h2>
             <p class="success-text">Please wait, you will be redirected soon</p>
         </div>
     </div>

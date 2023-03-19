@@ -1,9 +1,9 @@
 .paginate-pagination ul{
     width: fit-content;
-    margin: 20px auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    list-style-type: none;
 }
 
 .paginate-pagination ul > li{
@@ -11,6 +11,7 @@
 }
 
 .paginate-pagination ul > li > a.page{
+    text-decoration: none;
     border: 2px solid var(--secondary-color);
     display: block;
     font: inherit;
