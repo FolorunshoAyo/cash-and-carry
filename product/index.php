@@ -51,7 +51,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     <link rel="stylesheet" href="../assets/css/product.css" type="text/css" />
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" />
-    <title><?php echo $product_details['name'] ?> - Codeweb store</title>
+    <title><?php echo $product_details['name'] ?> - Halfcarry</title>
 </head>
 
 <body>

@@ -45,7 +45,7 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
     <link rel="stylesheet" href="../assets/css/all-products.css" type="text/css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css">
-    <title>All products - Codeweb Store</title>
+    <title>All products - Halfcarry</title>
 </head>
 
 <body>

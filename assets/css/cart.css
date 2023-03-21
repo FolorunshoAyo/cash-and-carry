@@ -6,6 +6,7 @@
     padding: 0rem 4rem;
     max-width: 1300px;
     margin: 0 auto;
+    position: relative;
 }
 
 .cart-number-indicator{
@@ -186,6 +187,11 @@ div[data-label="Quantity"] input{
     transform: translate(2px, 2px);
 }
 
+.cart-action-btn-container div .btn.disabled{
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
 .cart-action-btn-container div a i{
     margin-right: 10px;
 }
@@ -201,4 +207,23 @@ div[data-label="Quantity"] input{
 
 .cart-action-btn-container div .normal:hover{
     color: var(--danger);
+}
+
+.empty-cart-container{
+    font-size: 2rem;
+    text-align: center;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.empty-cart-container p{
+    margin-bottom: 20px;
+}
+
+.empty-cart-container a{
+    color: var(--primary-color);
+    font-size: 1.5rem;
 }

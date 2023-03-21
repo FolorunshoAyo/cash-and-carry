@@ -592,7 +592,7 @@ if ($inSession) {
                             });
                             load_cart_data();
                         }
-                    })
+                    });
                 } else {
                     return false;
                 }

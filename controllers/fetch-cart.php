@@ -49,12 +49,12 @@ if (!empty($_SESSION["shopping_cart"])) {
 </div>
 <div class="cart-menu-action-btns">
     <a href="' . $url . 'cart/" class="btn">View Cart</a>
-    <a ' . ($inSession? 'href="' . $url . 'checkout/' : '') . ' class="btn">Checkout</a>
+    <a ' . ($inSession? 'href="' . $url . 'checkout/" class="btn"' : 'href="#" class="btn disabled"') . ' class="btn">Checkout</a>
 </div>
  ';
 } else {
     $output .= '
-    <p style="text-align: center; margin-top: 30px; font-size: 20px;"> Your cart is empty!</p>
+    <p style="margin-top: 20px; font-size: 1.5rem;"> No products in cart. </p>
     ';
 }
 

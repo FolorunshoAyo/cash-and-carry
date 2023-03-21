@@ -35,6 +35,8 @@ if ($inSession) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+    <!-- IZITOAST CSS -->
+    <link rel="stylesheet" href="../auth-library/vendor/dist/css/iziToast.min.css">
     <!-- BASE CSS -->
     <link rel="stylesheet" href="../assets/css/base.css" />
     <!-- CUSTOM CSS (HOME) -->
@@ -43,16 +45,27 @@ if ($inSession) {
     <link rel="stylesheet" href="../assets/css/cart.css" type="text/css" />
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" />
-    <title>Cart - Codeweb store</title>
+    <title>Cart - Halfcarry</title>
 </head>
 
 <body>
-    <div class="full-loader">
-        <div class="spinner"></div>
-    </div>
+    <div class="cart-backdrop"></div>
+    <aside class="cart-menu">
+        <div class="close-container">
+            <i class="fa fa-times"></i>
+        </div>
+        <div class="cart-menu-items-container">
+            <div class="spinner-wrapper">
+                <div class="spinner-container">
+                    <img src="../assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    </aside>
     <header>
         <div class="top-header">
-            <a href="index.html" class="logo-container">
+            <a href="../" class="logo-container">
                 <div class="logo-image-container">
                     <img src="../assets/images/halfcarry-logo.jpeg" alt="Header Logo">
                 </div>
@@ -79,7 +92,7 @@ if ($inSession) {
                         </a>
                     </li>
                     <li class="nav-link-item cart-link">
-                        <a href="">
+                        <a href="javascript:void(0)">
                             <span class="cart-badge">0</span>
                             <i class="fa fa-shopping-cart"></i>
                             Cart
@@ -88,7 +101,7 @@ if ($inSession) {
                     <!-- <li class="nav-link-item">
                         <div class="dark-mode-container">
                             <span>Dark Mode</span>
-                            <img src="../assets/images/toggle-off.png" alt="toggle-off">
+                            <img src="assets/images/toggle-off.png" alt="toggle-off">
                         </div>
                     </li> -->
                 </ul>
@@ -96,17 +109,18 @@ if ($inSession) {
         </div>
         <div class="bottom-header">
             <div class="categories-btn-container">
-                <button>Categories</button>
+                <a href="../all-products?view-categories">Categories</a>
             </div>
             <div class="search-container">
-                <form class="search-box" action="../search/">
-                    <input type="text" name="q" placeholder="Search for an item" />
+                <form class="search-box" action="search/">
+                    <input type="text" name="q" placeholder="Search for an item">
                     <button type="submit" class="search-icon-btn">
                         <i class="fa fa-search"></i>
                     </button>
                 </form>
             </div>
             <div class="other-links-container">
+                <!-- <button class="installment-btn">Installments</button> -->
                 <div class="menu-container">
                     <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo ($inSession ?  explode(" ", $user_name)[0] : "Account") ?></a>
                     <?php
@@ -133,142 +147,93 @@ if ($inSession) {
     <main>
         <section class="cart-section">
             <div class="cart-container">
-                <div class="cart-number-indicator">
-                    Cart Item (<span id="cart-number">5</span>)
+                <div class='spinner-wrapper active'>
+                    <div class='spinner-container'>
+                        <img src='../assets/images/halfcarry-logo.jpeg' alt='Halfcarry Logo'>
+                        <div class='spinner'></div>
+                    </div>
                 </div>
+                <?php
+                if (empty($_SESSION['shopping_cart'])) {
+                ?>
+                    <div class="empty-cart-container">
+                        <p>No Items in Cart</p>
+                        <a href="../all-products/">Back to store</a>
+                    </div>
+                <?php
+                } else {
+                ?>
+                    <div class="cart-number-indicator">
+                        Cart Item (<span id="cart-number"><?php echo count($_SESSION['shopping_cart']) ?></span>)
+                    </div>
 
-                <div class="labels">
-                    <span>item</span>
-                    <span>quantity</span>
-                    <span>unit price</span>
-                    <span>sub total</span>
-                </div>
+                    <div class="labels">
+                        <span>item</span>
+                        <span>quantity</span>
+                        <span>unit price</span>
+                        <span>sub total</span>
+                    </div>
 
-                <div class="cart-items">
-                    <div class="cart-item">
-                        <div data-label="Item" class="product-info">
-                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam">
-                            <div class="details">
-                                <p><a href="#">Web Cam 2.0</a></p>
-                                <div class="action-btn-container">
-                                    <button><i class="fa fa-trash-o"></i></button>
+                    <div class="cart-items">
+                        <?php
+                        $total_price = 0;
+                        foreach ($_SESSION['shopping_cart'] as $keys => $values) {
+                            $product_sub_total = $values['product_price'] * $values['product_quantity'];
+                        ?>
+                            <div class="cart-item">
+                                <div data-label="Item" class="product-info">
+                                    <img src="<?php echo $values['product_image'] ?>" alt="<?= $values['product_name'] ?>">
+                                    <div class="details">
+                                        <p><a href="../product/?pid=<?= $values['product_id'] ?>"><?= $values['product_name'] ?></a></p>
+                                        <div class="action-btn-container">
+                                            <button data-product-id="<?= $values['product_id'] ?>"><i class="fa fa-trash-o"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-label="Quantity">
+                                    <input type="number" min="1" max="50" value="<?= $values['product_quantity'] ?>" class="amount" data-product-id="<?= $values['product_id'] ?>">
+                                </div>
+                                <div data-label="Unit-price">
+                                    ₦ <?= number_format($values['product_price'], 2) ?>
+                                </div>
+                                <div data-label="Sub-total">
+                                    ₦ <?= number_format($product_sub_total, 2) ?>
                                 </div>
                             </div>
-                        </div>
-                        <div data-label="Quantity">
-                            <input type="number" min="1" max="50" value="1" id="amount">
-                        </div>
-                        <div data-label="Unit-price">
-                            ₦ 300,000
-                        </div>
-                        <div data-label="Sub-total">
-                            ₦ 300,000
-                        </div>
-                    </div>
-                    <div class="cart-item">
-                        <div data-label="Item" class="product-info">
-                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam">
-                            <div class="details">
-                                <p><a href="#">Web Cam 2.0</a></p>
-                                <div class="action-btn-container">
-                                    <button><i class="fa fa-trash-o"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div data-label="Quantity">
-                            <input type="number" min="1" max="50" value="1" id="amount">
-                        </div>
-                        <div data-label="Unit-price">
-                            ₦ 300,000
-                        </div>
-                        <div data-label="Sub-total">
-                            ₦ 300,000
-                        </div>
-                    </div>
-                    <div class="cart-item">
-                        <div data-label="Item" class="product-info">
-                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam">
-                            <div class="details">
-                                <p><a href="#">Web Cam 2.0</a></p>
-                                <div class="action-btn-container">
-                                    <button><i class="fa fa-trash-o"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div data-label="Quantity">
-                            <input type="number" min="1" max="50" value="1" id="amount">
-                        </div>
-                        <div data-label="Unit-price">
-                            ₦ 300,000
-                        </div>
-                        <div data-label="Sub-total">
-                            ₦ 300,000
-                        </div>
-                    </div>
-                    <div class="cart-item">
-                        <div data-label="Item" class="product-info">
-                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam">
-                            <div class="details">
-                                <p><a href="#">Web Cam 2.0</a></p>
-                                <div class="action-btn-container">
-                                    <button><i class="fa fa-trash-o"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div data-label="Quantity">
-                            <input type="number" min="1" max="50" value="1" id="amount">
-                        </div>
-                        <div data-label="Unit-price">
-                            ₦ 300,000
-                        </div>
-                        <div data-label="Sub-total">
-                            ₦ 300,000
-                        </div>
-                    </div>
-                    <div class="cart-item">
-                        <div data-label="Item" class="product-info">
-                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam">
-                            <div class="details">
-                                <p><a href="#">Web Cam 2.0</a></p>
-                                <div class="action-btn-container">
-                                    <button><i class="fa fa-trash-o"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div data-label="Quantity">
-                            <input type="number" min="1" max="50" value="1" id="amount">
-                        </div>
-                        <div data-label="Unit-price">
-                            ₦ 300,000
-                        </div>
-                        <div data-label="Sub-total">
-                            ₦ 300,000
-                        </div>
-                    </div>
-                </div>
 
-                <div class="total-container">
-                    Total: <span> ₦ 300,000.00 </span> <br> <br>
-                    Delivery fee not included.
-                </div>
+                        <?php
+                            $total_price += $product_sub_total;
+                        }
+                        ?>
 
-                <div class="cart-action-btn-container">
-                    <div>
-                        <a href="#" class="btn">
-                            <i class="fa fa-arrow-left"></i>
-                            Return to shop
-                        </a>
                     </div>
-                    <div>
-                        <a href="#" class="btn">Proceed to checkout</a>
-                        <button class="btn" href="javascrript:void(0)" disabled>Update cart</button>
+
+                    <div class="total-container">
+                        Total: <span> ₦ <?= number_format($total_price, 2) ?> </span> <br> <br>
+                        Delivery fee not included.
                     </div>
-                </div>
+
+                    <div class="cart-action-btn-container">
+                        <div>
+                            <a href="../all-products/" class="btn">
+                                <i class="fa fa-arrow-left"></i>
+                                Return to shop
+                            </a>
+                        </div>
+                        <div>
+                            <a href="#" class="btn">Proceed to checkout</a>
+                            <button class="btn" disabled>Update cart</button>
+                        </div>
+                    </div>
+
+                <?php
+                }
+                ?>
             </div>
         </section>
     </main>
     <?php
-        include("../includes/footer.php");
+    include("../includes/footer.php");
     ?>
     <!-- FONT AWESOME JIT SCRIPT -->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
@@ -278,12 +243,32 @@ if ($inSession) {
     <script src="../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- SLICK SLIDER SCRIPT -->
     <script src="../assets/js/slick/slick.js"></script>
-    <!-- SWEET ALERT SCRIPT -->
-    <script src="auth-library/vendor/dist/sweetalert2.all.min.js"></script>
+    <!-- IZI TOAST SCRIPT -->
+    <script src="../auth-library/vendor/dist/js/iziToast.min.js"></script>
     <script>
         $(function() {
             const menuContainer = document.querySelector(".menu-container a");
             menuContainer.addEventListener("click", toggle);
+
+            const cartBtn = document.querySelector(".cart-link");
+            const cartBackdrop = document.querySelector(".cart-backdrop");
+            const cartMenu = document.querySelector(".cart-menu");
+            const cartClose = document.querySelector(".close-container i");
+
+            cartBtn.addEventListener("click", function() {
+                cartMenu.classList.toggle("active");
+                cartBackdrop.classList.toggle("active");
+            });
+
+            cartClose.addEventListener("click", function() {
+                cartMenu.classList.toggle("active");
+                cartBackdrop.classList.toggle("active");
+            });
+
+            cartBackdrop.addEventListener("click", function() {
+                cartMenu.classList.toggle("active");
+                cartBackdrop.classList.toggle("active");
+            }, false);
 
             function toggle(e) {
                 e.stopPropagation();
@@ -305,6 +290,189 @@ if ($inSession) {
             window.onclick = function(event) {
                 closeAll.call(event.target);
             };
+
+            load_cart_data();
+
+            function load_cart_data() {
+                $.ajax({
+                    url: "../controllers/fetch-cart.php",
+                    method: "POST",
+                    dataType: "json",
+                    beforeSend: function() {
+                        $(".spinner-wrapper").addClass("active");
+                    },
+                    success: function(data) {
+                        $(".spinner-wrapper").removeClass("active");
+                        if (data.total_item === 0) {
+                            $(".cart-menu-items-container").html(data.cart_details);
+                            $('.cart-badge').text("0");
+                        } else {
+                            $('.cart-menu-items-container').html(data.cart_details);
+                            $('.cart-badge').text(data.total_item);
+                        }
+                    }
+                });
+            }
+
+            var updatedProducts = []; // CONTAINS A LIST OF ALL THE UPDATED PRODUCTS AND THEIR QUANTITIES
+
+            $(document).on("click", ".cart-action-btn-container button.btn", function() {
+                $.ajax({
+                    url: "controllers/cart-controller.php",
+                    method: "POST",
+                    data: {
+                        action: "update",
+                        product_details: updatedProducts
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+                        $(".spinner-wrapper").addClass("active");
+                    },
+                    success: function() {
+                        $(".spinner-wrapper").removeClass("active");
+                        iziToast.success({
+                            title: "Cart successfuly updated",
+                            timeout: 3000,
+                            backgroundColor: 'green',
+                            theme: 'dark',
+                            position: 'topRight'
+                        });
+                        load_cart_data_2();
+                        load_cart_data();
+                    }
+                });
+            });
+
+            // EVENT FIRED ON NORMAL NUMBER CHANGE
+            $(document).on("change", ".amount", function() {
+                const product_quantity = $(this).val();
+                const product_id = $(this).attr("data-product-id");
+
+
+                // ENABLE UPDATE BUTTON
+                // console.log(Numbe);
+                if (Number(product_quantity) > 0) {
+                    enableUpdateCartButton();
+
+                    if (updatedProducts.length == 0) {
+                        updatedProducts.push({
+                            product_id,
+                            product_quantity
+                        });
+                    } else {
+                        updatedProducts.forEach((item, index) => {
+                            if (updatedProducts.some((item) => item.product_id == product_id)) {
+                                updatedProducts[index] = {
+                                    product_id,
+                                    product_quantity
+                                }
+                            } else {
+                                updatedProducts.push({
+                                    product_id,
+                                    product_quantity
+                                });
+                            }
+                        });
+                    }
+                }else{
+                    disableUpdateCartButton();
+                }
+            });
+
+            // EVENT FIRED ON DIRECT KEYBOARD CHANGE
+            $(document).on("keyup", ".amount", function() {
+                const product_quantity = $(this).val();
+                const product_id = $(this).attr("data-product-id");
+
+
+                // ENABLE UPDATE BUTTON
+                // console.log(Numbe);
+                if (Number(product_quantity) > 0) {
+                    console.log("product quantity isn't zero");
+
+                    enableUpdateCartButton();
+
+                    if (updatedProducts.length == 0) {
+                        updatedProducts.push({
+                            product_id,
+                            product_quantity
+                        });
+                    } else {
+                        updatedProducts.forEach((item, index) => {
+                            if (updatedProducts.some((item) => item.product_id == product_id)) {
+                                updatedProducts[index] = {
+                                    product_id,
+                                    product_quantity
+                                }
+                            } else {
+                                updatedProducts.push({
+                                    product_id,
+                                    product_quantity
+                                });
+                            }
+                        });
+                    }
+                }else{
+                    console.log("product quantity is zero");
+                    disableUpdateCartButton();
+                }
+            });
+
+            function enableUpdateCartButton() {
+                $(".cart-action-btn-container button.btn").attr("disabled", false);
+            }
+
+            function disableUpdateCartButton(){
+                $(".cart-action-btn-container button.btn").attr("disabled", true);
+            }
+
+            function load_cart_data_2() {
+                $.ajax({
+                    url: "controllers/fetch-cart.php",
+                    method: "POST",
+                    dataType: "json",
+                    beforeSend: function() {
+                        $(".spinner-wrapper").addClass("active");
+                    },
+                    success: function(data) {
+                        $(".spinner-wrapper").removeClass("active");
+                        $(".cart-container").html(data.cart_details);
+                    }
+                });
+            }
+
+            $(document).on("click", ".cart-item .details .action-btn-container button", function() {
+                var product_id = $(this).attr("data-product-id");
+                var action = "remove";
+
+                if (confirm("Are you sure you want to remove this product from cart?")) {
+                    $.ajax({
+                        url: "controllers/cart-controller.php",
+                        method: "POST",
+                        data: {
+                            product_id: product_id,
+                            action: action
+                        },
+                        beforeSend: function() {
+                            $(".spinner-wrapper").addClass("active");
+                        },
+                        success: function() {
+                            $(".spinner-wrapper").removeClass("active");
+                            iziToast.error({
+                                title: "Item removed from cart",
+                                timeout: 3000,
+                                backgroundColor: 'red',
+                                theme: 'dark',
+                                position: 'topRight'
+                            });
+                            load_cart_data();
+                            load_cart_data_2();
+                        }
+                    })
+                } else {
+                    return;
+                }
+            })
 
         });
     </script>
