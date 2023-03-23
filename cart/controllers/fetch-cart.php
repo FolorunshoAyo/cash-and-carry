@@ -31,7 +31,7 @@ if (!empty($_SESSION["shopping_cart"])) {
         $total_price += $values['product_quantity'] * $values['product_price'];
 
         $output .= "
-  <<div class='cart-item'>
+  <div class='cart-item'>
   <div data-label='Item' class='product-info'>
       <img src='" . $values['product_image'] . "' alt='" . $values['product_name'] . "'>
       <div class='details'>

@@ -1,16 +1,8 @@
 <?php 
   require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-  AdminAuth::User("a/login");
-  $admin_id = $_SESSION['admin_id'];
+  AgentAuth::User("a/login");
 
-//   $date_time = $db->query("SELECT NOW() AS nowdate");
-//   $row = $date_time->fetch_assoc();
-//   $dated = $row['nowdate'];
-//   $now = strtotime($dated);
-  // $time = date("M d Y, h:i A", $now);
-
-  $current_date = date('Y-m-d');
-  $str_current_date = strtotime(date('Y-m-d'));
+  $agent_id = $_SESSION['agent_id'];
 
   $admin_sql = $db->query("SELECT * FROM admin WHERE admin_id={$admin_id}");
   if($admin_sql->num_rows == 1){
@@ -26,16 +18,10 @@
         $html = "<span class='dot pending-dot'></span> pending";
       break;
       case "2":
-        $html = "<span class='dot awaiting-shipment-dot'></span> awaiting shipment";
+        $html = "<span class='dot shipped-dot'></span> granted";
       break;
       case "3":
-        $html = "<span class='dot shipped-dot'></span> shipped";
-      break;
-      case "4":
-        $html = "<span class='dot completed-dot'></span> completed";
-      break;
-      case "5":
-        $html = "<span class='dot cancelled-dot'></span> cancelled";
+        $html = "<span class='dot cancelled-dot'></span> rejected";
       break;
       default:
         $html = "Unable to detect status";
@@ -68,17 +54,17 @@
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/orders.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Orders - Halfcarry Admin</title>
+    <title>Orders - Halfcarry Agent</title>
 </head>
 
 <body style="background-color: #fafafa">
     <div class="dash-wrapper">
         <?php
-            include("includes/admin-sidebar.php");
+            include("includes/agent-sidebar.php");
         ?>
         <section class="page-wrapper">
             <div class="table-wrapper">
-                <h2 class="table-title">All Orders</h2>
+                <h2 class="table-title">All Savings Request</h2>
 
                 <div class="table-container">
                     <table id="teams-table" class="main-table">
@@ -88,13 +74,13 @@
                                     Product(s)
                                 </th> -->
                                 <th>
-                                    Order ID
-                                </th>
-                                <th>
-                                    Date
+                                   ID
                                 </th>
                                 <th>
                                     Customer
+                                </th>
+                                <th>
+                                    Date
                                 </th>
                                 <th>
                                     status
@@ -112,10 +98,10 @@
                         </thead>
                         <tbody>
                             <?php 
-                                $sql_all_orders = $db->query("SELECT orders.*, users.last_name, users.first_name FROM orders INNER JOIN users ON orders.user_id=users.user_id");
+                                $sql_all_savings_requests = $db->query("SELECT * FROM savings_requests INNER JOIN users ON savingss_requests.user_id = users.user_id WHERE savings_requests.agent_id={$agent_id} AND status = 1 AND type_of_savings='2' ORDER BY id DESC");
 
                                 $count = 1;
-                                while($order = $sql_all_orders->fetch_assoc()){
+                                while($request_details = $sql_all_savings_requests->fetch_assoc()){
                             ?>
                             <tr>
                                 <!-- <td>
@@ -130,36 +116,34 @@
                                     </div>
                                 </td> -->
                                 <td>
-                                    #<?php echo $order['order_no'] ?>
+                                    #<?php echo $request_details['savings_id'] ?>
                                 </td>
                                 <td>
-                                    <?php echo date("F j, Y", strtotime($order['ord_date'])) ?>
+                                    <?php echo date("F j, Y", strtotime($request_details['requested_at'])) ?>
                                 </td>
                                 <td>
                                     <?php 
-                                        $name = ucfirst($order['last_name'])  . " " . ucfirst($order['first_name']);
+                                        $name = ucfirst($request_details['last_name'])  . " " . ucfirst($request_details['first_name']);
                                         echo $name;
                                     ?>
                                 </td>
-                                <td class="status-cell-<?php echo $order['order_no'] ?>">
-                                    <?php echo showStatus($order['status']) ?>
+                                <td class="status-cell-<?php echo $request_details['savings_id'] ?>">
+                                    <?php echo showStatus($request_details['status']) ?>
                                 </td>
                                 <td>
                                     <form>
                                         <?php
-                                            $status = $order['status'];
+                                            $status = $request_details['status'];
                                         ?>
-                                        <select class="order-status-select" name="order-status" data-orderID="<?php echo $order['order_no'] ?>">
+                                        <select class="request_$request_details-status-select" name="request_$request_details-status" data-requestID="<?php echo $request_details['savings_id'] ?>">
                                             <option <?php echo $status === "1"? "selected" : "" ?> value="1">pending</option>
-                                            <option <?php echo $status === "2"? "selected" : "" ?> value="2">awaiting shipment</option>
-                                            <option <?php echo $status === "3"? "selected" : "" ?> value="3">shipped</option>
-                                            <option <?php echo $status === "4"? "selected" : "" ?> value="4">completed</option>
-                                            <option <?php echo $status === "5"? "selected" : "" ?> value="5">cancelled</option>
+                                            <option <?php echo $status === "2"? "selected" : "" ?> value="2">approved</option>
+                                            <option <?php echo $status === "3"? "selected" : "" ?> value="3">canceled</option>
                                         </select>
                                     </form>
                                 </td>
                                 <td>
-                                    NGN<?php echo number_format($order['purch_amt']) ?>
+                                    NGN <?php echo number_format($request_details['amount']) ?>
                                 </td>
                                 <td>
                                     <div class="dropdown">
@@ -167,7 +151,7 @@
                                             o<br>o<br>o
                                         </button>
                                         <div style="font-size: 1rem;" class="dropdown-menu" data-dd-path="<?php echo $count ?>">
-                                            <a class="dropdown-menu__link" href="order-details?oid=<?php echo $order['order_id'] ?>">View Order</a>
+                                            <a class="dropdown-menu__link" href="halfsavings_details?sid=<?php echo $request_details['savings_id'] ?>">View request</a>
                                             <!-- <a class="dropdown-menu__link deleteEl" href="javascript:void(0)" data-productId="1"></a> -->
                                         </div>
                                     </div>
@@ -206,31 +190,31 @@
                 "pageLength": 10
             });
 
-            // HANDLE ORDER STATUS UPDATE
-            $(".order-status-select").each(function () {
+            // HANDLE request_$request_details STATUS UPDATE
+            $(".request-status-select").each(function () {
                 $(this).on("change", function (e) {
-                    const selectedOrderStatus = e.target.value;
+                    const selectedRequestStatus = e.target.value;
                     const selectEl = this;
 
-                    const selectedOrderId = $(this).attr("data-orderID");
+                    const selectedRequestId = $(this).attr("data-requestID");
 
                     $(selectEl).after("<img src='../../assets/images/loading-gif.gif' alt='Loading'>")
 
                     
-                    $.post("controllers/update-order-status.php", { oid: selectedOrderId, status: selectedOrderStatus, submit: true }, function (response) {
+                    $.post("controllers/update-request_$request_details-status.php", { oid: selectedRequestId, status: selectedRequestStatus, submit: true }, function (response) {
                         response = JSON.parse(response);
                         if (response.success === 1) {
                             let statusHTML;
                             // ALERT ADMIN
                             Swal.fire({
-                                title: "Order status",
+                                title: "request_$request_details status",
                                 icon: "success",
-                                text: "Order status updated successfully",
+                                text: "request_$request_details status updated successfully",
                                 allowOutsideClick: true,
                                 allowEscapeKey: true,
                             });
 
-                            switch(selectedOrderStatus){
+                            switch(selectedRequestStatus){
                                 case "1":
                                     statusHTML = "<span class='dot pending-dot'></span> pending";
                                 break;
@@ -252,7 +236,7 @@
                             }
 
                             // UPDATE STATUS CELL
-                            $(`.status-cell-${selectedOrderId}`).html(statusHTML);
+                            $(`.status-cell-${selectedRequestId}`).html(statusHTML);
                             // REMOVE LOADER
                             $(selectEl).next("img[alt='Loading']").remove();
                         } else {

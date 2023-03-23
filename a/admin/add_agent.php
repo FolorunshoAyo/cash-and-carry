@@ -1,20 +1,8 @@
 <?php
     require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-    AgentAuth::User("a/login");
-
-    $agent_id = $_SESSION['agent_id'];
-
-    if(isset($_GET['cid']) && !empty($_GET['cid'])){
-        $cid = $_GET['cid'];
-    
-        $sql_agent_customer_details = $db->query("SELECT * FROM agent_customers WHERE agent_customer_id={$cid}");
-    
-        $customer_details = $sql_agent_customer_details->fetch_assoc();
-    }else{
-        header("Location: ./");
-    }
+    AdminAuth::User("");
+    $admin_id = $_SESSION['admin_id'];
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,78 +21,31 @@
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Add a new agent - CDS ADMIN</title>
+    <title>Add a new agent - Halfcarry Admin</title>
 </head>
 
 <body style="background-color: #fafafa">
     <div class="dash-wrapper">
-        <div class="mobile-backdrop"></div>
-        <aside class="dash-menu">
-            <div class="logo">
-                <div class="menu-icon">
-                    <i class="fa fa-bars"></i>
-                    <i class="fa fa-times"></i>
-                </div>
-                <a href="./" class="logo">
-                    <i class="fa fa-home"></i>
-                    <span> CDS AGENT </span>
-                </a>
-            </div>
-            <ul class="side-menu" id="side-menu">
-                <li class="nav-item active">
-                    <a href="./">
-                        <i class="fa fa-users"></i>
-                        <span>Customers</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0)">
-                        <i class="fa fa-truck"></i>
-                        <span>Shipping</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="./easybuy/">
-                        <i class="fa fa-usd"></i>
-                        <span>Easy Buy</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="./debtors/">
-                        <!-- <span class="blue-dot"></span> -->
-                        <i class="fa fa-info-circle"></i>
-                        <span>Debtors</span>
-                        <!-- <span class="nav-item-badge">1</span> -->
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="side-menu-bottom">
-                <li class="nav-item logout">
-                    <a href="../logout">
-                        <i class="fa fa-sign-out"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
+       <?php 
+        include("includes/admin-sidebar.php");
+       ?>
         <section class="page-wrapper">
             <header class="dash-header">
-                <a href="agents.html" class="back-link">
+                <a href="./agents" class="back-link">
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
             <div class="product-form-wrapper">
-                <h2 class="product-form-title">Edit Customer</h2>
+                <h2 class="product-form-title">Register a New Agent</h2>
 
                 <div class="product-form-container">
-                    <form id="customer-upload-form">
+                    <form id="agent-upload-form">
                         <div class="form-groupings">
                             <div class="form-group-container">
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="fname" id="fname" class="form-input" placeholder=" "
-                                            value="<?= $customer_details['first_name'] ?>" required />
+                                            required />
                                         <label for="fname">First Name</label>
                                     </div>
                                 </div>
@@ -112,48 +53,48 @@
                                 <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="lname" id="lname" class="form-input"
-                                            placeholder=" " value="<?= $customer_details['last_name'] ?>" required />
+                                            placeholder=" " required />
                                         <label for="lname">Last Name</label>
                                     </div>
                                 </div>
 
-                                <!-- <div class="form-group-container">
+                                <div class="form-group-container">
                                     <div class="form-group animate">
                                         <input type="text" name="oname" id="oname"
-                                            class="form-input" placeholder=" " value="Ayomide" required />
+                                            class="form-input" placeholder=" " required />
                                         <label for="oname">Other Name</label>
                                     </div>
-                                </div> -->
-
-                                <!-- <div class="form-group-container">
-                                    <h3 class="static-label">Email</h3>
-                                    <span class="static-value">folushoayomide11@gmail.com</span>
-                                </div> -->
+                                </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="email" id="email"
-                                            class="form-input" placeholder=" " value="<?php echo $customer_details['email']? $customer_details['email'] : "" ?>" />
+                                        <input type="email" name="email" id="email" class="form-input"
+                                            placeholder=" " required />
                                         <label for="email">Email</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="number" name="phoneno" id="phoneno" class="form-input" placeholder=" " value="<?= $customer_details['phone_no'] ?>" required />
+                                        <input type="number" name="phoneno" id="phoneno" class="form-input" placeholder=" " required />
                                         <label for="phoneno">Phone</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
-                                    <div class="form-group animate">
-                                        <input type="text" name="address" id="address" class="form-input" placeholder=" " value="<?php $customer_details['address']? $customer_details['phone_no'] : "" ?>" />
-                                        <label for="address">Address</label>
+                                    <div class="switch-wrapper">
+                                        <span class="switch-text">
+                                            Activate Account
+                                        </span>
+                                        <label for="active" class="switch">
+                                            <input type="checkbox" id="active" name="active" value="1">
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                 </div>
 
                                 <div class="submit-btn-container">
-                                    <button type="submit" class="admin-submit-btn">Save Changes</button>
+                                    <button type="submit" class="admin-submit-btn">Register Agent</button>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +121,7 @@
     <script>
         //FORM VALIDATION WITH VALIDATE.JS
 
-        const validation = new JustValidate("#customer-upload-form", {
+        const validation = new JustValidate("#agent-upload-form", {
             errorFieldCssClass: "is-invalid",
         });
 
@@ -197,6 +138,18 @@
                     errorMessage: "Field is required",
                 },
             ])
+            .addField("#oname", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
+            .addField("#email", [
+                {
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+            ])
             .addField("#phoneno", [
                 {
                     rule: "required",
@@ -204,44 +157,44 @@
                 },
             ])
             .onSuccess((event) => {
-                const form = document.getElementById("customer-upload-form");
+                const form = document.getElementById("agent-upload-form");
 
                 // GATHERING FORM DATA
                 const formData = new FormData(form);
                 formData.append("submit", true);
-                formData.append("cid", <?php echo $cid ?>);
 
                 //SENDING FORM DATA TO THE SERVER
                 $.ajax({
                     type: "post",
-                    url: "controllers/edit_customer.php",
+                    url: "controllers/add_agent.php",
                     data: formData,
                     contentType: false,
                     processData: false,
                     dataType: "json",
                     beforeSend: function () {
-                        $(".submit-btn-container button").html("Updating...");
+                        $(".submit-btn-container button").html("Adding...");
                         $(".submit-btn-container button").attr("disabled", true);
                     },
                     success: function (response) {
                         setTimeout(() => {
                             if (response.success === 1) {
+                                console.log(response.random_pass);
                                 // ALERT USER UPON SUCCESSFUL UPLOAD
                                 Swal.fire({
-                                    title: "Customer Updated",
+                                    title: "Agent Added",
                                     icon: "success",
-                                    text: "Your customer details has been updated successfully",
+                                    text: `You've added agent ${response.agent_name} successfully`,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
-                                    confirmButtonColor: '#2366B5',
+                                    confirmButtonColor: '#FF8124',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.href = "./"
+                                        location.href = "agents"
                                     }
                                 })
                             } else {
                                 $(".submit-btn-container button").attr("disabled", false);
-                                $(".submit-btn-container button").html("Save Changes");
+                                $(".submit-btn-container button").html("Register");
 
                                 if (response.error_title === "fatal") {
                                     // REFRESH CURRENT PAGE

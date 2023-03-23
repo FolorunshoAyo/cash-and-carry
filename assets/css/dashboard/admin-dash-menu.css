@@ -70,7 +70,7 @@ a{
 .logo a span{
     width: 150px;
     text-decoration: none;
-    font-family: "KyivType Sans", sans-serif;
+    font-family: "monserrat", sans-serif;
     font-size: 15px;
     font-weight: bold;
     color: var(--primary-color);
@@ -110,7 +110,7 @@ li{
 }
 
 li:not(:last-child){
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 li:hover{
@@ -144,9 +144,8 @@ li a i{
 li a span, 
 li a span.nav-item-badge{
     width: 0px;
-    font-size: 16px;
+    font-size: 13px;
     overflow: hidden;
-    height: 25px;
     transition: 0.5s;
 }
 
@@ -264,7 +263,7 @@ aside.expand li a span.nav-item-badge{
 
 li.mm-active{
     background-color: var(--primary-color);
-    color: #6b7177;
+    color: var(--white);
 }
 
 li.mm-active .sub-menu{

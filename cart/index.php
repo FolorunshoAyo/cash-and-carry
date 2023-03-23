@@ -472,7 +472,39 @@ if ($inSession) {
                 } else {
                     return;
                 }
-            })
+            });
+
+            $(document).on('click', '.close-btn-container button', function() {
+                var product_id = $(this).attr("data-product-id");
+                var action = 'remove';
+                if (confirm("Are you sure you want to remove this product?")) {
+                    $.ajax({
+                        url: "controllers/cart-controller.php",
+                        method: "POST",
+                        data: {
+                            product_id: product_id,
+                            action: action
+                        },
+                        beforeSend: function(){
+                            $(".spinner-wrapper").addClass("active");  
+                        },
+                        success: function() {
+                            $(".spinner-wrapper").removeClass("active");
+                            iziToast.error({
+                                title: "Item removed from cart",
+                                timeout: 3000,
+                                backgroundColor: 'red',
+                                theme: 'dark',
+                                position: 'topRight'
+                            });
+                            load_cart_data();
+                            load_cart_data_2();
+                        }
+                    });
+                } else {
+                    return false;
+                }
+            });
 
         });
     </script>

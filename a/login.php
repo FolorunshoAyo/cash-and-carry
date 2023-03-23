@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="../assets/css/dashboard/admin-dash/login.css">
   <!-- MEDIA QUERIES -->
   <link rel="stylesheet" href="../assets/css/media-queries/admin-dash-mediaqueries.css" type="text/css" />
-  <title>Admin Login - CDS</title>
+  <title>Admin Login - Halfcarry</title>
 </head>
 
 <body>

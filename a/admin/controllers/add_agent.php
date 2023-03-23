@@ -18,13 +18,13 @@
             $sql_add_agent = $db->query("INSERT INTO agents (last_name, first_name, other_name, email, passkey, phone_no, account_status) VALUES('$lname', '$fname', '$oname', '$email', '$passkey', '$phoneno', '$account_status')");
 
             if($sql_add_agent){
-                // $subject = "CDS AGENT VERIFICATION";
+                // $subject = "Halfcarry Agent Verification";
                 // // SEND MAIL
-                // $message = "<div class='container'>
-				//   <div class='image-container'>
-				//   	<img src='" . $url . "/assets/images/logo-small.png' alt='logo'/>
+                // $message = "<div>
+				//   <div>
+				//   	<img src='" . $url . "/assets/images/halfcarry-logo.jpeg' alt='logo' width='200' height='200'/>
 				//   </div>
-                //   <div class='box'>
+                //   <div>
                 //     <h2>". greeting() . "!</h2>
                 //     <p>Agent" . ucfirst($fname) . "</p>
                 //     <p>Your password is <b>" . $random_pass . "<b></p>                              

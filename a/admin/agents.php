@@ -1,7 +1,7 @@
 <?php
-    require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-    AdminAuth::User("a/login");
-    $admin_id = $_SESSION['admin_id'];
+require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+AdminAuth::User("a/login");
+$admin_id = $_SESSION['admin_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,83 +28,14 @@
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/agents.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Agent - CDS</title>
+    <title>Agent - Halfcarry Admin</title>
 </head>
 
 <body style="background-color: #fafafa">
     <div class="dash-wrapper">
-        <div class="mobile-backdrop"></div>
-        <aside class="dash-menu">
-            <div class="logo">
-                <div class="menu-icon">
-                    <i class="fa fa-bars"></i>
-                    <i class="fa fa-times"></i>
-                </div>
-                <a href="./" class="logo">
-                    <i class="fa fa-home"></i>
-                    <span> CDS ADMIN </span>
-                </a>
-            </div>
-            <ul class="side-menu" id="side-menu">
-                <li class="nav-item">
-                    <a href="./">
-                        <i class="fa fa-tachometer"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0">
-                        <i class="fa fa-signal"></i>
-                        <span>Statistics</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="./orders">
-                        <i class="fa fa-usd"></i>
-                        <span>Orders</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0">
-                        <i class="fa fa-recycle"></i>
-                        <span>Shipping</span>
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="./products">
-                        <i class="fa fa-shopping-bag"></i>
-                        <span>Products</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="./agents">
-                        <i class="fa fa-users"></i>
-                        <span>Agents</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0">
-                        <i class="fa fa-commenting-o"></i>
-                        <span>Messages</span>
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="side-menu-bottom">
-                <li class="nav-tem">
-                    <a href="javascript:void(0)">
-                        <i class="fa fa-gear"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-                <li class="nav-item logout">
-                    <a href="../logout">
-                        <i class="fa fa-sign-out"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
+        <?php
+        include("includes/admin-sidebar.php");
+        ?>
         <section class="page-wrapper">
             <header class="dash-header">
                 <a href="products" class="back-link">
@@ -140,64 +71,65 @@
                         </thead>
                         <tbody>
                             <?php
-                                function showStatus($status){
-                                    $html = "";
-                                    switch($status){
-                                        case "0":
-                                            $html = "<span class='status-badge danger'>suspended</span>";
+                            function showStatus($status)
+                            {
+                                $html = "";
+                                switch ($status) {
+                                    case "0":
+                                        $html = "<span class='status-badge danger'>suspended</span>";
                                         break;
-                                        case "1":
-                                            $html = "<span class='status-badge success'>active</span>";
+                                    case "1":
+                                        $html = "<span class='status-badge success'>active</span>";
                                         break;
-                                        case "2":
-                                            $html = "<span class='status-badge danger'>inactive</span>";
+                                    case "2":
+                                        $html = "<span class='status-badge danger'>inactive</span>";
                                         break;
-                                        default: 
-                                            $html = "Status not recognised";
+                                    default:
+                                        $html = "Status not recognised";
                                         break;
-                                    }
-
-                                    return $html;
                                 }
-                                $sql_agents = $db->query("SELECT * FROM agents ORDER BY agent_id DESC");
-                                $count = 1;
 
-                                while($agent = $sql_agents->fetch_assoc()){
-                                    if($agent['deleted'] !== "1"){
+                                return $html;
+                            }
+                            $sql_agents = $db->query("SELECT * FROM agents ORDER BY agent_id DESC");
+                            $count = 1;
+
+                            while ($agent = $sql_agents->fetch_assoc()) {
+                                if ($agent['deleted'] !== "1") {
                             ?>
-                            <tr>
-                                <td>
-                                    <?php echo $agent['last_name'] . " " . $agent['first_name'] ?>
-                                </td>
-                                <td>
-                                    <?php echo $agent['email'] ?>
-                                </td>
-                                <td>
-                                   <?php echo $agent['phone_no'] ?>
-                                </td>
-                                <td>
-                                    <?php echo date("j M, Y", strtotime($agent['created_at'])) ?>
-                                </td>
-                                <td>
-                                    <?php echo showStatus($agent['account_status']) ?>
-                                </td>
-                                <td>
-                                    <div class="dropdown" style="font-size: 12px;">
-                                        <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
-                                            o<br>o<br>o
-                                        </button>
-                                        <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
-                                            <a class="dropdown-menu__link" href="./edit_agent?aid=<?php echo $agent['agent_id'] ?>">Edit Agent</a>
-                                            <a class="dropdown-menu__link deleteEl" href="javascript:void(0)" data-agentId="<?php echo $agent['agent_id'] ?>">Delete
-                                                Agent</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    <tr>
+                                        <td>
+                                            <?php echo $agent['last_name'] . " " . $agent['first_name'] ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $agent['email'] ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $agent['phone_no'] ?>
+                                        </td>
+                                        <td>
+                                            <?php echo date("j M, Y", strtotime($agent['created_at'])) ?>
+                                        </td>
+                                        <td>
+                                            <?php echo showStatus($agent['account_status']) ?>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown" style="font-size: 12px;">
+                                                <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
+                                                    o<br>o<br>o
+                                                </button>
+                                                <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
+                                                    <a class="dropdown-menu__link" href="./edit_agent?aid=<?php echo $agent['agent_id'] ?>">Edit Agent</a>
+                                                    <a class="dropdown-menu__link deleteEl" href="javascript:void(0)" data-agentId="<?php echo $agent['agent_id'] ?>">Delete
+                                                        Agent</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                             <?php
-                                    }
-                                $count++;
                                 }
+                                $count++;
+                            }
                             ?>
                         </tbody>
                     </table>
@@ -226,44 +158,47 @@
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
-        $(function () {
+        $(function() {
             $("#agents-table").DataTable({
                 "pageLength": 10
             });
 
             // HANDLE PRODUCT DELETION
-            $(".deleteEl").each(function () {
-                $(this).on("click", function (e) {
+            $(".deleteEl").each(function() {
+                $(this).on("click", function(e) {
                     e.preventDefault();
 
                     const selectedAgentId = $(this).attr("data-agentId");
                     const self = this;
 
-                    if(confirm("Are you sure you want to delete this agent? \n NB: This action would delete all the data related to this agent")){
-                        $.post("controllers/delete_agent.php", { aid: selectedAgentId, submit: true }, function (response) {
+                    if (confirm("Are you sure you want to delete this agent? \n NB: This action would delete all the data related to this agent")) {
+                        $.post("controllers/delete_agent.php", {
+                            aid: selectedAgentId,
+                            submit: true
+                        }, function(response) {
                             response = JSON.parse(response);
-                        if (response.success === 1) {
-                            // ALERT ADMIN
-                            Swal.fire({
-                                title: response.title,
-                                icon: "success",
-                                text: response.message,
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            });
+                            if (response.success === 1) {
+                                // ALERT ADMIN
+                                Swal.fire({
+                                    title: response.title,
+                                    icon: "success",
+                                    text: response.message,
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                });
 
-                            // REMOVE PRODUCT FROM RECORDS
-                            $(self).parent().parent().parent().parent()[0].remove();
-                        } else {
-                            Swal.fire({
-                                title: response.error_title,
-                                icon: "error",
-                                text: response.error_message,
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            });
-                        }
-                    });
+                                // REMOVE PRODUCT FROM RECORDS
+                                $(self).parent().parent().parent().parent()[0].remove();
+                            } else {
+                                Swal.fire({
+                                    title: response.error_title,
+                                    icon: "error",
+                                    text: response.error_message,
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                });
+                            }
+                        });
                     }
                 });
             });

@@ -137,7 +137,26 @@
     }
 
     .dash-header{
-        padding: 5px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5px;
+        margin-top: 50px;
+    }
+
+    .menu-icon{
+        width: 25px;
+        height: 25px;
+        top: -10px;
+        right: -50px;
+        font-size: 15px;
+    }
+
+    .page-wrapper{
+        margin-left: 0px;
+    }
+
+    .table-wrapper{
+        margin-top: 10rem;
     }
 }
 
@@ -146,12 +165,6 @@
     .form-group.animate label{
         font-size: 12px;
         top: 2.5rem;
-    }
-
-    .dash-header{
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 5px;
     }
 
     .select-container{
