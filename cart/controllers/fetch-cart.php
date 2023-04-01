@@ -16,8 +16,9 @@ if (!empty($_SESSION["shopping_cart"])) {
         <img src='" . $url . "assets/images/halfcarry-logo.jpeg' alt='Halfcarry Logo'>
         <div class='spinner'></div>
     </div>
-    </div><div class='cart-number-indicator'>
-    Cart Item (<span id='cart-number'>" . count($_SESSION['shopping_cart']) . "</span>)
+    </div><div class='cart-action-section'>
+    <span>Cart Item (<span id='cart-number'>" . count($_SESSION['shopping_cart']) . "</span>)</span>
+    <button class='btn' disabled>Update Cart</button>
     </div>
 
     <div class='labels'>
@@ -71,7 +72,7 @@ if (!empty($_SESSION["shopping_cart"])) {
             </div>
             <div>
                 <a href="' . $url . 'checkout/" class="btn">Proceed to checkout</a>
-                <button class="btn" disabled>Update cart</button>
+                <button class="btn">Start Saving</button>
             </div>
         </div>
     ';

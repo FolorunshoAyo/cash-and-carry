@@ -1,6 +1,6 @@
 <?php
-  require(dirname(__DIR__).'/auth-library/resources.php');
-  Auth::User("../login");
+require(dirname(__DIR__) . '/auth-library/resources.php');
+Auth::User("../login");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,8 +10,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
   <!-- Custom Fonts (Inter) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
   <!-- BASE CSS -->
@@ -28,36 +27,9 @@
 </head>
 
 <body>
-  <div class="mobile-backdrop"></div>
-  <aside class="mobile-menu">
-    <div class="cross-icon-wrapper">
-      <div class="cross-icon-container">
-        <i class="fa fa-times"></i>
-      </div>
-    </div>
-    <div class="nav-link-container">
-      <ul class="nav-links">
-        <li class="nav-link-item">
-          <a href="./" class="nav-link"> Dashboard </a>
-        </li>
-        <li class="nav-link-item">
-          <a href="#" class="nav-link"> Items picked </a>
-        </li>
-        <li class="nav-link-item">
-          <a href="./orders">Orders</a>
-        </li>
-        <li class="nav-link-item active">
-          <a href="./address" class="nav-link"> Address </a>
-        </li>
-        <li class="nav-link-item">
-          <a href="./profile" class="nav-link"> My profile </a>
-        </li>
-        <li class="nav-link-item">
-          <a href="#" class="nav-link logout"> Logout </a>
-        </li>
-      </ul>
-    </div>
-  </aside>
+  <?php
+  include("includes/mobile-sidebar.php");
+  ?>
   <header>
     <div class="dash-header-container">
       <div class="menu-icon-container">
@@ -65,8 +37,7 @@
       </div>
       <div class="header-navigation-container">
         <div class="dropdown">
-          <a href="#" class="btn btn-secondary-outline dropdown-toggle header-link" type="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
+          <a href="#" class="btn btn-secondary-outline dropdown-toggle header-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Browse
           </a>
           <ul class="dropdown-menu">
@@ -86,31 +57,9 @@
   </header>
   <main>
     <div class="main-container">
-      <div class="dashboard-links-wrapper">
-        <div class="dashboard-links">
-          <ul class="dashboard-nav-links">
-            <li class="title">My Profile</li>
-            <li class="dashboard-nav-link">
-              <a href="./">Dashboard</a>
-            </li>
-            <li class="dashboard-nav-link">
-              <a href="#">Items-picked</a>
-            </li>
-            <li class="dashboard-nav-link">
-              <a href="./orders">Orders</a>
-            </li>
-            <li class="dashboard-nav-link active">
-              <a href="#">Address</a>
-            </li>
-            <li class="dashboard-nav-link">
-              <a href="./profile">My profile</a>
-            </li>
-            <li class="dashboard-nav-link logout">
-              <a href="#">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <?php
+      include("includes/dashboard-navigation.php");
+      ?>
       <div class="dashboard-main-section">
         <div class="dashboard-main-container">
           <h1 class="dashboard-main-title">Add Address</h1>
@@ -167,19 +116,19 @@
                   <select name="state" id="state">
                     <option value="">Choose State</option>
                     <?php
-                      $sql_states = $db->query("SELECT * FROM states");
+                    $sql_states = $db->query("SELECT * FROM states");
 
-                      while($state = $sql_states->fetch_assoc()){
-                        if($state['state_name'] === $address_details['address_state']){
+                    while ($state = $sql_states->fetch_assoc()) {
+                      if ($state['state_name'] === $address_details['address_state']) {
                     ?>
-                    <option selected><?php echo $state['state_name'] ?></option>
+                        <option selected><?php echo $state['state_name'] ?></option>
+                      <?php
+                      } else {
+                      ?>
+                        <option><?php echo $state['state_name'] ?></option>
                     <?php
-                        }else{
-                    ?>
-                    <option><?php echo $state['state_name'] ?></option>
-                    <?php
-                        }
                       }
+                    }
                     ?>
                   </select>
                   <label for="state">State</label>
@@ -202,59 +151,44 @@
   <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
   <script src="../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
   <!-- JAVASCRIPT BUNDLER WITH POPPER -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
   <!-- SWEET ALERT PLUGIN -->
   <script src="../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
-    <!-- JUST VALIDATE LIBRARY -->
-    <script src="../assets/js/just-validate/just-validate.js"></script>
+  <!-- JUST VALIDATE LIBRARY -->
+  <script src="../assets/js/just-validate/just-validate.js"></script>
   <!-- CUSTOM DASHBOARD SCRIPT -->
   <script src="../assets/js/user-dash.js"></script>
   <script>
-
     //FORM VALIDATION WITH VALIDATE.JS
     const validation = new JustValidate("#add-form", {
       errorFieldCssClass: "is-invalid",
     });
 
     validation
-      .addField("#rname", [
-        {
-          rule: "required",
-          errorMessage: "Field is required",
-        },
-      ])
-      .addField("#rphoneno", [
-        {
-          rule: "required",
-          errorMessage: "Field is required",
-        },
-      ])
-      .addField("#daddress", [
-        {
-          rule: "required",
-          errorMessage: "Field is required",
-        },
-      ])
-      .addField("#city", [
-        {
-          rule: "required",
-          errorMessage: "Field is required",
-        },
-      ])
-      .addField("#pcode", [
-        {
-          rule: "required",
-          errorMessage: "Field is required",
-        },
-      ])
-      .addField("#state", [
-        {
-          rule: "required",
-          errorMessage: "Field is required",
-        },
-      ])
+      .addField("#rname", [{
+        rule: "required",
+        errorMessage: "Field is required",
+      }, ])
+      .addField("#rphoneno", [{
+        rule: "required",
+        errorMessage: "Field is required",
+      }, ])
+      .addField("#daddress", [{
+        rule: "required",
+        errorMessage: "Field is required",
+      }, ])
+      .addField("#city", [{
+        rule: "required",
+        errorMessage: "Field is required",
+      }, ])
+      .addField("#pcode", [{
+        rule: "required",
+        errorMessage: "Field is required",
+      }, ])
+      .addField("#state", [{
+        rule: "required",
+        errorMessage: "Field is required",
+      }, ])
       .onSuccess((event) => {
         const form = document.getElementById("add-form");
 
@@ -275,11 +209,11 @@
           contentType: false,
           processData: false,
           dataType: "json",
-          beforeSend: function () {
+          beforeSend: function() {
             $(".submit-btn-container button").html("Adding...");
             $(".submit-btn-container button").attr("disabled", true);
           },
-          success: function (response) {
+          success: function(response) {
             setTimeout(() => {
               if (response.success === 1) {
                 // ALERT USER UPON SUCCESSFUL UPLOAD

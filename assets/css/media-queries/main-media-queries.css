@@ -732,6 +732,10 @@
     .cart-menu-items .cart-menu-item .cart-menu-item-image-container{
         flex: 0 0 70px;
     }
+
+    .cart-action-section > span{
+        margin-bottom: 30px;
+    }
 }
 
 

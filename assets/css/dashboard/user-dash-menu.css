@@ -42,6 +42,10 @@ aside.mobile-menu{
     border-radius: 10px;
 }
 
+.nav-link-item:not(:last-child){
+    margin-bottom: 10px;
+}
+
 .nav-link-item .nav-link{
     padding: 2rem 3rem;
     text-decoration: none;
@@ -65,8 +69,8 @@ aside.mobile-menu{
 }
 
 .nav-link-item .nav-link.logout:hover{
-    color: var(--white);
-    background-color: var(--primary-color);
+    color: var(--primary-color);
+    background-color: #fdeee7;
 }
 
 .mobile-backdrop{
@@ -133,10 +137,21 @@ aside.mobile-menu{
 
 .dashboard-links-wrapper{
     flex: 0 0 400px;
-    border-right: 1px solid var(--primary-color);
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.dashboard-links-wrapper::after{
+    content: "";
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    height: 80%;
+    width: 2px;
+    transform: translateY(-50%);
+    background-color: var(--primary-color);
 }
 
 .dashboard-links{
@@ -181,7 +196,7 @@ ul{
     transition: .3s;
 }
 
-.dashboard-nav-link.active a{
+.dashboard-nav-links .dashboard-nav-link.active a{
     color: var(--primary-color);
     background-color: #fdeee7;
 }
@@ -222,7 +237,10 @@ aside.mobile-menu.active{
     position: absolute;
     top: 50%;
     width: 95%;
-    transform: translateY(-50%);    
+    transform: translateY(-50%);  
+    min-height: 400px;
+    max-height: 90%;
+    overflow-x: auto;  
 }
 
 .dashboard-main-title{
@@ -232,6 +250,6 @@ aside.mobile-menu.active{
 }
 
 .dashboard-main-text{
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-bottom: 30px;
 }

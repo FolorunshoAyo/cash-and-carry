@@ -20,6 +20,8 @@ if ($inSession) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon Icon -->
+    <link rel="favicon" href="assets/images/halfcarry-logo.jpeg">
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="assets/fonts/fonts.css">
     <!-- BASE CSS -->
@@ -38,101 +40,11 @@ if ($inSession) {
 </head>
 
 <body>
-    <div class="cart-backdrop"></div>
-    <aside class="cart-menu">
-        <div class="close-container">
-            <i class="fa fa-times"></i>
-        </div>
-        <div class="cart-menu-items-container">
-            <div class="spinner-wrapper">
-                <div class="spinner-container">
-                    <img src="../assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
-                    <div class="spinner"></div>
-                </div>
-            </div>
-        </div>
-    </aside>
-    <header>
-        <div class="top-header">
-            <a href="./" class="logo-container">
-                <div class="logo-image-container">
-                    <img src="assets/images/halfcarry-logo.jpeg" alt="Header Logo">
-                </div>
-            </a>
-
-            <nav class="navigation-menu">
-                <ul class="nav-links">
-                    <li class="nav-link-item">
-                        <a href="#">
-                            <i class="fa fa-money"></i>
-                            Purchases
-                        </a>
-                    </li>
-                    <li class="nav-link-item">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            Packages
-                        </a>
-                    </li>
-                    <li class="nav-link-item">
-                        <a href="#">
-                            <i class="fa fa-info"></i>
-                            Help
-                        </a>
-                    </li>
-                    <li class="nav-link-item cart-link">
-                        <a href="javascript:void(0)">
-                            <span class="cart-badge">0</span>
-                            <i class="fa fa-shopping-cart"></i>
-                            Cart
-                        </a>
-                    </li>
-                    <!-- <li class="nav-link-item">
-                        <div class="dark-mode-container">
-                            <span>Dark Mode</span>
-                            <img src="assets/images/toggle-off.png" alt="toggle-off">
-                        </div>
-                    </li> -->
-                </ul>
-            </nav>
-        </div>
-        <div class="bottom-header">
-            <div class="categories-btn-container">
-                <a href="all-products?view-categories">Categories</a>
-            </div>
-            <div class="search-container">
-                <form class="search-box" action="search/">
-                    <input type="text" name="q" placeholder="Search for an item">
-                    <button type="submit" class="search-icon-btn">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </form>
-            </div>
-            <div class="other-links-container">
-                <!-- <button class="installment-btn">Installments</button> -->
-                <div class="menu-container">
-                    <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo ($inSession ?  explode(" ", $user_name)[0] : "Account") ?></a>
-                    <?php
-                    if (!$inSession) {
-                    ?>
-                        <ul class="menu">
-                            <li><a href="login">Sign In</a></li>
-                        </ul>
-                    <?php
-                    } else {
-                    ?>
-                        <ul class="menu">
-                            <li><a href="user/">Dashboard</a></li>
-                            <li><a href="user/orders">Orders</a></li>
-                            <li><a href="logout?rd=home">Log out</a></li>
-                        </ul>
-                    <?php
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-    </header>
+    <?php
+        include_once("includes/cart.php");
+        include_once("includes/savings-request-modal.php");
+        include_once("includes/header.php");
+    ?>
     <main>
         <section class="categories-section">
             <div class="categories-container">
@@ -449,6 +361,9 @@ if ($inSession) {
     <!-- IZI TOAST SCRIPT -->
     <script src="auth-library/vendor/dist/js/iziToast.min.js"></script>
     <script>
+        function displayActiveRequest() {
+            $(".savings-request-modal-wrapper").addClass("active");
+        }
         $(function() {
             // const burgerMenu = $(".burger-menu");
             // const mobileNav = $(".mobile-menu");
@@ -578,8 +493,8 @@ if ($inSession) {
                             product_id: product_id,
                             action: action
                         },
-                        beforeSend: function(){
-                            $(".spinner-wrapper").addClass("active");  
+                        beforeSend: function() {
+                            $(".spinner-wrapper").addClass("active");
                         },
                         success: function() {
                             $(".spinner-wrapper").removeClass("active");
@@ -605,7 +520,7 @@ if ($inSession) {
                     url: "controllers/fetch-cart.php",
                     method: "POST",
                     dataType: "json",
-                    beforeSend: function(){
+                    beforeSend: function() {
                         $(".spinner-wrapper").addClass("active");
                     },
                     success: function(data) {
@@ -620,6 +535,47 @@ if ($inSession) {
                     }
                 });
             }
+
+
+            // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
+            let productCount = 1;
+            $(document).on("click", ".controls-container button", function() {
+                const btnClicked = $(this).attr("data-direction");
+                const savingsProducts = $(".savings-request-modal .products-container .product");
+
+                if (btnClicked === "next") {
+                    savingsProducts.each(function() {
+                        $(this).removeClass("active");
+                    });
+
+                    productCount++;
+
+                    ($(savingsProducts[productCount - 1]).addClass("active"));
+                } else {
+                    savingsProducts.each(function() {
+                        $(this).removeClass("active");
+                    });
+
+                    productCount--;
+
+                    ($(savingsProducts[productCount - 1]).addClass("active"));
+                }
+
+                if (productCount === 1) {
+                    $(".controls-container button[data-direction = 'prev']").attr("disabled", true);
+                    $(".controls-container button[data-direction = 'next']").attr("disabled", false);
+                }
+
+                if (productCount === savingsProducts.length) {
+                    $(".controls-container button[data-direction = 'next']").attr("disabled", true);
+                    $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+                }
+            });
+
+            // ACTIVE SAVINGS REQUEST MODAL EVENT
+            $(document).on("click", ".savings-request-modal .modal-header .close-container", function() {
+                $(".savings-request-modal-wrapper").removeClass("active");
+            });
         });
     </script>
 </body>

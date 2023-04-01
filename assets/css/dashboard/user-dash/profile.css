@@ -2,12 +2,6 @@
     width: 100%;
 }
 
-.dashboard-main-container{
-    position: static;
-    top: 0px;
-    transform: translateY(0%);
-}
-
 .edit-profile-form-container{
     display: none;
 }

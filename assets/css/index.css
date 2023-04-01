@@ -197,6 +197,317 @@
     cursor: not-allowed;
 }
 
+.savings-request-modal-wrapper{
+    position: fixed;
+    inset: 0px;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.savings-request-modal-wrapper.active{
+    display: flex;
+}
+
+.savings-request-modal{
+    max-width: 600px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 5px;
+    padding: 2rem;
+    background-color: var(--white);
+}
+
+.savings-request-modal .modal-header{
+    display: flex;
+    align-items: center;
+}
+
+.savings-request-modal .modal-header .savings-id-container{
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+.savings-request-modal .modal-header .close-container{
+    width: 30px;
+    height: 30px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.savings-request-modal .controls-container{
+    margin: 10px 0;
+}
+
+.savings-request-modal .controls-container button,
+.payment-plan-container .controls-container button{
+    padding: 0.5rem 1rem;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    border: none;
+    color: var(--white);
+    background-color: var(--primary-color);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.savings-request-modal .controls-container button:disabled,
+.payment-plan-container .controls-container button:disabled{
+    opacity: .7;
+}
+
+.savings-request-modal .controls-container button:not(:last-child),
+.payment-plan-container .controls-container button:not(:last-child){
+    margin-right: 5px;
+}
+
+.savings-request-modal .products-container,
+.payment-plan-container .products-container{
+    margin: 15px 0;
+}
+
+.savings-request-modal .savings-product,
+.payment-plan-container .savings-product{
+    padding: 1rem 2rem;
+    display: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.savings-request-modal .savings-product.active,
+.payment-plan-container .savings-product.active{
+    display: flex;
+}
+
+.savings-request-modal .savings-product-image-container,
+.payment-plan-container .savings-product-image-container{
+    flex: 0 0 150px;
+    margin-right: 10px;
+}
+
+.savings-request-modal .savings-product-image-container img,
+.payment-plan-container .savings-product-image-container img{
+    max-width: 100%;
+}
+
+.savings-request-modal .savings-product-details,
+.payment-plan-container .savings-product-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 1.8rem;
+}
+
+.savings-request-modal .savings-product-details .savings-product-name,
+.payment-plan-container .savings-product-details .savings-product-name{
+    color: var(--primary-color);
+}
+
+.savings-request-modal .savings-info{
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.savings-request-modal .savings-info .savings-info-block{
+    flex: 0 0 45%;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.savings-request-modal .savings-info .savings-info-block .savings-label{
+    color: var(--primary-color);
+}
+
+
+.savings-request-modal .savings-info .savings-info-block .savings-value .dot.pending{
+    display: inline-block;
+    vertical-align: middle;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #1270B0;
+}
+
+.payment-plan-wrapper{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: rgba(0, 0, 0, .125);
+    display: none;
+    overflow-y: auto;
+  }
+  
+  .payment-plan-wrapper.active{
+    display: block;
+  }
+
+  .payment-plan-container{
+    max-width: 500px;
+    margin: 100px auto;
+    border-radius: 20px;
+    padding: 3rem 4rem;
+    background-color: var(--white);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+
+  .payment-plan-wrapper.active .payment-plan-container{
+    animation: slideInUp 0.5s linear;
+  }
+
+  .payment-plan-container header{
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 10px;
+    width: 100%;
+  }
+
+  .payment-plan-container header h1{
+    font-size: 1.5rem;
+  }
+
+  .payment-plan-container header a{
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+  }
+
+  .payment-plans > label{
+    display: block;
+    padding: 2.5rem 2rem;
+    display: flex;
+    border: 2px solid var(--primary-color);
+    gap: 30px;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+  .payment-plans label .radio-container{
+    flex: 0 0 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .payment-plans label .radio-container .custom-radio{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    outline: 2px solid var(--primary-color);
+    transition: all .3s ease;
+  }
+
+  .payment-plans input:checked + label .radio-container .custom-radio{
+    outline: 8px solid var(--primary-color);
+  }
+
+  .payment-plans label .payment-plan-info{
+    flex: 1;
+    color: var(--primary-color);
+  }
+  
+  .payment-plan-info h3{
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .payment-plan-info p{
+    font-size: 1.2rem;
+  }
+
+  .payment-plan-info p sup{
+    font-size: 1.5rem;
+  }
+
+  .payment-plan-info p:not(:last-child){
+    margin-bottom: 10px;
+  }
+
+  .payment-plan-info p span{
+    font-size: 2rem;
+  }
+
+  .payment-plans label:not(:last-child){
+    margin-bottom: 20px;
+  }
+
+  .payment-plans input{
+    display: none;
+  }
+
+  .payment-action-btns .btn{
+    appearance: button;
+    background-color: var(--primary-color);
+    background-image: none;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-shadow: #fff 4px 4px 0 0,#000 4px 4px 0 1px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0 5px 10px 0;
+    overflow: visible;
+    padding: 12px 40px;
+    text-align: center;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    transition: background-color .3s ease-in;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.payment-action-btns .btn:hover {
+    background-color: var(--black);
+}
+  
+.payment-action-btns .btn:active {
+    box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
+    outline: 0;
+}
+
+.payment-action-btns .btn:disabled{
+    opacity: 0.7;   
+}
+
+.payment-action-btns{
+    text-align: center;
+}
+
+.payment-action-btns .btn:not([disabled]):active {
+    box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+    transform: translate(2px, 2px);
+}
+
+.payment-action-btns a{
+    color: var(--primary-color);
+    font-size: 1.2rem; 
+    text-decoration: none;
+    transition: all .3s ease-in ;
+}
+
+.payment-action-btns a:hover{
+    text-decoration: underline;
+}
+
+.agent-select-container{
+    margin-top: 10px;
+}
+
 header{
     margin: 0 auto;
     width: 90%;
@@ -450,7 +761,7 @@ header{
 }
 
 .menu-container .menu li:not(:last-child){
-    border-bottom: 2px solid #d0d0d0;
+    border-bottom: 2px solid var(--primary-color);
 }
 
 .menu-container .menu li a{
@@ -459,6 +770,25 @@ header{
     padding: 10px;
     font-size: 1.5rem;
     height: 100%;
+    transition: all .3s ease-in;
+}
+
+.menu-container .menu li a:hover{
+    color: var(--white);
+    background-color: var(--primary-color);
+}
+
+.menu-container .menu li .circle{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    transition: all .3s ease-in;
+}
+
+.menu-container .menu li a:hover .circle{
+    background-color: var(--white);
 }
 
 .menu-container .menu.active{
@@ -815,7 +1145,7 @@ figcaption .payment-plans .product-badge.month{
     border-radius: 10px;
 }
 
-.circle{
+.banner-section-container .circle{
     width: 200px;
     height: 200px;
     border-radius: 50%;

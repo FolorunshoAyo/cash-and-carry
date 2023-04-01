@@ -60,36 +60,9 @@ function showStatus($status)
 </head>
 
 <body>
-  <div class="mobile-backdrop"></div>
-  <aside class="mobile-menu">
-    <div class="cross-icon-wrapper">
-      <div class="cross-icon-container">
-        <i class="fa fa-times"></i>
-      </div>
-    </div>
-    <div class="nav-link-container">
-      <ul class="nav-links">
-        <li class="nav-link-item">
-          <a href="./" class="nav-link"> Dashboard </a>
-        </li>
-        <li class="nav-link-item">
-          <a href="#" class="nav-link"> Savings products </a>
-        </li>
-        <li class="nav-link-item active">
-          <a href="./orders" class="nav-link">Orders</a>
-        </li>
-        <li class="nav-link-item">
-          <a href="./addresses" class="nav-link"> Addresses </a>
-        </li>
-        <li class="nav-link-item">
-          <a href="./profile" class="nav-link"> My profile </a>
-        </li>
-        <li class="nav-link-item">
-          <a href="#" class="nav-link logout"> Logout </a>
-        </li>
-      </ul>
-    </div>
-  </aside>
+  <?php
+  include("includes/mobile-sidebar.php");
+  ?>
   <header>
     <div class="dash-header-container">
       <div class="menu-icon-container">
@@ -107,7 +80,7 @@ function showStatus($status)
           </ul>
         </div>
         <div>
-          <a class="header-link" href="#">Homepage</a>
+          <a class="header-link" href="../">Homepage</a>
         </div>
         <div>
           <a class="header-link" href="#">Help</a>
@@ -117,40 +90,18 @@ function showStatus($status)
   </header>
   <main>
     <div class="main-container">
-      <div class="dashboard-links-wrapper">
-        <div class="dashboard-links">
-          <ul class="dashboard-nav-links">
-            <li class="title">My Profile</li>
-            <li class="dashboard-nav-link">
-              <a href="./">Dashboard</a>
-            </li>
-            <li class="dashboard-nav-link">
-              <a href="#">Savings products</a>
-            </li>
-            <li class="dashboard-nav-link active">
-              <a href="./orders">Orders</a>
-            </li>
-            <li class="dashboard-nav-link">
-              <a href="./addresses">Addresses</a>
-            </li>
-            <li class="dashboard-nav-link">
-              <a href="./profile">My profile</a>
-            </li>
-            <li class="dashboard-nav-link logout">
-              <a href="#">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <?php
+      include("includes/dashboard-navigation.php");
+      ?>
       <div class="dashboard-main-section">
         <div class="dashboard-main-container">
           <h1 class="dashboard-main-title">Open Orders</h1>
           <?php
           if ($sql_user_orders->num_rows == 0) {
           ?>
-          <div style="text-align: center; font-size: 30px;">
-            <p>No orders yet</p>
-          </div>
+            <div style="text-align: center; font-size: 15px;">
+              <p>No orders yet</p>
+            </div>
           <?php
           } else {
           ?>

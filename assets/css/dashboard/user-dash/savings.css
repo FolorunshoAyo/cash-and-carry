@@ -3,6 +3,32 @@
     margin-bottom: 10px;
 }
 
+.tabs-container{
+    display: flex;
+    margin: 20px;
+}
+
+.tabs-container .tab-link-container{
+    flex: 1;
+}
+
+.tabs-container .tab-link-container a{
+    display: block;
+    padding: 1.5rem 1rem;
+    color: var(--grey);
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid var(--grey);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tabs-container .tab-link-container a.active{
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    cursor: auto;
+}
+
 table{
     border-radius: 10px;
     overflow: hidden;
@@ -12,14 +38,15 @@ table{
 
 thead{
     padding: 1rem 0.5rem;
-    background-color: #E7F7FD;
+    background-color: #fdeee7;
+    color: var(--primary-color);
     font-size: 1rem;
     font-weight: lighter;
 }
 
 table.dataTable tbody th, table.dataTable tbody td{
     padding: 2rem;
-    font-size: 1.5rem;
+    font-size: 1rem;
 }
 
 table.dataTable tbody td .item-name-container{
@@ -46,14 +73,9 @@ table.dataTable tbody td .action-container button{
 }
 
 .details-btn{
-    color: #60CAF1;
-    background-color: #E7F7FD;
+    color: var(--primary-color);
+    background-color: #fdeee7;
     margin-right: 10px;
-}
-
-.item-badge{
-    color: var(--white);
-    background-color: #0FAFE9;
 }
 
 td{
@@ -82,12 +104,13 @@ td{
 }
 
 .view-btn-container button{
-    padding: 20px 15px;
+    padding: 10px 15px;
     border-radius: 10px;
     border: none;
     font-size: 1rem;
     margin-right: 2rem;
-    color: #60CAF1;
-    background-color: #E7F7FD;
+    color: var(--white);
+    background-color: var(--primary-color);
     font-size: 1.5rem;
+    cursor: pointer;
 }

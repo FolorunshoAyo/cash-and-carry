@@ -1,35 +1,36 @@
-<?php 
-  require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-  AgentAuth::User("a/login");
+<?php
+require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+AgentAuth::User("a/login");
 
-  $agent_id = $_SESSION['agent_id'];
+$agent_id = $_SESSION['agent_id'];
 
-  $admin_sql = $db->query("SELECT * FROM admin WHERE admin_id={$admin_id}");
-  if($admin_sql->num_rows == 1){
-      $row_admin = $admin_sql->fetch_assoc();
-  }else{
-      header("Location: ../login");
-  }
+$admin_sql = $db->query("SELECT * FROM admin WHERE admin_id={$admin_id}");
+if ($admin_sql->num_rows == 1) {
+    $row_admin = $admin_sql->fetch_assoc();
+} else {
+    header("Location: ../login");
+}
 
-  function showStatus($status){
+function showStatus($status)
+{
     $html = "";
-    switch($status){
-      case "1":
-        $html = "<span class='dot pending-dot'></span> pending";
-      break;
-      case "2":
-        $html = "<span class='dot shipped-dot'></span> granted";
-      break;
-      case "3":
-        $html = "<span class='dot cancelled-dot'></span> rejected";
-      break;
-      default:
-        $html = "Unable to detect status";
-      break;
+    switch ($status) {
+        case "1":
+            $html = "<span class='dot pending-dot'></span> pending";
+            break;
+        case "2":
+            $html = "<span class='dot shipped-dot'></span> granted";
+            break;
+        case "3":
+            $html = "<span class='dot cancelled-dot'></span> rejected";
+            break;
+        default:
+            $html = "Unable to detect status";
+            break;
     }
 
     return $html;
-  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +61,7 @@
 <body style="background-color: #fafafa">
     <div class="dash-wrapper">
         <?php
-            include("includes/agent-sidebar.php");
+        include("includes/agent-sidebar.php");
         ?>
         <section class="page-wrapper">
             <div class="table-wrapper">
@@ -74,7 +75,7 @@
                                     Product(s)
                                 </th> -->
                                 <th>
-                                   ID
+                                    ID
                                 </th>
                                 <th>
                                     Customer
@@ -97,14 +98,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
-                                $sql_all_savings_requests = $db->query("SELECT * FROM savings_requests INNER JOIN users ON savingss_requests.user_id = users.user_id WHERE savings_requests.agent_id={$agent_id} AND status = 1 AND type_of_savings='1' ORDER BY id DESC");
+                            <?php
+                            $sql_all_savings_requests = $db->query("SELECT * FROM savings_requests INNER JOIN users ON savingss_requests.user_id = users.user_id WHERE savings_requests.agent_id={$agent_id} AND type_of_savings='1' ORDER BY id DESC");
 
-                                $count = 1;
-                                while($request_details = $sql_all_savings_requests->fetch_assoc()){
+                            $count = 1;
+                            while ($request_details = $sql_all_savings_requests->fetch_assoc()) {
                             ?>
-                            <tr>
-                                <!-- <td>
+                                <tr>
+                                    <!-- <td>
                                     <div class="product-details-container">
                                         <div class="product-img-container">
                                             <img src="images/iphone13-green.jpg" alt="Product Image" />
@@ -115,51 +116,51 @@
                                         </div>
                                     </div>
                                 </td> -->
-                                <td>
-                                    #<?php echo $request_details['savings_id'] ?>
-                                </td>
-                                <td>
-                                    <?php echo date("F j, Y", strtotime($request_details['requested_at'])) ?>
-                                </td>
-                                <td>
-                                    <?php 
+                                    <td>
+                                        #<?php echo $request_details['savings_id'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo date("F j, Y", strtotime($request_details['requested_at'])) ?>
+                                    </td>
+                                    <td>
+                                        <?php
                                         $name = ucfirst($request_details['last_name'])  . " " . ucfirst($request_details['first_name']);
                                         echo $name;
-                                    ?>
-                                </td>
-                                <td class="status-cell-<?php echo $request_details['order_no'] ?>">
-                                    <?php echo showStatus($request_details['status']) ?>
-                                </td>
-                                <td>
-                                    <form>
-                                        <?php
-                                            $status = $request_details['status'];
                                         ?>
-                                        <select class="request-status-select" name="request_$request_details-status" data-requestID="<?php echo $request_details['savings_id'] ?>">
-                                            <option <?php echo $status === "1"? "selected" : "" ?> value="1">pending</option>
-                                            <option <?php echo $status === "2"? "selected" : "" ?> value="2">approved</option>
-                                            <option <?php echo $status === "3"? "selected" : "" ?> value="3">canceled</option>
-                                        </select>
-                                    </form>
-                                </td>
-                                <td>
-                                    NGN <?php echo number_format($request_details['amount']) ?>
-                                </td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
-                                            o<br>o<br>o
-                                        </button>
-                                        <div style="font-size: 1rem;" class="dropdown-menu" data-dd-path="<?php echo $count ?>">
-                                            <a class="dropdown-menu__link" href="halfsavings_details?sid=<?php echo $request_details['savings_id'] ?>">View request</a>
-                                            <!-- <a class="dropdown-menu__link deleteEl" href="javascript:void(0)" data-productId="1"></a> -->
+                                    </td>
+                                    <td class="status-cell-<?php echo $request_details['savings_id'] ?>">
+                                        <?php echo showStatus($request_details['status']) ?>
+                                    </td>
+                                    <td>
+                                        <form>
+                                            <?php
+                                            $status = $request_details['status'];
+                                            ?>
+                                            <select class="request-status-select" name="request-status-<?= $request_details['id'] ?>" data-requestID="<?php echo $request_details['id'] ?>" data-userID="<?= $request_details['user_id'] ?>">
+                                                <option <?php echo $status === "1" ? "selected" : "" ?> value="1">pending</option>
+                                                <option <?php echo $status === "2" ? "selected" : "" ?> value="2">approved</option>
+                                                <option <?php echo $status === "3" ? "selected" : "" ?> value="3">canceled</option>
+                                            </select>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        NGN <?php echo number_format($request_details['amount']) ?>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
+                                                o<br>o<br>o
+                                            </button>
+                                            <div style="font-size: 1rem;" class="dropdown-menu" data-dd-path="<?php echo $count ?>">
+                                                <a class="dropdown-menu__link" href="halfsavings_details?sid=<?php echo $request_details['savings_id'] ?>">View request</a>
+                                                <!-- <a class="dropdown-menu__link deleteEl" href="javascript:void(0)" data-productId="1"></a> -->
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
                             <?php
                                 $count++;
-                                }
+                            }
                             ?>
                         </tbody>
                     </table>
@@ -185,66 +186,102 @@
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
-        $(function () {
+        $(function() {
             $("#teams-table").DataTable({
                 "pageLength": 10
             });
 
-            // HANDLE request_$request_details STATUS UPDATE
-            $(".request-status-select").each(function () {
-                $(this).on("change", function (e) {
+            // HANDLE HALFSAVINGS REQUEST STATUS UPDATE
+            $(".request-status-select").each(function() {
+                $(this).on("change", function(e) {
                     const selectedRequestStatus = e.target.value;
                     const selectEl = this;
+                    const userId = $(this).attr("data-userID");
 
                     const selectedRequestId = $(this).attr("data-requestID");
 
-                    $(selectEl).after("<img src='../../assets/images/loading-gif.gif' alt='Loading'>")
+                    // PREVENT UPDATE IF PENDING
+                    if (selectedRequestStatus === "1") return;
 
-                    
-                    $.post("controllers/update-request-status.php", { rid: selectedRequestId, status: selectedRequestStatus, submit: true }, function (response) {
-                        response = JSON.parse(response);
-                        if (response.success === 1) {
-                            let statusHTML;
-                            // ALERT ADMIN
-                            Swal.fire({
-                                title: "Request Status",
-                                icon: "success",
-                                text: "This user can go ahead to make half payment.",
-                                allowOutsideClick: true,
-                                allowEscapeKey: true,
-                            });
+                    if (selectedRequestStatus === "2" || selectedRequestStatus === "3") {
+                        $(selectEl).after("<img src='../../assets/images/loading-gif.gif' alt='Loading'>");
 
-                            switch(selectedRequestStatus){
-                                case "1":
-                                    statusHTML = "<span class='dot pending-dot'></span> pending";
-                                break;
-                                case "2":
-                                    statusHTML = "<span class='dot completed-dot'></span> granted";
-                                break;
-                                case "3":
-                                    statusHTML = "<span class='dot cancelled-dot'></span> rejected";
-                                break;
-                                default: 
-                                console.log("Not recognized");
-                                break;
+                        Swal.fire({
+                            title: "Update Withdrawal Request",
+                            icon: "info",
+                            text: "This is a one time action and cannot be reversed, continue?",
+                            allowOutsideClick: true,
+                            allowEscapeKey: true,
+                            showCloseButton: true,
+                            showCancelButton: true,
+                            focusConfirm: false,
+                            confirmButtonText: 'Yes',
+                            cancelButtonText: 'No',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                updateAndDisableSavingsRequest(selectedRequestId, selectEl, userId, selectedRequestStatus);
+                            } else {
+                                $(selectEl).next("img[alt='Loading']").remove();
                             }
-
-                            // UPDATE STATUS CELL
-                            $(`.status-cell-${selectedRequestId}`).html(statusHTML);
-                            // REMOVE LOADER
-                            $(selectEl).next("img[alt='Loading']").remove();
-                        } else {
-                            Swal.fire({
-                                title: response.error_title,
-                                icon: "error",
-                                text: response.error_message,
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                            });
-                        }
-                    });
+                        });
+                    }
                 });
             });
+
+            function updateAndDisableSavingsRequest(requestId, selectEl, userId, status) {
+                $.post("controllers/update-saving-request", {
+                    rid: requestId,
+                    status: status,
+                    user_id: userId,
+                    type_of_savings: "1",
+                    submit: true
+                }, function(response) {
+                    response = JSON.parse(response);
+                    if (response.success === 1) {
+                        let statusHTML;
+                        // ALERT ADMIN
+                        Swal.fire({
+                            title: "Request Status",
+                            icon: "success",
+                            text: "This user can go ahead to make half payment.",
+                            allowOutsideClick: true,
+                            allowEscapeKey: true,
+                        });
+
+                        switch (selectedRequestStatus) {
+                            case "1":
+                                statusHTML = "<span class='dot pending-dot'></span> pending";
+                                break;
+                            case "2":
+                                statusHTML = "<span class='dot completed-dot'></span> granted";
+                                break;
+                            case "3":
+                                statusHTML = "<span class='dot cancelled-dot'></span> rejected";
+                                break;
+                            default:
+                                console.log("Not recognized");
+                                break;
+                        }
+
+                        // UPDATE STATUS CELL
+                        $(`.status-cell-${requestID}`).html(statusHTML);
+
+                        // REMOVE LOADER
+                        $(selectEl).next("img[alt='Loading']").remove();
+
+                        // DISABLE SELECT ELEMENT
+                        $(`[data-requestID = '${requestID}']`).attr("disabled", true);
+                    } else {
+                        Swal.fire({
+                            title: response.error_title,
+                            icon: "error",
+                            text: response.error_message,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        });
+                    }
+                });
+            }
         });
     </script>
 </body>

@@ -23,7 +23,7 @@
 }
 
 .address-card.default .main-address{
-    background-color: #1271b0ea;  
+    background-color: #fdeee7;  
     color: #fff;
     font-weight: 400;  
 }
@@ -112,7 +112,7 @@
     border-radius: 10px;
     background-color: var(--primary-color);
     width: 150px;
-    font-size: 1.5rem;
+    font-size: 1rem;
     display: inline-block;
     text-align: center;
     text-decoration: none;

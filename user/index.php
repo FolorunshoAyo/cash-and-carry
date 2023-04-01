@@ -34,36 +34,9 @@
     <title>Welcome <?php echo($user_name) ?> - Halfcarry</title>
   </head>
   <body>
-    <div class="mobile-backdrop"></div>
-    <aside class="mobile-menu">
-      <div class="cross-icon-wrapper">
-        <div class="cross-icon-container">
-            <i class="fa fa-times"></i>
-        </div>
-      </div>
-      <div class="nav-link-container">
-        <ul class="nav-links">
-          <li class="nav-link-item">
-            <a href="./" class="nav-link active"> Dashboard </a>
-          </li>
-          <li class="nav-link-item">
-            <a href="#" class="nav-link"> Savings products </a>
-          </li>
-          <li class="nav-link-item">
-            <a href="./orders" class="nav-link">Orders</a>
-          </li>
-          <li class="nav-link-item">
-            <a href="./addresses" class="nav-link"> Addresses </a>
-          </li>
-          <li class="nav-link-item">
-            <a href="./profile" class="nav-link"> My profile </a>
-          </li>
-          <li class="nav-link-item">
-            <a href="#" class="nav-link logout"> Logout </a>
-          </li>
-        </ul>
-      </div>
-    </aside>
+    <?php
+      include("includes/mobile-sidebar.php");
+    ?>
     <header>
       <div class="dash-header-container">
         <div class="menu-icon-container">
@@ -81,9 +54,9 @@
               Browse
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li><All class="dropdown-item" href="#">All products</a></li>
+              <li><a class="dropdown-item" href="#">Active Wallets</a></li>
+              <li><a class="dropdown-item" href="#">Savings Request</a></li>
             </ul>
           </div>
           <div>
@@ -97,31 +70,9 @@
     </header>
     <main>
       <div class="main-container">
-        <div class="dashboard-links-wrapper">
-          <div class="dashboard-links">
-            <ul class="dashboard-nav-links">
-              <li class="title">My Profile</li>
-              <li class="dashboard-nav-link active">
-                <a href="./">Dashboard</a>
-              </li>
-              <li class="dashboard-nav-link">
-                <a href="#">Savings products</a>
-              </li>
-              <li class="dashboard-nav-link">
-                <a href="./orders">Orders</a>
-              </li>
-              <li class="dashboard-nav-link">
-                <a href="./addresses">Address</a>
-              </li>
-              <li class="dashboard-nav-link">
-                <a href="./profile">My profile</a>
-              </li>
-              <li class="dashboard-nav-link logout">
-                <a href="#">Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <?php
+          include("includes/dashboard-navigation.php");
+        ?>
         <div class="dashboard-main-section">
           <div class="dashboard-main-container">
             <h1 class="dashboard-main-title">Dashboard</h1>

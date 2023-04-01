@@ -55,106 +55,11 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 </head>
 
 <body>
-    <div class="spinner-wrapper">
-        <div class="spinner-container">
-            <img src="../assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
-            <div class="spinner"></div>
-        </div>
-    </div>
-    <div class="cart-backdrop"></div>
-    <aside class="cart-menu">
-        <div class="close-container">
-            <i class="fa fa-times"></i>
-        </div>
-        <div class="cart-menu-items-container">
-            <div class="spinner-wrapper">
-                <div class="spinner-container">
-                    <img src="../assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
-                    <div class="spinner"></div>
-                </div>
-            </div>
-        </div>
-    </aside>
-    <header>
-        <div class="top-header">
-            <a href="../" class="logo-container">
-                <div class="logo-image-container">
-                    <img src="../assets/images/halfcarry-logo.jpeg" alt="Header Logo">
-                </div>
-            </a>
-
-            <nav class="navigation-menu">
-                <ul class="nav-links">
-                    <li class="nav-link-item">
-                        <a href="#">
-                            <i class="fa fa-money"></i>
-                            Purchases
-                        </a>
-                    </li>
-                    <li class="nav-link-item">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            Packages
-                        </a>
-                    </li>
-                    <li class="nav-link-item">
-                        <a href="#">
-                            <i class="fa fa-info"></i>
-                            Help
-                        </a>
-                    </li>
-                    <li class="nav-link-item cart-link">
-                        <a href="javascript:void(0)">
-                            <span class="cart-badge">0</span>
-                            <i class="fa fa-shopping-cart"></i>
-                            Cart
-                        </a>
-                    </li>
-                    <!-- <li class="nav-link-item">
-                        <div class="dark-mode-container">
-                            <span>Dark Mode</span>
-                            <img src="../assets/images/toggle-off.png" alt="toggle-off">
-                        </div>
-                    </li> -->
-                </ul>
-            </nav>
-        </div>
-        <div class="bottom-header">
-            <div class="categories-btn-container">
-                <a href="../all-products/?view-categories">Categories</a>
-            </div>
-            <div class="search-container">
-                <form class="search-box" action="../search/">
-                    <input type="text" name="q" placeholder="Search for an item" />
-                    <button type="submit" class="search-icon-btn">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </form>
-            </div>
-            <div class="other-links-container">
-                <div class="menu-container">
-                    <a href="javascript:void(0)"><i class="fa fa-user-o"></i> <?php echo ($inSession ?  explode(" ", $user_name)[0] : "Account") ?></a>
-                    <?php
-                    if (!$inSession) {
-                    ?>
-                        <ul class="menu">
-                            <li><a href="login">Sign In</a></li>
-                        </ul>
-                    <?php
-                    } else {
-                    ?>
-                        <ul class="menu">
-                            <li><a href="user/">Dashboard</a></li>
-                            <li><a href="user/orders">Orders</a></li>
-                            <li><a href="logout?rd=home">Log out</a></li>
-                        </ul>
-                    <?php
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-    </header>
+    <?php
+    include_once("../includes/cart.php");
+    include_once("../includes/savings-request-modal.php");
+    include_once("../includes/header.php");
+    ?>
     <main>
         <section class="product-section">
             <div class="product-section-container">
@@ -182,7 +87,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                 </div>
                 <div class="product-info">
                     <div class="breadcrumbs">
-                        <a href="../">Home</a> / <a href="../all-products/?category=<?php echo $product_details['category_name'] ?>"><?php echo $product_details['category_name'] ?></a> / <?php echo $product_details['name'] ?>
+                        <a href="../">Home</a> / <a href="../all-products/?category=<?php echo str_replace(" ", "", join("-", explode("&", $product_details['category_name']))) ?>"><?php echo $product_details['category_name'] ?></a> / <?php echo $product_details['name'] ?>
                     </div>
                     <h1 id="name-<?= $product_details['product_id'] ?>" data-name="<?= $product_details['name'] ?>" class="product-name">
                         <?php echo $product_details['name'] ?>
@@ -288,6 +193,30 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                     <h1>Choose your plan</h1>
                     <a href="../user/">Back to dashboard</a>
                 </header>
+                <!-- <div class="controls-container">
+                    <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
+                    <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
+                </div> -->
+                <div class="products-container">
+                    <div class="savings-product active">
+                        <div class="savings-product-image-container">
+                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam #1">
+                        </div>
+                        <div class="savings-product-details">
+                            <span class="savings-product-name">Web cam 2.0</span>
+                            <span class="savings-product-qty">Qty: 3</span>
+                        </div>
+                    </div>
+                    <div class="savings-product">
+                        <div class="savings-product-image-container">
+                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam #1">
+                        </div>
+                        <div class="savings-product-details">
+                            <span class="savings-product-name">Web cam 2.0</span>
+                            <span class="savings-product-qty">Qty: 3</span>
+                        </div>
+                    </div>
+                </div>
                 <form>
                     <div class="payment-plans">
                         <input type="radio" name="payment-plan" value="1" id="payment-plan-1" />
@@ -327,6 +256,15 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                             <div class="form-group animate">
                                 <select name="agent_id" id="agent_id">
                                     <option value="">Choose manager</option>
+                                    <?php
+                                    $sql_get_all_agents = $db->query("SELECT * FROM agents");
+
+                                    while ($agent_details = $sql_get_all_agents->fetch_assoc()) {
+                                    ?>
+                                        <option value="<?= $agent_details['agent_id'] ?>"><?= $agent_details['last_name'] . " " . $agent_details['first_name'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
                                 </select>
                                 <label for="agent_id">Select Relationship Manager</label>
                             </div>
@@ -357,6 +295,10 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     <!-- IZI TOAST SCRIPT -->
     <script src="../auth-library/vendor/dist/js/iziToast.min.js"></script>
     <script>
+        function displayActiveRequest() {
+            $(".savings-request-modal-wrapper").addClass("active");
+        }
+
         $(function() {
             const menuContainer = document.querySelector(".menu-container a");
             menuContainer.addEventListener("click", toggle);
@@ -591,8 +533,12 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                         }
                     }
                 });
-            }
 
+                // ACTIVE SAVINGS REQUEST MODAL EVENT
+                $(document).on("click", ".savings-request-modal .modal-header .close-container", function() {
+                    $(".savings-request-modal-wrapper").removeClass("active");
+                });
+            }
         });
     </script>
 </body>
