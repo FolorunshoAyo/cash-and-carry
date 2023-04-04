@@ -23,7 +23,7 @@ Auth::User("../login");
   <link rel="stylesheet" href="../assets/css/dashboard/user-dash/add-address.css" />
   <!-- DASHHBOARD MEDIA QUERIES -->
   <link rel="stylesheet" href="../assets/css/media-queries/user-dash-mediaqueries.css" />
-  <title>Add a new address - CDS</title>
+  <title>Add a new address - Halfcarry</title>
 </head>
 
 <body>
@@ -116,26 +116,26 @@ Auth::User("../login");
                   <select name="state" id="state">
                     <option value="">Choose State</option>
                     <?php
-                    $sql_states = $db->query("SELECT * FROM states");
+                    // $sql_states = $db->query("SELECT * FROM states");
 
-                    while ($state = $sql_states->fetch_assoc()) {
-                      if ($state['state_name'] === $address_details['address_state']) {
+                    // while ($state = $sql_states->fetch_assoc()) {
+                    //   if ($state['state_name'] === $address_details['address_state']) {
                     ?>
-                        <option selected><?php echo $state['state_name'] ?></option>
+                        <!-- <option selected><?php echo $state['state_name'] ?></option> -->
                       <?php
-                      } else {
+                      // } else {
                       ?>
-                        <option><?php echo $state['state_name'] ?></option>
+                        <!-- <option><?php echo $state['state_name'] ?></option> -->
                     <?php
-                      }
-                    }
+                    //   }
+                    // }
                     ?>
                   </select>
                   <label for="state">State</label>
                 </div>
               </div>
               <div class="submit-btn-container">
-                <button type="submit">Add address</button>
+                <button>Add address</button>
               </div>
             </form>
           </div>
@@ -195,11 +195,6 @@ Auth::User("../login");
         // GATHERING FORM DATA
         const formData = new FormData(form);
         formData.append("submit", true);
-
-
-        for (let [key, value] of formData.entries()) {
-          console.log(`${key}: ${value}`);
-        }
 
         //SENDING FORM DATA TO THE SERVER
         $.ajax({

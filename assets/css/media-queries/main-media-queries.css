@@ -625,6 +625,15 @@
     .cart-menu{
         width: 300px;
     }
+
+    .product .product-image-container{
+        width: 100px;
+        height: 100px;
+    }
+
+    .payment-plan-container .savings-product-image-container{
+        flex: 0 0 100px;
+    }
 }
 
 /* < 400px */
@@ -712,7 +721,6 @@
     }
 
     .payment-plan-container{
-        width: 350px;
         max-width: 350px;
         margin: 0 30px;
     }

@@ -301,7 +301,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
 }
 
 .savings-request-modal .savings-product-details .savings-product-name,

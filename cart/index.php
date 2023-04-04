@@ -39,6 +39,8 @@ if ($inSession) {
     <link rel="stylesheet" href="../auth-library/vendor/dist/css/iziToast.min.css">
     <!-- BASE CSS -->
     <link rel="stylesheet" href="../assets/css/base.css" />
+    <!-- CUSTOM FORMS CSS -->
+    <link rel="stylesheet" href="../assets/css/form.css" />
     <!-- CUSTOM CSS (HOME) -->
     <link rel="stylesheet" href="../assets/css/index.css" type="text/css" />
     <!-- PRODUCT PAGE CSS -->
@@ -132,7 +134,7 @@ if ($inSession) {
                             </a>
                         </div>
                         <div>
-                            <a href="#" class="btn">Proceed to checkout</a>
+                            <a href="../checkout/" class="btn">Proceed to checkout</a>
                             <button class="btn">Start Saving</button>
                         </div>
                     </div>
@@ -142,6 +144,97 @@ if ($inSession) {
                 ?>
             </div>
         </section>
+        <div class="payment-plan-wrapper">
+            <section class="payment-plan-container">
+                <header>
+                    <h1>Choose your plan</h1>
+                    <a href="../user/">Back to dashboard</a>
+                </header>
+                <!-- <div class="controls-container">
+                    <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
+                    <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
+                </div> -->
+                <div class="products-container">
+                    <div class="savings-product active">
+                        <div class="savings-product-image-container">
+                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam #1">
+                        </div>
+                        <div class="savings-product-details">
+                            <span class="savings-product-name">Web cam 2.0</span>
+                            <span class="savings-product-qty">Qty: 3</span>
+                        </div>
+                    </div>
+                    <div class="savings-product">
+                        <div class="savings-product-image-container">
+                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam #1">
+                        </div>
+                        <div class="savings-product-details">
+                            <span class="savings-product-name">Web cam 2.0</span>
+                            <span class="savings-product-qty">Qty: 3</span>
+                        </div>
+                    </div>
+                </div>
+                <form>
+                    <div class="payment-plans">
+                        <input type="radio" name="payment-plan" value="1" id="payment-plan-1" />
+                        <label for="payment-plan-1" class="payment-plan">
+                            <div class="radio-container">
+                                <div class="custom-radio"></div>
+                            </div>
+                            <div class="payment-plan-info">
+                                <h3>Daily payment</h3>
+                                <p>Save daily to aquire this product</p>
+                                <p><sup>₦</sup> <span> 100.00 </span><sub>/day</sub></p>
+                            </div>
+                        </label>
+                        <input type="radio" name="payment-plan" value="2" id="payment-plan-2" />
+                        <label for="payment-plan-2" class="payment-plan">
+                            <div class="radio-container">
+                                <div class="custom-radio"></div>
+                            </div>
+                            <div class="payment-plan-info">
+                                <h3>Weekly payment</h3>
+                                <p>Save weekly to aquire this product</p>
+                                <p><sup>₦</sup> <span> 900.00 </span><sub>/week</sub></p>
+                            </div>
+                        </label>
+                        <input type="radio" name="payment-plan" value="3" id="payment-plan-3" />
+                        <label for="payment-plan-3" class="payment-plan">
+                            <div class="radio-container">
+                                <div class="custom-radio"></div>
+                            </div>
+                            <div class="payment-plan-info">
+                                <h3>Monthly payment</h3>
+                                <p>Save monthly to aquire this product</p>
+                                <p><sup>₦</sup> <span> 400 </span><sub>/month</sub></p>
+                            </div>
+                        </label>
+                        <div class="form-group-container">
+                            <div class="form-group animate">
+                                <select name="agent_id" id="agent_id">
+                                    <option value="">Choose manager</option>
+                                    <?php
+                                    $sql_get_all_agents = $db->query("SELECT * FROM agents");
+
+                                    while ($agent_details = $sql_get_all_agents->fetch_assoc()) {
+                                    ?>
+                                        <option value="<?= $agent_details['agent_id'] ?>"><?= $agent_details['last_name'] . " " . $agent_details['first_name'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                                <label for="agent_id">Select Relationship Manager</label>
+                            </div>
+                        </div>
+                        <div class="payment-action-btns">
+                            <button class="btn" type="submit">Proceed</button>
+                            <a href="javascript:void(0)">close</a>
+                        </div>
+                    </div>
+
+                </form>
+            </section>
+        </div>
     </main>
     <?php
     include("../includes/footer.php");
@@ -165,6 +258,7 @@ if ($inSession) {
             const cartBackdrop = document.querySelector(".cart-backdrop");
             const cartMenu = document.querySelector(".cart-menu");
             const cartClose = document.querySelector(".close-container i");
+            const $paymentPlanDialogCloseBtn = $(".payment-action-btns a");
 
             cartBtn.addEventListener("click", function() {
                 cartMenu.classList.toggle("active");
@@ -201,6 +295,45 @@ if ($inSession) {
             window.onclick = function(event) {
                 closeAll.call(event.target);
             };
+
+            $paymentPlanDialogCloseBtn.on("click", function() {
+                $(".payment-plan-wrapper").toggleClass("active");
+            });
+
+            <?php
+            if ($inSession) {
+            ?>
+
+                $(".cart-action-btn-container button.btn").on("click", function() {
+                    $(".payment-plan-wrapper").addClass("active");
+                });
+
+            <?php
+            } else {
+            ?>
+
+                $(".cart-action-btn-container .btn").on("click", function() {
+                    // ALERT ADMIN
+                    Swal.fire({
+                        title: "Savings Error",
+                        icon: "error",
+                        text: "You need to login to use this action.",
+                        showCancelButton: true,
+                        confirmButtonText: 'Login',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: '#2366B5',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // REDIRECT USER TO LOGIN PAGE
+                            location.replace("./login");
+                        }
+                    });
+                });
+
+            <?php
+            }
+            ?>
 
             load_cart_data();
 
