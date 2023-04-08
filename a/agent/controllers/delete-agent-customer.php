@@ -17,7 +17,7 @@
             $sql_delete_customer_details = $db->query("DELETE FROM agent_customers WHERE agent_customer_id='$cid' AND agent_id='$aid'");
 
             if($sql_delete_customer_details){
-                echo json_encode(array('success' => 1))
+                echo json_encode(array('success' => 1));
             }
         }
     }else{
