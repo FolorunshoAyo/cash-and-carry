@@ -541,7 +541,7 @@ if ($inSession) {
             let requestProductCount = 1;
             $(document).on("click", ".savings-request-modal .controls-container button", function() {
                 const btnClicked = $(this).attr("data-direction");
-                const savingsProducts = $(".savings-request-modal .products-container .product");
+                const savingsProducts = $(".savings-request-modal .products-container .savings-product");
 
                 if (btnClicked === "next") {
                     savingsProducts.each(function() {

@@ -25,6 +25,7 @@ header{
 
 .form-logo-img-container{
     flex: 0 0 80px;
+    height: 35px;
     margin-right: 5px;
 }
 

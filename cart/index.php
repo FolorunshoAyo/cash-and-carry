@@ -178,7 +178,7 @@ if ($inSession) {
                             $product_price = $product_details['price'];
 
                             array_push($productMonths, $product_savings_duration);
-                            array_push($productPrices, $product_price);
+                            array_push($productPrices, ($product_price * $values['product_quantity']));
 
                             if ($key == 0) {
                         ?>
@@ -302,6 +302,8 @@ if ($inSession) {
     <script src="../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- SLICK SLIDER SCRIPT -->
     <script src="../assets/js/slick/slick.js"></script>
+    <!-- SWEET ALERT SCRIPT -->
+    <script src="../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- IZI TOAST SCRIPT -->
     <script src="../auth-library/vendor/dist/js/iziToast.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
@@ -378,7 +380,7 @@ if ($inSession) {
             if ($inSession) {
             ?>
 
-                $(".cart-action-btn-container button.btn").on("click", function() {
+                $(document).on("click", ".cart-action-btn-container button.btn", function() {
                     const formData = new FormData();
 
                     formData.append("submit", true);
@@ -406,7 +408,7 @@ if ($inSession) {
             } else {
             ?>
 
-                $(".cart-action-btn-container .btn").on("click", function() {
+                $(document).on("click", ".cart-action-btn-container .btn", function() {
                     // ALERT ADMIN
                     Swal.fire({
                         title: "Savings Error",
@@ -420,7 +422,7 @@ if ($inSession) {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // REDIRECT USER TO LOGIN PAGE
-                            location.replace("./login");
+                            location.replace("../login");
                         }
                     });
                 });

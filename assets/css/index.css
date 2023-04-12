@@ -1316,6 +1316,7 @@ figcaption .payment-plans .product-badge.month{
 
 .footer-logo-container .footer-logo-image-container{
     flex: 0 0 100px;
+    height: 45px;
     /* margin-right: 10px; */
 }
 

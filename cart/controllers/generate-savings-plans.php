@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
              $product_price = $product_details['price'];
 
             array_push($productMonths, $product_savings_duration);
-            array_push($productPrices, $product_price);
+            array_push($productPrices, ($product_price * $values['product_quantity']));
 
             if ($key == 0) {
                 $output .= '<div class="savings-product active">
