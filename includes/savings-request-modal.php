@@ -1,5 +1,5 @@
-<?php 
-    $url = strval($url);
+<?php
+$url = strval($url);
 ?>
 <div class="savings-request-modal-wrapper">
     <div class="savings-request-modal">
@@ -65,7 +65,7 @@
                     Amount to save:
                 </span>
                 <span class="savings-value">
-                    NGN 30,000.00
+                    ₦30,000.00
                 </span>
             </li>
             <li class="savings-info-block">

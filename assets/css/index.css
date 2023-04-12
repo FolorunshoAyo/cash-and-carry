@@ -259,6 +259,7 @@
 .savings-request-modal .controls-container button:disabled,
 .payment-plan-container .controls-container button:disabled{
     opacity: .7;
+    cursor: default;
 }
 
 .savings-request-modal .controls-container button:not(:last-child),
@@ -297,7 +298,8 @@
 }
 
 .savings-request-modal .savings-product-details,
-.payment-plan-container .savings-product-details{
+.payment-plan-container .savings-product-details
+{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -383,7 +385,7 @@
     color: var(--primary-color);
   }
 
-  .payment-plans > label{
+  .payment-plans #required-radio-container > label{
     display: block;
     padding: 2.5rem 2rem;
     display: flex;
@@ -437,12 +439,17 @@
     font-size: 2rem;
   }
 
-  .payment-plans label:not(:last-child){
+  .payment-plans label{
     margin-bottom: 20px;
   }
 
   .payment-plans input{
     display: none;
+  }
+
+  .payment-plans #required-radio-container .just-validate-error-label{
+    position: static;
+    margin: -10px 0 10px 0;
   }
 
   .payment-action-btns .btn{

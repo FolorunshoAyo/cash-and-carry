@@ -17,7 +17,7 @@ $file_name = end($page_info);
             <li class="nav-link-item <?= ($file_name === "index.php")? 'active' : ''?>">
                 <a href="./" class="nav-link"> Dashboard </a>
             </li>
-            <li class="nav-link-item <?= ($file_name === "savings.php") || ($file_name === "active_savings.php")? 'active' : ''?>">
+            <li class="nav-link-item <?= ($file_name === "savings.php") || ($file_name === "wallet.php") || ($file_name === "savings-request.php") || ($file_name === "active_savings.php")? 'active' : ''?>">
                 <a href="./savings" class="nav-link"> Savings </a>
             </li>
             <li class="nav-link-item <?= ($file_name === "order_details.php") || ($file_name === "orders.php")? 'active' : ''?>">

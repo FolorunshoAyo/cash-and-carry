@@ -59,7 +59,7 @@
     }
 
     .dashboard-main-container{
-        margin: 5rem 0 0;
+        margin: 3rem 0 0;
         position: static;
         width: 100%;
         transform: none;
@@ -98,7 +98,7 @@
     }
 
     .dashboard-main-section{
-        padding: 0 3rem;
+        padding: 0 1rem;
     }
 
     .items-table-container{
@@ -167,6 +167,22 @@
     .see-details-container{
         bottom: 5px;
     }
+
+    .list-items-container .savings-card{
+        margin-inline: 10px;
+    }
+
+    .savings-card .savings-icon-container{
+        flex: 0 0 60px;
+    }
+
+    .savings-card .savings-target-price{
+        font-size: 12px;
+    }
+
+    .savings-card .savings-amount{
+        font-size: 12px;
+    }
 }
 
 /* < 400px */
@@ -205,6 +221,7 @@
     }
 }
 
+/* < 300px */
 @media only screen and (max-width: 18.75em){
     .order-container{
         padding: 1.2rem 0.5rem;

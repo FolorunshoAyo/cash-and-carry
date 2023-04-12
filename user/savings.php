@@ -15,12 +15,14 @@ $user_name = $_SESSION['user_name'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
-  <!-- DATATABLES CSS -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css" />
+  <!-- PAGINATE CSS -->
+  <link rel="stylesheet" href="../assets/css/jquery.paginate.css">
   <!-- Custom Fonts (Inter) -->
   <link rel="stylesheet" href="../assets/fonts/fonts.css" />
   <!-- BASE CSS -->
   <link rel="stylesheet" href="../assets/css/base.css" />
+  <!-- CUSTOM PAGINATE CSS -->
+  <link rel="stylesheet" href="../assets/css/custom-paginate.css">
   <!-- DASHBOARD MENU CSS -->
   <link rel="stylesheet" href="../assets/css/dashboard/user-dash-menu.css" />
   <!-- ITEMS PAGE STYLESHEET -->
@@ -69,118 +71,208 @@ $user_name = $_SESSION['user_name'];
           <h1 class="dashboard-main-title">Savings</h1>
 
           <div class="tabs-container">
-            <div class="tab-link-container">
-              <a href="javascript:void()" class="active">Active</a>
+            <div class="tab-link-container" data-tab="1">
+              <a href="javascript:void(0)" class="active">Active</a>
             </div>
-            <div class="tab-link-container">
-              <a href="javascript:void()">Requests</a>
+            <div class="tab-link-container" data-tab="2">
+              <a href="javascript:void(0)">Requests</a>
             </div>
           </div>
-          <div class="tab-container" id="tab-1">
-            <div class="items-table-container">
-              <table id="active-wallets-table">
-                <thead>
-                  <tr>
-                    <th>S/N</th>
-                    <th>Products</th>
-                    <th>Current Balance</th>
-                    <th>Target</th>
-                    <th>Saved For</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>#239</td>
-                    <td>
-                      <div class="item-name-container">
-                        <i class="fa fa-product-hunt"></i>
-                        Nikon Dsir, Refrigerator, TV
-                      </div>
-                    </td>
-                    <td>NGN 3,000</td>
-                    <td>NGN 250,000</td>
-                    <td>3 days</td>
-                    <td>
-                      <div class="action-container">
-                        <button class="details-btn">View Wallet</button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>#239</td>
-                    <td>
-                      <div class="item-name-container">
-                        <i class="fa fa-product-hunt"></i>
-                        Nikon Dsir, Refrigerator, TV
-                      </div>
-                    </td>
-                    <td>NGN 3,000</td>
-                    <td>NGN 250,000</td>
-                    <td>3 days</td>
-                    <td>
-                      <div class="action-container">
-                        <button class="details-btn">View Wallet</button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+          <div class="tab-container active" id="tab-1">
+            <!-- <p>No active wallets</p> -->
+            <div class="list-items-container active-wallets">
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-archive"></i>
+                </div>
+                <div class="savings-info-wrapper">
+                  <div class="savings-info-container">
+                    <a href="#" class="savings-request-id">#23456789</a>
+                    <span class="savings-days">13 days left</span>
+                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  </div>
+                  <span class="savings-amount">
+                    NGN 400,000
+                  </span>
+                  <div class="savings-progress-thumb">
+                    <div class="progress-pill" style="width: 33.33%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-archive"></i>
+                </div>
+                <div class="savings-info-wrapper">
+                  <div class="savings-info-container">
+                    <a href="#" class="savings-request-id">#23456789</a>
+                    <span class="savings-days">13 days left</span>
+                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  </div>
+                  <span class="savings-amount">
+                    NGN 400,000
+                  </span>
+                  <div class="savings-progress-thumb">
+                    <div class="progress-pill" style="width: 33.33%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-archive"></i>
+                </div>
+                <div class="savings-info-wrapper">
+                  <div class="savings-info-container">
+                    <a href="#" class="savings-request-id">#23456789</a>
+                    <span class="savings-days">13 days left</span>
+                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  </div>
+                  <span class="savings-amount">
+                    NGN 400,000
+                  </span>
+                  <div class="savings-progress-thumb">
+                    <div class="progress-pill" style="width: 33.33%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-archive"></i>
+                </div>
+                <div class="savings-info-wrapper">
+                  <div class="savings-info-container">
+                    <a href="#" class="savings-request-id">#23456789</a>
+                    <span class="savings-days">13 days left</span>
+                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  </div>
+                  <span class="savings-amount">
+                    NGN 400,000
+                  </span>
+                  <div class="savings-progress-thumb">
+                    <div class="progress-pill" style="width: 33.33%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-archive"></i>
+                </div>
+                <div class="savings-info-wrapper">
+                  <div class="savings-info-container">
+                    <a href="#" class="savings-request-id">#23456789</a>
+                    <span class="savings-days">13 days left</span>
+                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  </div>
+                  <span class="savings-amount">
+                    NGN 400,000
+                  </span>
+                  <div class="savings-progress-thumb">
+                    <div class="progress-pill" style="width: 33.33%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-archive"></i>
+                </div>
+                <div class="savings-info-wrapper">
+                  <div class="savings-info-container">
+                    <a href="#" class="savings-request-id">#23456789</a>
+                    <span class="savings-days">13 days left</span>
+                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  </div>
+                  <span class="savings-amount">
+                    NGN 400,000
+                  </span>
+                  <div class="savings-progress-thumb">
+                    <div class="progress-pill" style="width: 33.33%;"></div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <!-- <div class="view-btn-container">
-              <button class="view-savings-btn">View Savings Plan</button>
-            </div> -->
           </div>
-          <div class="tab-container" id="tab-2" style="display: none;">
-            <div class="items-table-container">
-              <table id="requests-table">
-                <thead>
-                  <tr>
-                    <th>Savings ID</th>
-                    <th>Products</th>
-                    <th>Quantity</th>
-                    <th>Status</th>
-                    <th>Amount to save</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>#2001</td>
-                    <td>
-                      <div class="item-name-container">
-                        <i class="fa fa-product-hunt"></i>
-                        Nikon Dsir, Refrigerator, TV
-                      </div>
-                    </td>
-                    <td>Active</td>
-                    <td>1, 3, 2</td>
-                    <td>NGN 250,000</td>
-                    <td>
-                      <div class="action-container">
-                        <button class="details-btn">View Details</button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>#2001</td>
-                    <td>
-                      <div class="item-name-container">
-                        <i class="fa fa-product-hunt"></i>
-                        Nikon Dsir, Refrigerator, TV
-                      </div>
-                    </td>
-                    <td>Active</td>
-                    <td>1, 3, 2</td>
-                    <td>NGN 250,000</td>
-                    <td>
-                      <div class="action-container">
-                        <button class="details-btn">View Details</button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+          <div class="tab-container" id="tab-2">
+            <!-- <p>No active requests</p> -->
+            <div class="list-items-container savings-requests__paginated">
+              <!-- REQUESTS HERE -->
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-handshake-o"></i>
+                </div>
+                <div class="savings-request-info-container">
+                  <a href="#" class="savings-request-id">#23456789</a>
+                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
+                </div>
+                <div class="savings-target-price">
+                  NGN 2,300,000
+                </div>
+              </div>
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-handshake-o"></i>
+                </div>
+                <div class="savings-request-info-container">
+                  <a href="#" class="savings-request-id">#23456789</a>
+                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
+                </div>
+                <div class="savings-target-price">
+                  NGN 2,300,000
+                </div>
+              </div>
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-handshake-o"></i>
+                </div>
+                <div class="savings-request-info-container">
+                  <a href="#" class="savings-request-id">#23456789</a>
+                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
+                </div>
+                <div class="savings-target-price">
+                  NGN 2,300,000
+                </div>
+              </div>
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-handshake-o"></i>
+                </div>
+                <div class="savings-request-info-container">
+                  <a href="#" class="savings-request-id">#23456789</a>
+                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
+                </div>
+                <div class="savings-target-price">
+                  NGN 2,300,000
+                </div>
+              </div>
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-handshake-o"></i>
+                </div>
+                <div class="savings-request-info-container">
+                  <a href="#" class="savings-request-id">#23456789</a>
+                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
+                </div>
+                <div class="savings-target-price">
+                  NGN 2,300,000
+                </div>
+              </div>
+              <div class="savings-card">
+                <div class="savings-icon-container">
+                  <i class="fa fa-handshake-o"></i>
+                </div>
+                <div class="savings-request-info-container">
+                  <a href="#" class="savings-request-id">#23456789</a>
+                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
+                </div>
+                <div class="savings-target-price">
+                  NGN 2,300,000
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -196,18 +288,42 @@ $user_name = $_SESSION['user_name'];
   <script src="../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
   <!-- JAVASCRIPT BUNDLER WITH POPPER -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
-  <!-- DATATABLES JAVASCRIPT -->
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+  <!-- JQUERY PAGINATE -->
+  <script src="../assets/js/jquery.paginate.js"></script>
   <!-- CUSTOM DASHBOARD SCRIPT -->
   <script src="../assets/js/user-dash.js"></script>
   <script>
     $(function() {
-      $("#requests-table").DataTable({
-        "pageLength": 4,
+
+      $(".list-items-container.active-wallets__paginated").paginate({
+        scope: $(".savings-card"),
+        paginatePosition: ['bottom'],
+        perPage: 10
       });
 
-      $("#active-wallets-table").DataTable({
-        "pageLength": 4,
+      $(".list-items-container.savings-requests__paginated").paginate({
+        scope: $(".savings-card"),
+        paginatePosition: ['bottom'],
+        perPage: 10
+      });
+
+      $(document).on("click", ".tab-link-container", function() {
+        $(this).on("click", function() {
+          const tabNo = $(this).attr("data-tab");
+
+          // REMOVE ALL ACTIVE TABS
+          $(".tab-link-container a").each(function() {
+            $(this).removeClass("active");
+          });
+
+          $(".tab-container").each(function() {
+            $(this).removeClass("active");
+          });
+
+          $(`.tab-link-container[data-tab="${tabNo}"] a`).addClass("active");
+          $(`#tab-${tabNo}`).addClass("active");
+
+        });
       });
     });
   </script>

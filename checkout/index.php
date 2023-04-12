@@ -51,7 +51,7 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
             <h1>Confirm & Order</h1>
         </div>
         <div class="cancel-container">
-            <a href="./cart">
+            <a href="../cart/">
                 <i class="fa fa-times"></i>
             </a>
         </div>

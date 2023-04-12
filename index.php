@@ -41,9 +41,9 @@ if ($inSession) {
 
 <body>
     <?php
-        include_once("includes/cart.php");
-        include_once("includes/savings-request-modal.php");
-        include_once("includes/header.php");
+    include_once("includes/cart.php");
+    include_once("includes/savings-request-modal.php");
+    include_once("includes/header.php");
     ?>
     <main>
         <section class="categories-section">
@@ -538,8 +538,8 @@ if ($inSession) {
 
 
             // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
-            let productCount = 1;
-            $(document).on("click", ".controls-container button", function() {
+            let requestProductCount = 1;
+            $(document).on("click", ".savings-request-modal .controls-container button", function() {
                 const btnClicked = $(this).attr("data-direction");
                 const savingsProducts = $(".savings-request-modal .products-container .product");
 
@@ -548,27 +548,27 @@ if ($inSession) {
                         $(this).removeClass("active");
                     });
 
-                    productCount++;
+                    requestProductCount++;
 
-                    ($(savingsProducts[productCount - 1]).addClass("active"));
+                    ($(savingsProducts[requestProductCount - 1]).addClass("active"));
                 } else {
                     savingsProducts.each(function() {
                         $(this).removeClass("active");
                     });
 
-                    productCount--;
+                    requestProductCount--;
 
-                    ($(savingsProducts[productCount - 1]).addClass("active"));
+                    ($(savingsProducts[requestProductCount - 1]).addClass("active"));
                 }
 
-                if (productCount === 1) {
-                    $(".controls-container button[data-direction = 'prev']").attr("disabled", true);
-                    $(".controls-container button[data-direction = 'next']").attr("disabled", false);
+                if (requestProductCount === 1) {
+                    $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", true);
+                    $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", false);
                 }
 
-                if (productCount === savingsProducts.length) {
-                    $(".controls-container button[data-direction = 'next']").attr("disabled", true);
-                    $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+                if (requestProductCount === savingsProducts.length) {
+                    $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", true);
+                    $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", false);
                 }
             });
 

@@ -98,7 +98,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                         </span>
                     </div>
                     <?php
-                    $product_interest_amount = (30 / 100) * $product_details['price'];
+                    $product_interest_amount = (20 / 100) * $product_details['price'];
 
                     $product_installment_price = $product_details['price'] + $product_interest_amount;
 
@@ -109,9 +109,9 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                     $productCalculatedMonths = $productCalculatedPeriods['months'];
                     ?>
                     <div class="product-info-group">
-                        <span class="product-badge">Pay ₦<?php echo number_format(($product_installment_price / $productCalculatedDays), 2) ?> daily (<?= $productCalculatedPeriods['days'] ?> days)</span>
-                        <span class="product-badge">Pay ₦<?php echo number_format(($product_installment_price / $productCalculatedWeeks), 2) ?> per week (<?= $productCalculatedPeriods['weeks'] ?> weeks)</span>
-                        <span class="product-badge">Pay ₦<?php echo number_format(($product_installment_price / $productCalculatedMonths), 2) ?> per month (<?= $productCalculatedPeriods['months'] ?> months)</span>
+                        <span class="product-badge">Pay ₦<span><?php echo number_format(($product_installment_price / $productCalculatedDays), 2) ?></span> daily (<?= $productCalculatedPeriods['days'] ?> days)</span>
+                        <span class="product-badge">Pay ₦<span><?php echo number_format(($product_installment_price / $productCalculatedWeeks), 2) ?></span> per week (<?= $productCalculatedPeriods['weeks'] ?> weeks)</span>
+                        <span class="product-badge">Pay ₦<span><?php echo number_format(($product_installment_price / $productCalculatedMonths), 2) ?></span> per month (<?= $productCalculatedPeriods['months'] ?> months)</span>
                     </div>
                     <div class="product-info-group">
                         <div class="product-details">
@@ -144,7 +144,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                         <?php
                         while ($related_product = $sql_get_related_products->fetch_assoc()) {
 
-                            $interest_amount = (30 / 100) * $related_product['price'];
+                            $interest_amount = (20 / 100) * $related_product['price'];
 
                             $installment_price = $related_product['price'] + $interest_amount;
 
@@ -193,65 +193,57 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                     <h1>Choose your plan</h1>
                     <a href="../user/">Back to dashboard</a>
                 </header>
-                <!-- <div class="controls-container">
-                    <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
-                    <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
-                </div> -->
                 <div class="products-container">
                     <div class="savings-product active">
                         <div class="savings-product-image-container">
-                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam #1">
+                            <?php
+                            $picture = explode(",", $product_details['pictures'])[0];
+                            ?>
+                            <img src="<?= $url . "a/admin/images/" . $picture ?>" alt="<?= $product_details['name'] ?>">
                         </div>
                         <div class="savings-product-details">
-                            <span class="savings-product-name">Web cam 2.0</span>
-                            <span class="savings-product-qty">Qty: 3</span>
-                        </div>
-                    </div>
-                    <div class="savings-product">
-                        <div class="savings-product-image-container">
-                            <img src="../assets/images/web-cam-1.jpg" alt="Web cam #1">
-                        </div>
-                        <div class="savings-product-details">
-                            <span class="savings-product-name">Web cam 2.0</span>
+                            <span class="savings-product-name"> <?= $product_details['name'] ?> </span>
                             <span class="savings-product-qty">Qty: 3</span>
                         </div>
                     </div>
                 </div>
-                <form>
+                <form id="savings-form">
                     <div class="payment-plans">
-                        <input type="radio" name="payment-plan" value="1" id="payment-plan-1" />
-                        <label for="payment-plan-1" class="payment-plan">
-                            <div class="radio-container">
-                                <div class="custom-radio"></div>
-                            </div>
-                            <div class="payment-plan-info">
-                                <h3>Daily payment</h3>
-                                <p>Save daily to aquire this product</p>
-                                <p><sup>₦</sup> <span><?php echo number_format(($product_installment_price / $productCalculatedDays), 2) ?></span><sub>/day</sub></p>
-                            </div>
-                        </label>
-                        <input type="radio" name="payment-plan" value="2" id="payment-plan-2" />
-                        <label for="payment-plan-2" class="payment-plan">
-                            <div class="radio-container">
-                                <div class="custom-radio"></div>
-                            </div>
-                            <div class="payment-plan-info">
-                                <h3>Weekly payment</h3>
-                                <p>Save weekly to aquire this product</p>
-                                <p><sup>₦</sup> <span><?php echo number_format(($product_installment_price / $productCalculatedWeeks), 2) ?></span><sub>/week</sub></p>
-                            </div>
-                        </label>
-                        <input type="radio" name="payment-plan" value="3" id="payment-plan-3" />
-                        <label for="payment-plan-3" class="payment-plan">
-                            <div class="radio-container">
-                                <div class="custom-radio"></div>
-                            </div>
-                            <div class="payment-plan-info">
-                                <h3>Monthly payment</h3>
-                                <p>Save monthly to aquire this product</p>
-                                <p><sup>₦</sup> <span><?php echo number_format(($product_installment_price / $productCalculatedMonths), 2) ?></span><sub>/month</sub></p>
-                            </div>
-                        </label>
+                        <div id="required-radio-container">
+                            <input type="radio" name="payment-plan" value="1" id="payment-plan-1" />
+                            <label for="payment-plan-1" class="payment-plan">
+                                <div class="radio-container">
+                                    <div class="custom-radio"></div>
+                                </div>
+                                <div class="payment-plan-info">
+                                    <h3>Daily payment</h3>
+                                    <p>Save daily to aquire this product</p>
+                                    <p><sup>₦</sup> <span><?php echo number_format(($product_installment_price / $productCalculatedDays), 2) ?></span><sub>/day</sub></p>
+                                </div>
+                            </label>
+                            <input type="radio" name="payment-plan" value="2" id="payment-plan-2" />
+                            <label for="payment-plan-2" class="payment-plan">
+                                <div class="radio-container">
+                                    <div class="custom-radio"></div>
+                                </div>
+                                <div class="payment-plan-info">
+                                    <h3>Weekly payment</h3>
+                                    <p>Save weekly to aquire this product</p>
+                                    <p><sup>₦</sup> <span><?php echo number_format(($product_installment_price / $productCalculatedWeeks), 2) ?></span><sub>/week</sub></p>
+                                </div>
+                            </label>
+                            <input type="radio" name="payment-plan" value="3" id="payment-plan-3" />
+                            <label for="payment-plan-3" class="payment-plan">
+                                <div class="radio-container">
+                                    <div class="custom-radio"></div>
+                                </div>
+                                <div class="payment-plan-info">
+                                    <h3>Monthly payment</h3>
+                                    <p>Save monthly to aquire this product</p>
+                                    <p><sup>₦</sup> <span><?php echo number_format(($product_installment_price / $productCalculatedMonths), 2) ?></span><sub>/month</sub></p>
+                                </div>
+                            </label>
+                        </div>
                         <div class="form-group-container">
                             <div class="form-group animate">
                                 <select name="agent_id" id="agent_id">
@@ -294,7 +286,23 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     <script src="../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- IZI TOAST SCRIPT -->
     <script src="../auth-library/vendor/dist/js/iziToast.min.js"></script>
+    <!-- JUST VALIDATE LIBRARY -->
+    <script src="../assets/js/just-validate/just-validate.js"></script>
     <script>
+        const validation = new JustValidate("#savings-form", {
+            errorFieldCssClass: "is-invalid",
+        });
+
+        validation
+            .addRequiredGroup("#required-radio-container", "Please select an option")
+            .addField("#agent_id", [{
+                rule: "required",
+                errorMessage: "Field is required",
+            }])
+            .onSuccess((event) => {
+                console.log(event);
+            });
+
         function displayActiveRequest() {
             $(".savings-request-modal-wrapper").addClass("active");
         }
@@ -356,7 +364,33 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
             ?>
 
                 $(".buy-options-container button:nth-of-type(2)").on("click", function() {
+                    /* UPDATE ALL SAVINGS AMOUNT BEFORE MODAL DISPLAY
+                       =========================================
+                    */
+                    // SHOWING SELECTED QUANTITY IN MODAL
+                    const selectedQuantiiy = Number($(".product-info-group.amount-block #amount").val());
+                    const savingsPrices = [];
+
+                    if (!selectedQuantiiy) return;
+
+                    $(".product-badge span").each(function() {
+                        savingsPrices.push(Number($(this).text().trim().replace(/,/g, "")));
+                    });
+
+                    $(".savings-product-qty").html(`Qty: ${selectedQuantiiy}`);
+
+                    $(".payment-plans .payment-plan-info span").each(function(index) {
+                        const paymentOptionPrice = savingsPrices[index];
+
+                        const result = paymentOptionPrice * selectedQuantiiy;
+
+                        $(this).text(result.toLocaleString("en-US"));
+                    });
+
                     $(".payment-plan-wrapper").addClass("active");
+                    /* 
+                       =========================================
+                    */
                 })
 
             <?php
@@ -377,7 +411,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // REDIRECT USER TO LOGIN PAGE
-                            location.replace("./login");
+                            location.replace("../login");
                         }
                     });
                 });
@@ -405,6 +439,8 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                 var action = "add";
 
                 var add_to_cart_btn = $(this);
+
+                if (!product_quantity) return;
 
                 if (product_quantity > 0) {
                     $.ajax({
@@ -531,6 +567,40 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                             $('.cart-menu-items-container').html(data.cart_details);
                             $('.cart-badge').text(data.total_item);
                         }
+                    }
+                });
+                // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
+                let requestProductCount = 1;
+                $(document).on("click", ".savings-request-modal .controls-container button", function() {
+                    const btnClicked = $(this).attr("data-direction");
+                    const savingsProducts = $(".savings-request-modal .products-container .savings-product");
+
+                    if (btnClicked === "next") {
+                        savingsProducts.each(function() {
+                            $(this).removeClass("active");
+                        });
+
+                        requestProductCount++;
+
+                        ($(savingsProducts[requestProductCount - 1]).addClass("active"));
+                    } else {
+                        savingsProducts.each(function() {
+                            $(this).removeClass("active");
+                        });
+
+                        requestProductCount--;
+
+                        ($(savingsProducts[requestProductCount - 1]).addClass("active"));
+                    }
+
+                    if (requestProductCount === 1) {
+                        $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", true);
+                        $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", false);
+                    }
+
+                    if (requestProductCount === savingsProducts.length) {
+                        $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", true);
+                        $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", false);
                     }
                 });
 

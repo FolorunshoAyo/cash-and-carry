@@ -12,7 +12,7 @@ $file_name = end($page_info);
         </div>
         <a href="./" class="logo">
             <i class="fa fa-home"></i>
-            <span> CODEWEB STORE </span>
+            <span> Halfcarry Admin </span>
         </a>
     </div>
     <ul class="side-menu" id="side-menu">

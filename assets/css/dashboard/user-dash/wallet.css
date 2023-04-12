@@ -1,0 +1,189 @@
+.dashboard-main-container .controls-container button{
+    padding: 0.5rem 1rem;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    border: none;
+    color: var(--white);
+    background-color: var(--primary-color);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.dashboard-main-container .controls-container button:disabled{
+    opacity: .7;
+    cursor: default;
+}
+
+.dashboard-main-container .controls-container button:not(:last-child){
+    margin-right: 5px;
+}
+
+.dashboard-main-container .products-container{
+    margin: 15px 0;
+}
+
+.dashboard-main-container .savings-product{
+    padding: 1rem 2rem;
+    display: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.dashboard-main-container .savings-product.active{
+    display: flex;
+}
+
+.dashboard-main-container .savings-product-image-container{
+    flex: 0 0 150px;
+    margin-right: 10px;
+}
+
+.dashboard-main-container .savings-product-image-container img{
+    max-width: 100%;
+}
+
+.dashboard-main-container .savings-product-details
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 1.5rem;
+}
+
+.dashboard-main-container .savings-product-details .savings-product-name{
+    color: var(--primary-color);
+}
+
+.wallet-card{
+    margin-top: 150px;
+    background-color: var(--white);
+    border-radius: 10px 10px 0 0;
+    padding: 1rem 2rem;
+}
+
+.wallet-card .wallet-header{
+    margin-top: -100px;
+    text-align: center;
+}
+
+.wallet-card .wallet-header .wallet-icon-container{
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: var(--primary-color);
+    background-color: #fdeee7;
+}
+
+.wallet-card .wallet-header .wallet-balance-container{
+    margin-top: 20px;
+    font-size: 3rem;
+    color: var(--primary-color);
+}
+
+.wallet-card .wallet-progress{
+    margin: 50px 0;
+}
+
+.wallet-card .wallet-progress .progress-top{
+    color: var(--grey);
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    padding: 0 1rem;
+    align-items: center;
+}
+
+.wallet-card .wallet-progress .progress-thumb{
+    height: 5px;
+    background-color: #fdeee7;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 5px 0;
+}
+
+.wallet-card .wallet-progress .progress-pill{
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    height: 100%;
+}
+
+.wallet-card .wallet-progress .progress-bottom{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.wallet-card .wallet-progress .progress-percent i{
+    color: var(--primary-color);
+}
+
+.wallet-card .wallet-progress .wallet-target-amount{
+    font-size: 1.5rem;
+}
+
+.savings-history-container .title{
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.savings-history-container .savings-history{
+    list-style-type: none;
+    margin: 0 auto;
+    max-width: 95%;
+}
+
+.savings-history-container .savings-history li{
+    display: flex;
+    padding: 1rem 0.5rem;
+    height: 100px;
+}
+
+.savings-history-container .savings-history li:not(:last-child){
+    margin-bottom: 20px;
+    border-bottom: 2px solid #fdeee7;
+}
+
+.savings-history-container .savings-history .savings-history-icon-container{
+    flex: 0 0 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    background-color: #fdeee7;
+    color: var(--primary-color);
+    margin-right: 15px;
+}
+
+.savings-history-container .savings-history .savings-history-info{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+
+.savings-history-container .savings-history .savings-history-info .saved-for{
+    color: var(--primary-color);
+    font-size: 2rem;
+}
+
+
+.savings-history-container .savings-history .savings-history-info .paid-date{
+    color: var(--grey);
+    font-size: 1.5rem;
+}
+
+
+.savings-history-container .savings-history .savings-history-price{
+    align-self: center;
+    color: var(--primary-color);
+    font-size: 2rem;
+}
