@@ -151,8 +151,8 @@ if ($inSession) {
             <div class="payment-plan-wrapper">
                 <section class="payment-plan-container">
                     <header>
-                        <h1>Choose your plan</h1>
-                        <a href="<?= $url ?>user/">Back to dashboard</a>
+                        <h2>Choose your plan</h2>
+                        <a href="javascript:void(0)">close</a>
                     </header>
                     <?php
                     if (count($_SESSION['shopping_cart']) > 1) {
@@ -278,13 +278,17 @@ if ($inSession) {
                                 </div>
                             </div>
 
-                            <div class="payment-action-btns">
+                            <div class="savings-action-btn-container">
                                 <button class="btn" type="submit">Proceed</button>
-                                <a href="javascript:void(0)">close</a>
                             </div>
                         </div>
-
                     </form>
+                    <footer class="modal-footer">
+                        <div class="total-amount-container">
+                            Amount to save: <br> <span class="total-amount">NGN 20,000</span>
+                        </div>
+                        <a href="<?= $url ?>user/">Back to dashboard</a>
+                    </footer>
                 </section>
             </div>
         <?php
@@ -309,19 +313,23 @@ if ($inSession) {
     <!-- JUST VALIDATE LIBRARY -->
     <script src="../assets/js/just-validate/just-validate.js"></script>
     <script>
-        const validation = new JustValidate("#savings-form", {
-            errorFieldCssClass: "is-invalid",
-        });
-
-        validation
-            .addRequiredGroup("#required-radio-container", "Please select an option")
-            .addField("#agent_id", [{
-                rule: "required",
-                errorMessage: "Field is required",
-            }])
-            .onSuccess((event) => {
-                console.log(event);
+        function activateSavingsValidator() {
+            const validation = new JustValidate("#savings-form", {
+                errorFieldCssClass: "is-invalid",
             });
+
+            validation
+                .addRequiredGroup("#required-radio-container", "Please select an option")
+                .addField("#agent_id", [{
+                    rule: "required",
+                    errorMessage: "Field is required",
+                }])
+                .onSuccess((event) => {
+                    console.log(event);
+                });
+        }
+
+        activateSavingsValidator();
 
         function displayActiveRequest() {
             $(".savings-request-modal-wrapper").addClass("active");
@@ -372,7 +380,7 @@ if ($inSession) {
                 closeAll.call(event.target);
             };
 
-            $(document).on("click", ".payment-action-btns a", function() {
+            $(document).on("click", ".payment-plan-container header a", function() {
                 $(".payment-plan-wrapper").toggleClass("active");
             });
 
@@ -395,13 +403,14 @@ if ($inSession) {
                         beforeSend: function() {
                             $(".spinner-wrapper").addClass("active");
                         },
-                        success: function(data) {
-                            $("section.payment-plan-container").html(data);
+                        success: function(response) {
+                            $("section.payment-plan-container").html(response);
                             $(".spinner-wrapper").removeClass("active");
                         }
                     });
 
                     $(".payment-plan-wrapper").addClass("active");
+                    activateSavingsValidator();
                 });
 
             <?php

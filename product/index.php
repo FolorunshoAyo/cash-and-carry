@@ -190,8 +190,8 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
         <div class="payment-plan-wrapper">
             <section class="payment-plan-container">
                 <header>
-                    <h1>Choose your plan</h1>
-                    <a href="../user/">Back to dashboard</a>
+                    <h2>Choose your plan</h2>
+                    <a href="javascript:void(0)">close</a>
                 </header>
                 <div class="products-container">
                     <div class="savings-product active">
@@ -203,7 +203,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                         </div>
                         <div class="savings-product-details">
                             <span class="savings-product-name"> <?= $product_details['name'] ?> </span>
-                            <span class="savings-product-qty">Qty: 3</span>
+                            <span class="savings-product-qty">Qty: 1</span>
                         </div>
                     </div>
                 </div>
@@ -261,13 +261,17 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                                 <label for="agent_id">Select Relationship Manager</label>
                             </div>
                         </div>
-                        <div class="payment-action-btns">
+                        <div class="savings-action-btn-container">
                             <button class="btn" type="submit">Proceed</button>
-                            <a href="javascript:void(0)">close</a>
                         </div>
                     </div>
-
                 </form>
+                <footer class="modal-footer">
+                    <div class="total-amount-container">
+                        Amount to save: <br> <span class="total-amount">NGN <?= number_format($product_installment_price, 2) ?></span>
+                    </div>
+                    <a href="<?= $url ?>user/">Back to dashboard</a>
+                </footer>
             </section>
         </div>
     </main>
@@ -289,19 +293,23 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     <!-- JUST VALIDATE LIBRARY -->
     <script src="../assets/js/just-validate/just-validate.js"></script>
     <script>
-        const validation = new JustValidate("#savings-form", {
-            errorFieldCssClass: "is-invalid",
-        });
-
-        validation
-            .addRequiredGroup("#required-radio-container", "Please select an option")
-            .addField("#agent_id", [{
-                rule: "required",
-                errorMessage: "Field is required",
-            }])
-            .onSuccess((event) => {
-                console.log(event);
+        function activateSavingsValidator() {
+            const validation = new JustValidate("#savings-form", {
+                errorFieldCssClass: "is-invalid",
             });
+
+            validation
+                .addRequiredGroup("#required-radio-container", "Please select an option")
+                .addField("#agent_id", [{
+                    rule: "required",
+                    errorMessage: "Field is required",
+                }])
+                .onSuccess((event) => {
+                    console.log(event);
+                });
+        }
+
+        activateSavingsValidator();
 
         function displayActiveRequest() {
             $(".savings-request-modal-wrapper").addClass("active");
@@ -316,7 +324,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
             const cartMenu = document.querySelector(".cart-menu");
             const cartClose = document.querySelector(".close-container i");
             const $paymentPlanDialog = $(".payment-plan-wrapper");
-            const $paymentPlanDialogCloseBtn = $(".payment-action-btns a");
+            const $paymentPlanDialogCloseBtn = $(".payment-plan-container header a");
 
             $paymentPlanDialogCloseBtn.on("click", function() {
                 $paymentPlanDialog.toggleClass("active");
@@ -386,6 +394,14 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 
                         $(this).text(result.toLocaleString("en-US"));
                     });
+
+                    // CALCULATING AMOUNT TO SAVE FROM PRODUCT PRICE
+                    const productPrice = Number($("#price-<?= $product_details['product_id']?>").attr("data-price"));
+
+                    const calculatedPrice =  selectedQuantiiy * productPrice;
+                    const finalPrice = ((20 / 100) * calculatedPrice) + calculatedPrice;
+
+                    $(".modal-footer .total-amount-container .total-amount").html("NGN" + finalPrice.toLocaleString("en-US"));
 
                     $(".payment-plan-wrapper").addClass("active");
                     /* 

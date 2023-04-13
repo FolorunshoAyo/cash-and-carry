@@ -5,8 +5,8 @@ $url = strval($url);
 
 if (isset($_POST['submit'])) {
     $output = "<header>
-    <h1>Choose your plan</h1>
-    <a href='" . $url . "user/'>Back to dashboard</a>
+    <h2>Choose your plan</h2>
+    <a href='javascript:void(0)'>close</a>
 </header>";
 
     if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
@@ -127,13 +127,19 @@ if (isset($_POST['submit'])) {
                     <label for="agent_id">Select Relationship Manager</label>
                 </div>
             </div>
-            <div class="payment-action-btns">
+            <div class="savings-action-btn-container">
                 <button class="btn" type="submit">Proceed</button>
-                <a href="javascript:void(0)">close</a>
             </div>
         </div>
-    </form>';
+    </form>
+    <footer class="modal-footer">
+        <div class="total-amount-container">
+            Amount to save: <br> <span class="total-amount">NGN ' .  number_format($final_price, 2) . '</span>
+        </div>
+        <a href="' . $url . 'user/">Back to dashboard</a>
+    </footer>
+    ';
     }
 
-    echo $output;
+    echo  $output;
 }
