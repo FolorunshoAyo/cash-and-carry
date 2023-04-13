@@ -293,6 +293,8 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     <!-- JUST VALIDATE LIBRARY -->
     <script src="../assets/js/just-validate/just-validate.js"></script>
     <script>
+        let productQuantity = 1;
+
         function activateSavingsValidator() {
             const validation = new JustValidate("#savings-form", {
                 errorFieldCssClass: "is-invalid",
@@ -305,7 +307,18 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                     errorMessage: "Field is required",
                 }])
                 .onSuccess((event) => {
-                    console.log(event);
+                    const savingsForm = document.querySelector("#savings-form");
+
+                    const formData = new FormData(savingsForm);
+
+                    formData.append("product_id", "<?= $product_details['product_id'] ?>");
+                    formData.append("quantity", productQuantity);
+                    formData.append("type", "1");
+
+                    for(const [key,value] of formData.entries()){
+                        console.log(`${key}: ${value}`);
+                    }
+
                 });
         }
 
@@ -376,21 +389,23 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                        =========================================
                     */
                     // SHOWING SELECTED QUANTITY IN MODAL
-                    const selectedQuantiiy = Number($(".product-info-group.amount-block #amount").val());
+                    const selectedQuantity = Number($(".product-info-group.amount-block #amount").val());
+
+                    productQuantity = selectedQuantity;
                     const savingsPrices = [];
 
-                    if (!selectedQuantiiy) return;
+                    if (!selectedQuantity) return;
 
                     $(".product-badge span").each(function() {
                         savingsPrices.push(Number($(this).text().trim().replace(/,/g, "")));
                     });
 
-                    $(".savings-product-qty").html(`Qty: ${selectedQuantiiy}`);
+                    $(".savings-product-qty").html(`Qty: ${selectedQuantity}`);
 
                     $(".payment-plans .payment-plan-info span").each(function(index) {
                         const paymentOptionPrice = savingsPrices[index];
 
-                        const result = paymentOptionPrice * selectedQuantiiy;
+                        const result = paymentOptionPrice * selectedQuantity;
 
                         $(this).text(result.toLocaleString("en-US"));
                     });
@@ -398,7 +413,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                     // CALCULATING AMOUNT TO SAVE FROM PRODUCT PRICE
                     const productPrice = Number($("#price-<?= $product_details['product_id']?>").attr("data-price"));
 
-                    const calculatedPrice =  selectedQuantiiy * productPrice;
+                    const calculatedPrice =  selectedQuantity * productPrice;
                     const finalPrice = ((20 / 100) * calculatedPrice) + calculatedPrice;
 
                     $(".modal-footer .total-amount-container .total-amount").html("NGN" + finalPrice.toLocaleString("en-US"));

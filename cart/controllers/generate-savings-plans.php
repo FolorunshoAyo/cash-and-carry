@@ -4,10 +4,8 @@ require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
 $url = strval($url);
 
 if (isset($_POST['submit'])) {
-    $output = "<header>
-    <h2>Choose your plan</h2>
-    <a href='javascript:void(0)'>close</a>
-</header>";
+    $products = "";
+    $savingsPrices = array();
 
     if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
         // IF CART EXISTS
@@ -17,7 +15,7 @@ if (isset($_POST['submit'])) {
         $productPrices = array();
 
         if (count($_SESSION['shopping_cart']) > 1) {
-            $output .= '<div class="controls-container">
+            $products .= '<div class="controls-container">
                                 <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
                                 <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
                             </div><div class="products-container">';
@@ -38,7 +36,7 @@ if (isset($_POST['submit'])) {
             array_push($productPrices, ($product_price * $values['product_quantity']));
 
             if ($key == 0) {
-                $output .= '<div class="savings-product active">
+                $products .= '<div class="savings-product active">
                 <div class="savings-product-image-container">
                     <img src="' . $values['product_image'] . '" alt="' . $values['product_name'] . '">
                 </div>
@@ -48,7 +46,7 @@ if (isset($_POST['submit'])) {
                 </div>
             </div>';
             } else {
-                $output .= '<div class="savings-product">
+                $products .= '<div class="savings-product">
                 <div class="savings-product-image-container">
                     <img src="' . $values['product_image'] . '" alt="' . $values['product_name'] . '">
                 </div>
@@ -81,65 +79,10 @@ if (isset($_POST['submit'])) {
             $agent_html .= "<option value=" . $agent_details['agent_id'] . ">" . $agent_details['last_name'] . " " . $agent_details['first_name'] . "</option>";
         }
 
-        $output .= '</div><form id="savings-form">
-        <div class="payment-plans">
-            <div id="required-radio-container">
-                <input type="radio" name="payment-plan" value="1" id="payment-plan-1" />
-                <label for="payment-plan-1" class="payment-plan">
-                    <div class="radio-container">
-                        <div class="custom-radio"></div>
-                    </div>
-                    <div class="payment-plan-info">
-                        <h3>Daily payment</h3>
-                        <p>Save daily to aquire this product</p>
-                        <p><sup>₦</sup> <span>'. number_format(($final_price / $daysWeeksMonths['days']), 2) . '</span><sub>/day</sub></p>
-                    </div>
-                </label>
-                <input type="radio" name="payment-plan" value="2" id="payment-plan-2" />
-                <label for="payment-plan-2" class="payment-plan">
-                    <div class="radio-container">
-                        <div class="custom-radio"></div>
-                    </div>
-                    <div class="payment-plan-info">
-                        <h3>Weekly payment</h3>
-                        <p>Save weekly to aquire this product</p>
-                        <p><sup>₦</sup> <span>'. number_format(($final_price / $daysWeeksMonths['weeks']), 2) . '</span><sub>/week</sub></p>
-                    </div>
-                </label>
-                <input type="radio" name="payment-plan" value="3" id="payment-plan-3" />
-                <label for="payment-plan-3" class="payment-plan">
-                    <div class="radio-container">
-                        <div class="custom-radio"></div>
-                    </div>
-                    <div class="payment-plan-info">
-                        <h3>Monthly payment</h3>
-                        <p>Save monthly to aquire this product</p>
-                        <p><sup>₦</sup> <span>'. number_format(($final_price / $daysWeeksMonths['months']), 2) . '</span><sub>/month</sub></p>
-                    </div>
-                </label>
-            </div>
-            <div class="form-group-container">
-                <div class="form-group animate">
-                    <select name="agent_id" id="agent_id">
-                        <option value="">Choose manager</option>
-                        '. $agent_html .'
-                    </select>
-                    <label for="agent_id">Select Relationship Manager</label>
-                </div>
-            </div>
-            <div class="savings-action-btn-container">
-                <button class="btn" type="submit">Proceed</button>
-            </div>
-        </div>
-    </form>
-    <footer class="modal-footer">
-        <div class="total-amount-container">
-            Amount to save: <br> <span class="total-amount">NGN ' .  number_format($final_price, 2) . '</span>
-        </div>
-        <a href="' . $url . 'user/">Back to dashboard</a>
-    </footer>
-    ';
+        $savingsPrices[0] = number_format(($final_price / $daysWeeksMonths['days']), 2);
+        $savingsPrices[1] = number_format(($final_price / $daysWeeksMonths['weeks']), 2);
+        $savingsPrices[2] = number_format(($final_price / $daysWeeksMonths['months']), 2);
     }
 
-    echo  $output;
+    echo  json_encode(array('products' => $products, 'savings_prices' => $savingsPrices, 'total_amount' => number_format($final_price)));
 }

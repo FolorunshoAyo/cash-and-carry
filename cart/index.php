@@ -154,60 +154,62 @@ if ($inSession) {
                         <h2>Choose your plan</h2>
                         <a href="javascript:void(0)">close</a>
                     </header>
-                    <?php
-                    if (count($_SESSION['shopping_cart']) > 1) {
-                    ?>
-                        <div class="controls-container">
-                            <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
-                            <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
-                        </div>
-                    <?php
-                    }
-                    ?>
-                    <div class="products-container">
+                    <section class="products-section">
                         <?php
-                        $productMonths = array();
-                        $productPrices = array();
-                        foreach ($_SESSION['shopping_cart'] as $key => $values) {
-                            $product_id = $values['product_id'];
-                            $sql_get_product_savings_duration = $db->query("SELECT price,duration_of_payment FROM products WHERE product_id = {$product_id}");
-
-                            // SAVINGS DURATION OF EACH PRODUCT
-                            $product_details = $sql_get_product_savings_duration->fetch_assoc();
-                            $product_savings_duration = intval($product_details['duration_of_payment']);
-                            $product_price = $product_details['price'];
-
-                            array_push($productMonths, $product_savings_duration);
-                            array_push($productPrices, ($product_price * $values['product_quantity']));
-
-                            if ($key == 0) {
+                        if (count($_SESSION['shopping_cart']) > 1) {
                         ?>
-                                <div class="savings-product active">
-                                    <div class="savings-product-image-container">
-                                        <img src="<?= $values['product_image'] ?>" alt="<?= $values['product_name'] ?>">
-                                    </div>
-                                    <div class="savings-product-details">
-                                        <span class="savings-product-name"><?= $values['product_name'] ?></span>
-                                        <span class="savings-product-qty">Qty: <?= $values['product_quantity'] ?></span>
-                                    </div>
-                                </div>
-                            <?php
-                            } else {
-                            ?>
-                                <div class="savings-product">
-                                    <div class="savings-product-image-container">
-                                        <img src="<?= $values['product_image'] ?>" alt="<?= $values['product_name'] ?>">
-                                    </div>
-                                    <div class="savings-product-details">
-                                        <span class="savings-product-name"><?= $values['product_name'] ?></span>
-                                        <span class="savings-product-qty">Qty: <?= $values['product_quantity'] ?></span>
-                                    </div>
-                                </div>
+                            <div class="controls-container">
+                                <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
+                                <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
+                            </div>
                         <?php
-                            }
                         }
                         ?>
-                    </div>
+                        <div class="products-container">
+                            <?php
+                            $productMonths = array();
+                            $productPrices = array();
+                            foreach ($_SESSION['shopping_cart'] as $key => $values) {
+                                $product_id = $values['product_id'];
+                                $sql_get_product_savings_duration = $db->query("SELECT price,duration_of_payment FROM products WHERE product_id = {$product_id}");
+
+                                // SAVINGS DURATION OF EACH PRODUCT
+                                $product_details = $sql_get_product_savings_duration->fetch_assoc();
+                                $product_savings_duration = intval($product_details['duration_of_payment']);
+                                $product_price = $product_details['price'];
+
+                                array_push($productMonths, $product_savings_duration);
+                                array_push($productPrices, ($product_price * $values['product_quantity']));
+
+                                if ($key == 0) {
+                            ?>
+                                    <div class="savings-product active">
+                                        <div class="savings-product-image-container">
+                                            <img src="<?= $values['product_image'] ?>" alt="<?= $values['product_name'] ?>">
+                                        </div>
+                                        <div class="savings-product-details">
+                                            <span class="savings-product-name"><?= $values['product_name'] ?></span>
+                                            <span class="savings-product-qty">Qty: <?= $values['product_quantity'] ?></span>
+                                        </div>
+                                    </div>
+                                <?php
+                                } else {
+                                ?>
+                                    <div class="savings-product">
+                                        <div class="savings-product-image-container">
+                                            <img src="<?= $values['product_image'] ?>" alt="<?= $values['product_name'] ?>">
+                                        </div>
+                                        <div class="savings-product-details">
+                                            <span class="savings-product-name"><?= $values['product_name'] ?></span>
+                                            <span class="savings-product-qty">Qty: <?= $values['product_quantity'] ?></span>
+                                        </div>
+                                    </div>
+                            <?php
+                                }
+                            }
+                            ?>
+                        </div>
+                    </section>
                     <?php
                     // DETERMINING MAXIMUM SAVINGS PERIOD AND TOTAL PRODUCT PRICES PLUS INTTEREST
                     $max_month = max($productMonths);
@@ -285,7 +287,7 @@ if ($inSession) {
                     </form>
                     <footer class="modal-footer">
                         <div class="total-amount-container">
-                            Amount to save: <br> <span class="total-amount">NGN 20,000</span>
+                            Amount to save: <br> <span class="total-amount">NGN <?= number_format($final_price, 2) ?></span>
                         </div>
                         <a href="<?= $url ?>user/">Back to dashboard</a>
                     </footer>
@@ -404,13 +406,22 @@ if ($inSession) {
                             $(".spinner-wrapper").addClass("active");
                         },
                         success: function(response) {
-                            $("section.payment-plan-container").html(response);
+                            response = JSON.parse(response);
+                            // $("section.payment-plan-container").html(response);
+                            // $(".spinner-wrapper").removeClass("active");
+
+                            $("section.payment-plan-container section.products-section").html(response.products);
+                            $("section.payment-plan-container form#savings-form .payment-plan-info span").each(function(index){
+                                $(this).html(response.savings_prices[index]);
+                            });
+
+                            $(".modal-footer .total-amount-container .total-amount").html("NGN " + response.total_amount);
+
                             $(".spinner-wrapper").removeClass("active");
                         }
                     });
 
                     $(".payment-plan-wrapper").addClass("active");
-                    activateSavingsValidator();
                 });
 
             <?php
