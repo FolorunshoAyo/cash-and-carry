@@ -41,9 +41,7 @@ if (isset($_POST['submit'])) {
 
         $daysWeeksMonths = getDaysWeeks($product_savings_duration);
 
-        // $savings_id = generateUniqueCode();
-
-        $savings_id = rand(0000000000, 9999999999);
+        $savings_id = generateUniqueCode();
 
         if ($selected_plan === "1") {
             // DAILY SAVINGS
@@ -109,9 +107,7 @@ if (isset($_POST['submit'])) {
 
         $daysWeeksMonths = getDaysWeeks($max_month);
 
-        // $savings_id = generateUniqueCode();
-
-        $savings_id = rand(0000000000, 9999999999);
+        $savings_id = generateUniqueCode();
 
         if ($selected_plan === "1") {
             // DAILY SAVINGS
