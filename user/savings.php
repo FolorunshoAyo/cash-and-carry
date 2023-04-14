@@ -5,6 +5,42 @@ Auth::User("login");
 $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
 
+function getWalletIntallmentType($installment_type)
+{
+  $output = "";
+
+  if ($installment_type === "1") {
+    $output = "day(s)";
+  } elseif ($installment_type === "1") {
+    $output = "week(s)";
+  } else {
+    $output = "month(s)";
+  }
+
+  return $output;
+}
+
+function generateStatus($status)
+{
+  $html = "";
+
+  switch ($status) {
+    case "1":
+      $html = '<span class="dot pending"> </span> pending';
+      break;
+    case "2":
+      $html = '<span class="dot approved"> </span> approved';
+      break;
+    case "3":
+      $html = '<span class="dot rejected"> </span> rejected';
+      break;
+    default:
+      $html = 'Unable to generate status';
+      break;
+  }
+
+  return $html;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,9 +83,9 @@ $user_name = $_SESSION['user_name'];
             Browse
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href="../all-products/">All products</a></li>
+            <li><a class="dropdown-item" href="savings?active">Active Wallets</a></li>
+            <li><a class="dropdown-item" href="savings?requests">Savings Request</a></li>
           </ul>
         </div>
         <div>
@@ -69,211 +105,104 @@ $user_name = $_SESSION['user_name'];
       <div class="dashboard-main-section">
         <div class="dashboard-main-container">
           <h1 class="dashboard-main-title">Savings</h1>
-
+          <?php
+          if (isset($_GET['requests']) || isset($_GET['active'])) {
+            $selectedTab = isset($_GET['active']) ? "1" : "2";
+          }
+          ?>
           <div class="tabs-container">
             <div class="tab-link-container" data-tab="1">
-              <a href="javascript:void(0)" class="active">Active</a>
+              <a href="javascript:void(0)" <?= isset($selectedTab) ? ($selectedTab == "1" ? "class='active'" : "") : "class='active'" ?>>Active</a>
             </div>
             <div class="tab-link-container" data-tab="2">
-              <a href="javascript:void(0)">Requests</a>
+              <a href="javascript:void(0)" <?= isset($selectedTab) ? ($selectedTab == "2" ? "class='active'" : "") : "" ?>>Requests</a>
             </div>
           </div>
-          <div class="tab-container active" id="tab-1">
-            <!-- <p>No active wallets</p> -->
-            <div class="list-items-container active-wallets">
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-archive"></i>
-                </div>
-                <div class="savings-info-wrapper">
-                  <div class="savings-info-container">
-                    <a href="#" class="savings-request-id">#23456789</a>
-                    <span class="savings-days">13 days left</span>
-                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
+          <div class="tab-container <?= isset($selectedTab) ? ($selectedTab == "1" ? "active" : "") : "active" ?>" id="tab-1">
+            <?php
+            $get_active_wallets = $db->query("SELECT wallet_no, paid_for, duration, type_of_savings, target_amount, current_amount FROM store_wallets ORDER BY wallet_id DESC");
+
+            $number_of_wallets = $get_active_wallets->num_rows;
+
+            if ($number_of_wallets === 0) {
+            ?>
+              <p>No active wallets</p>
+            <?php
+            } else {
+
+            ?>
+              <div class="list-items-container active-wallets<?= ($number_of_wallets > 10) ? "__paginated" : "" ?>">
+                <?php
+                while ($wallet_details = $get_active_wallets->fetch_assoc()) {
+                ?>
+                  <div class="savings-card">
+                    <div class="savings-icon-container">
+                      <i class="fa fa-archive"></i>
+                    </div>
+                    <div class="savings-info-wrapper">
+                      <div class="savings-info-container">
+                        <a href="wallet?id=<?= $wallet_details['wallet_no'] ?>" class="savings-request-id">#<?= $wallet_details['wallet_no'] ?></a>
+                        <?php
+                        $period_left = $wallet_details['duration'] - $wallet_details['paid_for'];
+                        ?>
+                        <span class="savings-days"><?= $period_left . " " . getWalletIntallmentType($wallet_details['installment_type']) ?> left</span>
+                        <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> <?= $wallet_details['type_of_savings'] === "1" ? "Normal Savings" : "Half Savings" ?></span>
+                      </div>
+                      <span class="savings-amount">
+                        NGN <?= number_format($wallet_details['target_amount'], 2) ?>
+                      </span>
+                      <div class="savings-progress-thumb">
+                        <?php
+                        $percentage_of_savings = (($wallet_details['target_amount'] - $wallet_details['current_amount']) / $wallet_details['target_amount']) * 100;
+                        ?>
+                        <div class="progress-pill" style="width: <?= $percentage_of_savings ?>%;"></div>
+                      </div>
+                    </div>
                   </div>
-                  <span class="savings-amount">
-                    NGN 400,000
-                  </span>
-                  <div class="savings-progress-thumb">
-                    <div class="progress-pill" style="width: 33.33%;"></div>
-                  </div>
-                </div>
+                <?php
+                }
+                ?>
               </div>
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-archive"></i>
-                </div>
-                <div class="savings-info-wrapper">
-                  <div class="savings-info-container">
-                    <a href="#" class="savings-request-id">#23456789</a>
-                    <span class="savings-days">13 days left</span>
-                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  </div>
-                  <span class="savings-amount">
-                    NGN 400,000
-                  </span>
-                  <div class="savings-progress-thumb">
-                    <div class="progress-pill" style="width: 33.33%;"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-archive"></i>
-                </div>
-                <div class="savings-info-wrapper">
-                  <div class="savings-info-container">
-                    <a href="#" class="savings-request-id">#23456789</a>
-                    <span class="savings-days">13 days left</span>
-                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  </div>
-                  <span class="savings-amount">
-                    NGN 400,000
-                  </span>
-                  <div class="savings-progress-thumb">
-                    <div class="progress-pill" style="width: 33.33%;"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-archive"></i>
-                </div>
-                <div class="savings-info-wrapper">
-                  <div class="savings-info-container">
-                    <a href="#" class="savings-request-id">#23456789</a>
-                    <span class="savings-days">13 days left</span>
-                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  </div>
-                  <span class="savings-amount">
-                    NGN 400,000
-                  </span>
-                  <div class="savings-progress-thumb">
-                    <div class="progress-pill" style="width: 33.33%;"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-archive"></i>
-                </div>
-                <div class="savings-info-wrapper">
-                  <div class="savings-info-container">
-                    <a href="#" class="savings-request-id">#23456789</a>
-                    <span class="savings-days">13 days left</span>
-                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  </div>
-                  <span class="savings-amount">
-                    NGN 400,000
-                  </span>
-                  <div class="savings-progress-thumb">
-                    <div class="progress-pill" style="width: 33.33%;"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-archive"></i>
-                </div>
-                <div class="savings-info-wrapper">
-                  <div class="savings-info-container">
-                    <a href="#" class="savings-request-id">#23456789</a>
-                    <span class="savings-days">13 days left</span>
-                    <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  </div>
-                  <span class="savings-amount">
-                    NGN 400,000
-                  </span>
-                  <div class="savings-progress-thumb">
-                    <div class="progress-pill" style="width: 33.33%;"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <?php
+            }
+            ?>
           </div>
-          <div class="tab-container" id="tab-2">
-            <!-- <p>No active requests</p> -->
-            <div class="list-items-container savings-requests__paginated">
-              <!-- REQUESTS HERE -->
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-handshake-o"></i>
-                </div>
-                <div class="savings-request-info-container">
-                  <a href="#" class="savings-request-id">#23456789</a>
-                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
-                </div>
-                <div class="savings-target-price">
-                  NGN 2,300,000
-                </div>
+          <div class="tab-container <?= isset($selectedTab) ? ($selectedTab == "2" ? "active" : "") : "" ?>" id="tab-2">
+            <?php
+            $get_savings_requests = $db->query("SELECT savings_id, type_of_savings, target_amount, status FROM savings_requests ORDER BY requested_at DESC");
+
+            $number_of_requests = $get_savings_requests->num_rows;
+
+            if ($number_of_requests === 0) {
+            ?>
+              <p>No active requests</p>
+            <?php
+            } else {
+            ?>
+              <div class="list-items-container savings-requests<?= $number_of_requests > 10 ? "__paginated" : "" ?>">
+                <?php
+                while ($request_details = $get_savings_requests->fetch_assoc()) {
+                ?>
+                  <div class="savings-card">
+                    <div class="savings-icon-container">
+                      <i class="fa fa-handshake-o"></i>
+                    </div>
+                    <div class="savings-request-info-container">
+                      <a href="savings-request?id=<?= $request_details['savings_id'] ?>" class="savings-request-id">#<?= $request_details['savings_id'] ?></a>
+                      <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> <?= $request_details['type_of_savings'] === "1" ? "Normal Savings" : "Half Savings" ?> </span>
+                      <span class="savings-request-status"> <?= generateStatus($request_details['status']) ?> </span>
+                    </div>
+                    <div class="savings-target-price">
+                      NGN <?= number_format($request_details['target_amount'], 2) ?>
+                    </div>
+                  </div>
+                <?php
+                }
+                ?>
               </div>
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-handshake-o"></i>
-                </div>
-                <div class="savings-request-info-container">
-                  <a href="#" class="savings-request-id">#23456789</a>
-                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
-                </div>
-                <div class="savings-target-price">
-                  NGN 2,300,000
-                </div>
-              </div>
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-handshake-o"></i>
-                </div>
-                <div class="savings-request-info-container">
-                  <a href="#" class="savings-request-id">#23456789</a>
-                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
-                </div>
-                <div class="savings-target-price">
-                  NGN 2,300,000
-                </div>
-              </div>
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-handshake-o"></i>
-                </div>
-                <div class="savings-request-info-container">
-                  <a href="#" class="savings-request-id">#23456789</a>
-                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
-                </div>
-                <div class="savings-target-price">
-                  NGN 2,300,000
-                </div>
-              </div>
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-handshake-o"></i>
-                </div>
-                <div class="savings-request-info-container">
-                  <a href="#" class="savings-request-id">#23456789</a>
-                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
-                </div>
-                <div class="savings-target-price">
-                  NGN 2,300,000
-                </div>
-              </div>
-              <div class="savings-card">
-                <div class="savings-icon-container">
-                  <i class="fa fa-handshake-o"></i>
-                </div>
-                <div class="savings-request-info-container">
-                  <a href="#" class="savings-request-id">#23456789</a>
-                  <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> Normal Savings</span>
-                  <span class="savings-request-status"><span class="dot pending-dot"></span> pending</span>
-                </div>
-                <div class="savings-target-price">
-                  NGN 2,300,000
-                </div>
-              </div>
-            </div>
+            <?php
+            }
+            ?>
           </div>
         </div>
       </div>

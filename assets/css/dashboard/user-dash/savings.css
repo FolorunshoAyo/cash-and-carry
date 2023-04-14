@@ -144,16 +144,16 @@
     vertical-align: middle;
 }
 
-.pending-dot{
+.dot.pending{
     background-color: #1270B0;
 }
 
-.granted-dot{
-    background-color: #28a745;
+.dot.granted{
+    background-color: var(--success);
 }
 
-.cancelled-dot{
-    background-color: var(--black);
+.dot.rejected{
+    background-color: var(--danger);
 }
 
 .savings-card .savings-target-price{

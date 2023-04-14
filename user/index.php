@@ -54,9 +54,9 @@
               Browse
             </a>
             <ul class="dropdown-menu">
-              <li><All class="dropdown-item" href="#">All products</a></li>
-              <li><a class="dropdown-item" href="#">Active Wallets</a></li>
-              <li><a class="dropdown-item" href="#">Savings Request</a></li>
+              <li><a class="dropdown-item" href="../all-products/">All products</a></li>
+              <li><a class="dropdown-item" href="savings?active">Active Wallets</a></li>
+              <li><a class="dropdown-item" href="savings?requests">Savings Request</a></li>
             </ul>
           </div>
           <div>

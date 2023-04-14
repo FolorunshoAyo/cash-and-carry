@@ -302,6 +302,10 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
                                 </div>
                             </div>
 
+                            <div class="important-message-container">
+                                <i class="fa fa-info-circle"></i> Items in cart requested to save are to be paid 50% percent upfront irrespective of selected plan</i>
+                            </div>
+
                             <div class="savings-action-btn-container">
                                 <button class="btn" type="submit">Proceed</button>
                             </div>

@@ -455,7 +455,16 @@
 
   .payment-plans #required-radio-container .just-validate-error-label{
     position: static;
+    flex: 0 0 100%;
+    text-align: center;
     margin: -10px 0 10px 0;
+  }
+
+  .important-message-container{
+    padding: 0 1rem;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    color: var(--danger);
   }
 
   .savings-action-btn-container{

@@ -72,11 +72,22 @@
     color: var(--primary-color);
 }
 
-.dashboard-main-container .savings-info .savings-info-block .savings-value .dot.pending{
+.dashboard-main-container .savings-info .savings-info-block .savings-value .dot{
     display: inline-block;
     vertical-align: middle;
     width: 10px;
     height: 10px;
     border-radius: 50%;
+}
+
+.dashboard-main-container .savings-info .savings-info-block .savings-value .dot.pending{
     background-color: #1270B0;
+}
+
+.dashboard-main-container .savings-info .savings-info-block .savings-value .dot.approved{
+    background-color: var(--success);
+}
+
+.dashboard-main-container .savings-info .savings-info-block .savings-value .dot.rejected{
+    background-color: var(--danger);
 }

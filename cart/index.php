@@ -280,6 +280,10 @@ if ($inSession) {
                                 </div>
                             </div>
 
+                            <div class="important-message-container">
+                                <i class="fa fa-info-circle"></i> Items in cart requested to save are to be paid 50% percent upfront irrespective of selected plan</i>
+                            </div>
+
                             <div class="savings-action-btn-container">
                                 <button class="btn" type="submit">Proceed</button>
                             </div>
@@ -327,7 +331,55 @@ if ($inSession) {
                     errorMessage: "Field is required",
                 }])
                 .onSuccess((event) => {
-                    console.log(event);
+                    const savingsForm = document.querySelector("#savings-form");
+
+                    const formData = new FormData(savingsForm);
+
+                    formData.append("submit", true);
+                    formData.append("type", "2");
+
+                    for (const [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
+
+                    // CREATE SAVINGS REQUEST
+                    $.ajax({
+                        url: "../controllers/make-savings-request.php",
+                        method: "POST",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function() {
+                            $(".spinner-wrapper").addClass("active");
+                            $(".savings-action-btn-container button.btn").html("<i class='fa fa-spinner rotate'></i>")
+                        },
+                        success: function(response) {
+                            response = JSON.parse(response);
+
+                            if (response.success == 1) {
+                                Swal.fire({
+                                    title: "Savings Request",
+                                    icon: "success",
+                                    text: "Your request has been placed successfully, your chosen agent would contact you shortly.",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                }).then((result) => {
+                                    location.href = `../user/savings-request?id=${response.savings_id}`;
+                                });
+                            } else {
+                                $(".spinner-wrapper").addClass("active");
+                                $(".savings-action-btn-container buttton.btn").html("<i class='fa fa-spinner rotate'></i>")
+
+                                Swal.fire({
+                                    title: "Savings Request Error",
+                                    icon: "error",
+                                    text: "Unable to place savings request. Please try again.",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                });
+                            }
+                        }
+                    });
                 });
         }
 
@@ -411,7 +463,7 @@ if ($inSession) {
                             // $(".spinner-wrapper").removeClass("active");
 
                             $("section.payment-plan-container section.products-section").html(response.products);
-                            $("section.payment-plan-container form#savings-form .payment-plan-info span").each(function(index){
+                            $("section.payment-plan-container form#savings-form .payment-plan-info span").each(function(index) {
                                 $(this).html(response.savings_prices[index]);
                             });
 
@@ -510,7 +562,6 @@ if ($inSession) {
 
 
                 // ENABLE UPDATE BUTTON
-                // console.log(Numbe);
                 if (Number(product_quantity) > 0) {
                     enableUpdateCartButton();
 
@@ -546,9 +597,7 @@ if ($inSession) {
 
 
                 // ENABLE UPDATE BUTTON
-                // console.log(Numbe);
                 if (Number(product_quantity) > 0) {
-                    console.log("product quantity isn't zero");
 
                     enableUpdateCartButton();
 
@@ -573,7 +622,6 @@ if ($inSession) {
                         });
                     }
                 } else {
-                    console.log("product quantity is zero");
                     disableUpdateCartButton();
                 }
             });

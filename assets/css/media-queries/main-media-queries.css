@@ -493,6 +493,10 @@
     .payment-plans #required-radio-container > label{
         flex: 0 0 100%;
     }
+
+    .payment-plans #required-radio-container .just-validate-error-label{
+        text-align: left;
+    }
 }
 
 /* < 500px */ 
