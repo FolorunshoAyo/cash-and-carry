@@ -359,6 +359,11 @@ input[type="file"]#pimages{
     accent-color: var(--primary-color);
 }
 
+.agreement-container label a{
+    margin-left: 5px;
+    color: var(--primary-color);
+}
+
 .agreement-container .just-validate-error-label{
     position: static;
     padding: 1rem;

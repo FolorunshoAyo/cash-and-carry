@@ -4,6 +4,21 @@ Auth::User("login");
 
 $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
+
+if (isset($_GET['id']) && !empty($_GET['id'])) {
+    $savings_id = $_GET['id'];
+
+    $get_request_details = $db->query("SELECT savings_requests.*, agents.first_name as agent_first_name, agents.last_name as agent_last_name, agents.phone_no as agents_phone_no, agents.email as agents_email FROM 
+    (savings_requests INNER JOIN agents ON savings_requests.agent_id=agents.agent_id) WHERE savings_id = {$savings_id}");
+
+    $get_products = $db->query("SELECT savings_products.*, products.pictures, products.name FROM savings_products INNER JOIN ON savings_products.product_id = products.product_id WHERE savings_id={$savings_id}");
+
+    $request_details = $get_request_details->fetch_assoc();
+
+} else {
+    header("location: ./");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +41,7 @@ $user_name = $_SESSION['user_name'];
     <link rel="stylesheet" href="../assets/css/dashboard/user-dash/savings-request.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/user-dash-mediaqueries.css" />
-    <title> Savings Request (#123456) - Halfcarry</title>
+    <title> Savings Request (#<?= $savings_id ?>) - Halfcarry</title>
 </head>
 
 <body>
@@ -67,12 +82,16 @@ $user_name = $_SESSION['user_name'];
             ?>
             <div class="dashboard-main-section">
                 <div class="dashboard-main-container">
-                    <h1 class="dashboard-main-title" style="font-size: 3rem;">Savings Request <span style="color: var(--primary-color);">(#123456)</span></h1>
+                    <h1 class="dashboard-main-title" style="font-size: 3rem;">Savings Request <span style="color: var(--primary-color);">(#<?= $savings_id ?>)</span></h1>
 
+                    <?php
+                    if ($request_details)
+                    ?>
                     <div class="controls-container">
                         <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
                         <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
                     </div>
+
                     <div class="products-container">
                         <div class="savings-product active">
                             <div class="savings-product-image-container">

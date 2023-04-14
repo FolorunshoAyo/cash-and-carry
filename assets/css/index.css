@@ -354,7 +354,7 @@
   }
 
   .payment-plan-container{
-    max-width: 500px;
+    max-width: 900px;
     margin: 100px auto;
     border-radius: 20px;
     padding: 3rem 4rem;
@@ -385,8 +385,14 @@
     color: var(--primary-color);
   }
 
+  .payment-plans #required-radio-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
   .payment-plans #required-radio-container > label{
-    display: block;
+    flex: 0 0 45%;
     padding: 2.5rem 2rem;
     display: flex;
     border: 2px solid var(--primary-color);

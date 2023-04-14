@@ -485,6 +485,14 @@
     .cart-menu{
         width: 400px;
     }
+
+    .payment-plan-container{
+        max-width: 500px;
+    }
+
+    .payment-plans #required-radio-container > label{
+        flex: 0 0 100%;
+    }
 }
 
 /* < 500px */ 

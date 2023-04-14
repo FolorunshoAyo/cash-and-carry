@@ -25,7 +25,7 @@ if ($inSession) {
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="assets/fonts/fonts.css">
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/base.css?v=1">
     <!-- IZITOAST CSS -->
     <link rel="stylesheet" href="auth-library/vendor/dist/css/iziToast.min.css">
     <!-- Slick plugin stylesheet -->
@@ -33,7 +33,7 @@ if ($inSession) {
     <!-- CUSTOM SLIDER STYLING -->
     <link rel="stylesheet" href="assets/css/slider-theme.css" type="text/css">
     <!-- CUSTOM CSS (HOME) -->
-    <link rel="stylesheet" href="assets/css/index.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/index.css?v=1" type="text/css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="assets/css/media-queries/main-media-queries.css">
     <title>Home - Halfcarry</title>

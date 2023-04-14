@@ -40,13 +40,13 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/base.css?v=1" />
     <!-- IZITOAST CSS -->
     <link rel="stylesheet" href="../auth-library/vendor/dist/css/iziToast.min.css">
     <!-- CUSTOM FORMS CSS -->
     <link rel="stylesheet" href="../assets/css/form.css" />
     <!-- CUSTOM CSS (HOME) -->
-    <link rel="stylesheet" href="../assets/css/index.css" type="text/css" />
+    <link rel="stylesheet" href="../assets/css/index.css?v=1" type="text/css" />
     <!-- PRODUCT PAGE CSS -->
     <link rel="stylesheet" href="../assets/css/product.css" type="text/css" />
     <!-- MEDIA QUERIES -->
@@ -311,13 +311,53 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 
                     const formData = new FormData(savingsForm);
 
+                    formData.append("submit", true);     
                     formData.append("product_id", "<?= $product_details['product_id'] ?>");
                     formData.append("quantity", productQuantity);
                     formData.append("type", "1");
 
-                    for(const [key,value] of formData.entries()){
+                    for (const [key, value] of formData.entries()) {
                         console.log(`${key}: ${value}`);
                     }
+
+                    // CREATE SAVINGS REQUEST
+                    $.ajax({
+                        url: "../controllers/make-savings-request.php",
+                        method: "POST",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function() {
+                            $(".spinner-wrapper").addClass("active");
+                            $(".savings-action-btn-container button.btn").html("<i class='fa fa-spinner rotate'></i>")
+                        },
+                        success: function(response) {
+                            response = JSON.parse(response);
+
+                            if (response.success == 1) {
+                                Swal.fire({
+                                    title: "Savings Request",
+                                    icon: "success",
+                                    text: "Your request has been placed successfully, your chosen agent would contact you shortly.",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                }).then((result) => {
+                                    location.href = `../user/savings-request?id=${response.savings_id}`;
+                                });
+                            } else {
+                                $(".spinner-wrapper").addClass("active");
+                                $(".savings-action-btn-container buttton.btn").html("<i class='fa fa-spinner rotate'></i>")
+
+                                Swal.fire({
+                                    title: "Savings Request Error",
+                                    icon: "error",
+                                    text: "Unable to place savings request. Please try again.",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                });
+                            }
+                        }
+                    });
 
                 });
         }
@@ -411,12 +451,12 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                     });
 
                     // CALCULATING AMOUNT TO SAVE FROM PRODUCT PRICE
-                    const productPrice = Number($("#price-<?= $product_details['product_id']?>").attr("data-price"));
+                    const productPrice = Number($("#price-<?= $product_details['product_id'] ?>").attr("data-price"));
 
-                    const calculatedPrice =  selectedQuantity * productPrice;
+                    const calculatedPrice = selectedQuantity * productPrice;
                     const finalPrice = ((20 / 100) * calculatedPrice) + calculatedPrice;
 
-                    $(".modal-footer .total-amount-container .total-amount").html("NGN" + finalPrice.toLocaleString("en-US"));
+                    $(".modal-footer .total-amount-container .total-amount").html("NGN " + finalPrice.toLocaleString("en-US"));
 
                     $(".payment-plan-wrapper").addClass("active");
                     /* 

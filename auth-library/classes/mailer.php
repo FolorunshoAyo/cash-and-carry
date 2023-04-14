@@ -32,14 +32,6 @@ function send_mail($email, $subject, $msg, $gurl)
 					   <head>
 					   	   <link rel='stylesheet'  href='" . $url . "assets/fonts/fonts.css' type='text/css' />
 						   <style>               
-						   .container{
-							   background-color: #fff;
-							   padding: 10px;
-							   font-family: 'Inter', sans-serif;
-							   border-radius: 5px;
-							   border: 5px solid #1270B0;
-						   }
-
 						   .img-container{
 							text-align: center;
 							margin-bottom: 10px

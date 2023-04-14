@@ -39,11 +39,11 @@ if ($inSession) {
     <!-- IZITOAST CSS -->
     <link rel="stylesheet" href="../auth-library/vendor/dist/css/iziToast.min.css">
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/base.css?v=1" />
     <!-- CUSTOM FORMS CSS -->
     <link rel="stylesheet" href="../assets/css/form.css" />
     <!-- CUSTOM CSS (HOME) -->
-    <link rel="stylesheet" href="../assets/css/index.css" type="text/css" />
+    <link rel="stylesheet" href="../assets/css/index.css?v=1" type="text/css" />
     <!-- PRODUCT PAGE CSS -->
     <link rel="stylesheet" href="../assets/css/cart.css" type="text/css" />
     <!-- MEDIA QUERIES -->
