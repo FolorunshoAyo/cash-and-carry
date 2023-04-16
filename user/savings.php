@@ -11,7 +11,7 @@ function getWalletIntallmentType($installment_type)
 
   if ($installment_type === "1") {
     $output = "day(s)";
-  } elseif ($installment_type === "1") {
+  } elseif ($installment_type === "2") {
     $output = "week(s)";
   } else {
     $output = "month(s)";
@@ -29,7 +29,7 @@ function generateStatus($status)
       $html = '<span class="dot pending"> </span> pending';
       break;
     case "2":
-      $html = '<span class="dot approved"> </span> approved';
+      $html = '<span class="dot granted"> </span> granted';
       break;
     case "3":
       $html = '<span class="dot rejected"> </span> rejected';
@@ -120,7 +120,7 @@ function generateStatus($status)
           </div>
           <div class="tab-container <?= isset($selectedTab) ? ($selectedTab == "1" ? "active" : "") : "active" ?>" id="tab-1">
             <?php
-            $get_active_wallets = $db->query("SELECT wallet_no, paid_for, duration, type_of_savings, target_amount, current_amount FROM store_wallets ORDER BY wallet_id DESC");
+            $get_active_wallets = $db->query("SELECT store_wallets.*, savings_requests.duration_of_savings, savings_requests.type_of_savings, savings_requests.target_amount, savings_requests.installment_type FROM store_wallets INNER JOIN savings_requests ON store_wallets.wallet_no=savings_requests.savings_id WHERE store_wallets.user_id = {$user_id} ORDER BY store_wallets.wallet_id DESC");
 
             $number_of_wallets = $get_active_wallets->num_rows;
 
@@ -131,7 +131,7 @@ function generateStatus($status)
             } else {
 
             ?>
-              <div class="list-items-container active-wallets<?= ($number_of_wallets > 10) ? "__paginated" : "" ?>">
+              <div class="list-items-container active-wallets<?= ($number_of_wallets > 20) ? "__paginated" : "" ?>">
                 <?php
                 while ($wallet_details = $get_active_wallets->fetch_assoc()) {
                 ?>
@@ -143,7 +143,7 @@ function generateStatus($status)
                       <div class="savings-info-container">
                         <a href="wallet?id=<?= $wallet_details['wallet_no'] ?>" class="savings-request-id">#<?= $wallet_details['wallet_no'] ?></a>
                         <?php
-                        $period_left = $wallet_details['duration'] - $wallet_details['paid_for'];
+                        $period_left = $wallet_details['duration_of_savings'] - $wallet_details['paid_for'];
                         ?>
                         <span class="savings-days"><?= $period_left . " " . getWalletIntallmentType($wallet_details['installment_type']) ?> left</span>
                         <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> <?= $wallet_details['type_of_savings'] === "1" ? "Normal Savings" : "Half Savings" ?></span>
@@ -169,7 +169,7 @@ function generateStatus($status)
           </div>
           <div class="tab-container <?= isset($selectedTab) ? ($selectedTab == "2" ? "active" : "") : "" ?>" id="tab-2">
             <?php
-            $get_savings_requests = $db->query("SELECT savings_id, type_of_savings, target_amount, status FROM savings_requests ORDER BY requested_at DESC");
+            $get_savings_requests = $db->query("SELECT savings_id, type_of_savings, target_amount, status FROM savings_requests WHERE user_id = {$user_id} ORDER BY requested_at DESC");
 
             $number_of_requests = $get_savings_requests->num_rows;
 
@@ -179,7 +179,7 @@ function generateStatus($status)
             <?php
             } else {
             ?>
-              <div class="list-items-container savings-requests<?= $number_of_requests > 10 ? "__paginated" : "" ?>">
+              <div class="list-items-container savings-requests<?= $number_of_requests > 20 ? "__paginated" : "" ?>">
                 <?php
                 while ($request_details = $get_savings_requests->fetch_assoc()) {
                 ?>

@@ -79,8 +79,7 @@ $sql_other_addresses = $db->query("SELECT *
           <h1 class="dashboard-main-title">Address/Delivery Details</h1>
 
           <p class="dashboard-main-text">
-            Here is your address details, you can delete or remove one or more addresses. <br>
-            If you already have a registered address, you can still add another address (Max is 3).
+            Here is your address details, you can delete or remove one or more addresses.
           </p>
 
           <div class="addresses-container">

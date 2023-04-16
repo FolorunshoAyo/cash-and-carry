@@ -90,7 +90,7 @@
                   <figcaption>Orders</figcaption>
                 </figure>
               </a>
-              <a href="./address" class="dashboard-action-group">
+              <a href="./addresses" class="dashboard-action-group">
                 <figure>
                   <i class="fa fa-map-marker"></i>
                   <figcaption>Address</figcaption>

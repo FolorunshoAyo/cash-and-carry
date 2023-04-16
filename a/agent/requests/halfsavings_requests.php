@@ -1,12 +1,12 @@
 <?php
-require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+require(dirname(dirname(dirname(__DIR__))) . '/auth-library/resources.php');
 AgentAuth::User("a/login");
 
 $agent_id = $_SESSION['agent_id'];
 
-$admin_sql = $db->query("SELECT * FROM admin WHERE admin_id={$admin_id}");
-if ($admin_sql->num_rows == 1) {
-    $row_admin = $admin_sql->fetch_assoc();
+$agent_sql = $db->query("SELECT * FROM agents WHERE agent_id={$agent_id}");
+if ($agent_sql->num_rows == 1) {
+    $row_agent = $agent_sql->fetch_assoc();
 } else {
     header("Location: ../login");
 }
@@ -42,26 +42,26 @@ function showStatus($status)
     <!-- JQUERY DATATABLES CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <!-- DROP DOWN MENU CSS -->
-    <link rel="stylesheet" href="../../assets/css/dropdown.css" />
+    <link rel="stylesheet" href="../../../assets/css/dropdown.css" />
     <!-- Custom Fonts (Inter) -->
-    <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="../../../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../../assets/css/base.css" />
     <!-- ADMIN DASHBOARD MENU CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- ADMIN TABLE CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/admin-table.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/admin-table.css">
     <!-- ADMIN AGENT CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/orders.css">
+    <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/orders.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
-    <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Orders - Halfcarry Agent</title>
+    <link rel="stylesheet" href="../../../assets/css/media-queries/admin-dash-mediaqueries.css" />
+    <title>HalfSavings Request - Halfcarry Agent</title>
 </head>
 
 <body style="background-color: #fafafa">
     <div class="dash-wrapper">
         <?php
-        include("includes/agent-sidebar.php");
+        include("../includes/agent-sidebar.php");
         ?>
         <section class="page-wrapper">
             <div class="table-wrapper">
@@ -78,10 +78,10 @@ function showStatus($status)
                                     ID
                                 </th>
                                 <th>
-                                    Customer
+                                    Date
                                 </th>
                                 <th>
-                                    Date
+                                    Customer
                                 </th>
                                 <th>
                                     status
@@ -90,7 +90,10 @@ function showStatus($status)
                                     Set status
                                 </th>
                                 <th>
-                                    Total
+                                    Installment Amount
+                                </th>
+                                <th>
+                                    Target Amount
                                 </th>
                                 <th>
                                     Action
@@ -99,7 +102,7 @@ function showStatus($status)
                         </thead>
                         <tbody>
                             <?php
-                            $sql_all_savings_requests = $db->query("SELECT * FROM savings_requests INNER JOIN users ON savingss_requests.user_id = users.user_id WHERE savings_requests.agent_id={$agent_id} AND type_of_savings='1' ORDER BY id DESC");
+                            $sql_all_savings_requests = $db->query("SELECT * FROM savings_requests INNER JOIN users ON savings_requests.user_id = users.user_id WHERE savings_requests.agent_id={$agent_id} AND type_of_savings='2' ORDER BY id DESC");
 
                             $count = 1;
                             while ($request_details = $sql_all_savings_requests->fetch_assoc()) {
@@ -128,7 +131,7 @@ function showStatus($status)
                                         echo $name;
                                         ?>
                                     </td>
-                                    <td class="status-cell-<?php echo $request_details['savings_id'] ?>">
+                                    <td class="status-cell-<?php echo $request_details['id'] ?>">
                                         <?php echo showStatus($request_details['status']) ?>
                                     </td>
                                     <td>
@@ -139,12 +142,15 @@ function showStatus($status)
                                             <select class="request-status-select" name="request-status-<?= $request_details['id'] ?>" data-requestID="<?php echo $request_details['id'] ?>" data-userID="<?= $request_details['user_id'] ?>">
                                                 <option <?php echo $status === "1" ? "selected" : "" ?> value="1">pending</option>
                                                 <option <?php echo $status === "2" ? "selected" : "" ?> value="2">approved</option>
-                                                <option <?php echo $status === "3" ? "selected" : "" ?> value="3">canceled</option>
+                                                <option <?php echo $status === "3" ? "selected" : "" ?> value="3">rejected</option>
                                             </select>
                                         </form>
                                     </td>
                                     <td>
-                                        NGN <?php echo number_format($request_details['amount']) ?>
+                                        NGN <?php echo number_format($request_details['installment_amount'], 2) ?>
+                                    </td>
+                                    <td>
+                                        NGN <?php echo number_format($request_details['target_amount'], 2) ?>
                                     </td>
                                     <td>
                                         <div class="dropdown">
@@ -152,7 +158,7 @@ function showStatus($status)
                                                 o<br>o<br>o
                                             </button>
                                             <div style="font-size: 1rem;" class="dropdown-menu" data-dd-path="<?php echo $count ?>">
-                                                <a class="dropdown-menu__link" href="halfsavings_details?sid=<?php echo $request_details['savings_id'] ?>">View request</a>
+                                                <a class="dropdown-menu__link" href="../request_details?sid=<?php echo $request_details['savings_id'] ?>">View request</a>
                                                 <!-- <a class="dropdown-menu__link deleteEl" href="javascript:void(0)" data-productId="1"></a> -->
                                             </div>
                                         </div>
@@ -172,19 +178,19 @@ function showStatus($status)
     <!-- FONT AWESOME JIT SCRIPT-->
     <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
-    <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
-    <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <script src="../../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
-    <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <script src="../../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- Sweet Alert JS -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- JQUERY DATATABLE SCRIPT -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <!-- DROP DOWN JS -->
-    <script type="text/javascript" src="../../assets/js/dropdown/dropdown.min.js"></script>
+    <script type="text/javascript" src="../../../assets/js/dropdown/dropdown.min.js"></script>
     <!-- DASHBOARD SCRIPT -->
-    <script src="../../assets/js/admin-dash.js"></script>
+    <script src="../../../assets/js/admin-dash.js"></script>
     <script>
         $(function() {
             $("#teams-table").DataTable({
@@ -204,7 +210,7 @@ function showStatus($status)
                     if (selectedRequestStatus === "1") return;
 
                     if (selectedRequestStatus === "2" || selectedRequestStatus === "3") {
-                        $(selectEl).after("<img src='../../assets/images/loading-gif.gif' alt='Loading'>");
+                        $(selectEl).after("<img src='../../../assets/images/loading-gif.gif' alt='Loading'>");
 
                         Swal.fire({
                             title: "Update Withdrawal Request",
@@ -229,11 +235,11 @@ function showStatus($status)
             });
 
             function updateAndDisableSavingsRequest(requestId, selectEl, userId, status) {
-                $.post("controllers/update-saving-request", {
+                $.post("controllers/update-savings-request", {
                     rid: requestId,
                     status: status,
                     user_id: userId,
-                    type_of_savings: "1",
+                    type_of_savings: "2",
                     submit: true
                 }, function(response) {
                     response = JSON.parse(response);
@@ -248,7 +254,7 @@ function showStatus($status)
                             allowEscapeKey: true,
                         });
 
-                        switch (selectedRequestStatus) {
+                        switch (status) {
                             case "1":
                                 statusHTML = "<span class='dot pending-dot'></span> pending";
                                 break;
@@ -264,13 +270,13 @@ function showStatus($status)
                         }
 
                         // UPDATE STATUS CELL
-                        $(`.status-cell-${requestID}`).html(statusHTML);
+                        $(`.status-cell-${requestId}`).html(statusHTML);
 
                         // REMOVE LOADER
                         $(selectEl).next("img[alt='Loading']").remove();
 
                         // DISABLE SELECT ELEMENT
-                        $(`[data-requestID = '${requestID}']`).attr("disabled", true);
+                        $(`[data-requestID = '${requestId}']`).attr("disabled", true);
                     } else {
                         Swal.fire({
                             title: response.error_title,
