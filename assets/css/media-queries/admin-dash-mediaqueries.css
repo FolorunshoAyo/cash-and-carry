@@ -17,16 +17,16 @@
     .card-details{
         flex: 0 0 60%;
     }
+
+    .table-container{
+        overflow-x: auto;
+    }
 }
 
 /* < 900px */ 
 @media only screen and (max-width: 56.25em){
     .login-container{
         flex: 0 0 75%;
-    }
-
-    .table-container{
-        overflow-x: auto;
     }
 
     .main-table{

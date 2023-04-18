@@ -9,8 +9,6 @@
   <link rel="stylesheet" href="assets/fonts/fonts.css" type="text/css" />
   <!-- BASE CSS -->
   <link rel="stylesheet" href="assets/css/base.css" type="text/css" />
-  <!-- CUSTOM CSS (form) -->
-  <link rel="stylesheet" href="assets/css/form.css" type="text/css" />
   <!-- FORM STYLING STYLESHEET -->
   <link rel="stylesheet" href="assets/css/form.css" type="text/css" />
   <!-- MEDIA QUERIES -->
@@ -90,8 +88,7 @@
                 </div>
               </div>
               <div class="agreement-container">
-                <label for="agree_to_terms"><input type="checkbox" id="agree_to_terms" />Agree to terms
-                  and conditions</label>
+                <label for="agree_to_terms"> <input type="checkbox" id="agree_to_terms" /> Agree to <a href="assets/pdf/halfcarry-terms-and-conditions.pdf" target="__blank"> terms and conditions</a></label>
               </div>
 
               <div class="submit-btn-container">

@@ -259,6 +259,7 @@
 .savings-request-modal .controls-container button:disabled,
 .payment-plan-container .controls-container button:disabled{
     opacity: .7;
+    cursor: default;
 }
 
 .savings-request-modal .controls-container button:not(:last-child),
@@ -297,11 +298,12 @@
 }
 
 .savings-request-modal .savings-product-details,
-.payment-plan-container .savings-product-details{
+.payment-plan-container .savings-product-details
+{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
 }
 
 .savings-request-modal .savings-product-details .savings-product-name,
@@ -352,7 +354,7 @@
   }
 
   .payment-plan-container{
-    max-width: 500px;
+    max-width: 900px;
     margin: 100px auto;
     border-radius: 20px;
     padding: 3rem 4rem;
@@ -379,12 +381,18 @@
 
   .payment-plan-container header a{
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: var(--primary-color);
   }
 
-  .payment-plans > label{
-    display: block;
+  .payment-plans #required-radio-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
+  .payment-plans #required-radio-container > label{
+    flex: 0 0 45%;
     padding: 2.5rem 2rem;
     display: flex;
     border: 2px solid var(--primary-color);
@@ -437,7 +445,7 @@
     font-size: 2rem;
   }
 
-  .payment-plans label:not(:last-child){
+  .payment-plans label{
     margin-bottom: 20px;
   }
 
@@ -445,7 +453,25 @@
     display: none;
   }
 
-  .payment-action-btns .btn{
+  .payment-plans #required-radio-container .just-validate-error-label{
+    position: static;
+    flex: 0 0 100%;
+    text-align: center;
+    margin: -10px 0 10px 0;
+  }
+
+  .important-message-container{
+    padding: 0 1rem;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    color: var(--danger);
+  }
+
+  .savings-action-btn-container{
+    margin-bottom: 20px;
+  }
+
+  .savings-action-btn-container .btn{
     appearance: button;
     background-color: var(--primary-color);
     background-image: none;
@@ -471,36 +497,57 @@
     margin-bottom: 20px;
 }
 
-.payment-action-btns .btn:hover {
+
+.savings-action-btn-container .btn:hover {
     background-color: var(--black);
 }
   
-.payment-action-btns .btn:active {
+
+.savings-action-btn-container .btn:active {
     box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
     outline: 0;
 }
 
-.payment-action-btns .btn:disabled{
+
+.savings-action-btn-container .btn:disabled{
     opacity: 0.7;   
 }
 
-.payment-action-btns{
+
+.savings-action-btn-container{
     text-align: center;
 }
 
-.payment-action-btns .btn:not([disabled]):active {
+
+.savings-action-btn-container .btn:not([disabled]):active {
     box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
     transform: translate(2px, 2px);
 }
 
-.payment-action-btns a{
+.modal-footer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-footer .total-amount-container{
+    font-size: 1.2rem;
+}
+
+.modal-footer .total-amount-container .total-amount{
+    color: var(--primary-color);
+    font-size: 2rem;
+}
+
+.modal-footer a{
     color: var(--primary-color);
     font-size: 1.2rem; 
     text-decoration: none;
     transition: all .3s ease-in ;
 }
 
-.payment-action-btns a:hover{
+
+.modal-footer a:hover{
     text-decoration: underline;
 }
 
@@ -1309,6 +1356,7 @@ figcaption .payment-plans .product-badge.month{
 
 .footer-logo-container .footer-logo-image-container{
     flex: 0 0 100px;
+    height: 45px;
     /* margin-right: 10px; */
 }
 

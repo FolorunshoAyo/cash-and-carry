@@ -25,7 +25,7 @@ if (isset($_SESSION['verify']) && isset($_SESSION['otp_code']) && isset($_SESSIO
   <link rel="stylesheet" href="assets/css/form.css" type="text/css" />
   <!-- MEDIA QUERIES -->
   <link rel="stylesheet" href="assets/css/media-queries/main-media-queries.css" type="text/css" />
-  <title>Verify Email - CDS</title>
+  <title>Verify Email - Halfcarry</title>
 </head>
 
 <body>
@@ -61,7 +61,7 @@ if (isset($_SESSION['verify']) && isset($_SESSION['otp_code']) && isset($_SESSIO
             </div>
 
             <div class="submit-btn-container">
-              <button type="submit">Reset password</button>
+              <button type="submit" name="verify">verify</button>
             </div>
           </div>
         </form>

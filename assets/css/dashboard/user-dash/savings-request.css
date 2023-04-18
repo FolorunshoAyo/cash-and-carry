@@ -1,0 +1,93 @@
+.dashboard-main-container .controls-container button{
+    padding: 0.5rem 1rem;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    border: none;
+    color: var(--white);
+    background-color: var(--primary-color);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.dashboard-main-container .controls-container button:disabled{
+    opacity: .7;
+    cursor: default;
+}
+
+.dashboard-main-container .controls-container button:not(:last-child){
+    margin-right: 5px;
+}
+
+.dashboard-main-container .products-container{
+    margin: 15px 0;
+}
+
+.dashboard-main-container .savings-product{
+    padding: 1rem 2rem;
+    display: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.dashboard-main-container .savings-product.active{
+    display: flex;
+}
+
+.dashboard-main-container .savings-product-image-container{
+    flex: 0 0 150px;
+    margin-right: 10px;
+}
+
+.dashboard-main-container .savings-product-image-container img{
+    max-width: 100%;
+}
+
+.dashboard-main-container .savings-product-details
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 1.5rem;
+}
+
+.dashboard-main-container .savings-product-details .savings-product-name{
+    color: var(--primary-color);
+}
+
+.dashboard-main-container .savings-info{
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.dashboard-main-container .savings-info .savings-info-block{
+    flex: 0 0 45%;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.dashboard-main-container .savings-info .savings-info-block .savings-label{
+    color: var(--primary-color);
+}
+
+.dashboard-main-container .savings-info .savings-info-block .savings-value .dot{
+    display: inline-block;
+    vertical-align: middle;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.dashboard-main-container .savings-info .savings-info-block .savings-value .dot.pending{
+    background-color: #1270B0;
+}
+
+.dashboard-main-container .savings-info .savings-info-block .savings-value .dot.approved{
+    background-color: var(--success);
+}
+
+.dashboard-main-container .savings-info .savings-info-block .savings-value .dot.rejected{
+    background-color: var(--danger);
+}

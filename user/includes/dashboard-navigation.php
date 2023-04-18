@@ -5,7 +5,7 @@
             <li class="dashboard-nav-link  <?= ($file_name === "index.php")? 'active' : ''?>">
                 <a href="./">Dashboard</a>
             </li>
-            <li class="dashboard-nav-link <?= ($file_name === "savings.php") || ($file_name === "active_savings.php")? 'active' : ''?>">
+            <li class="dashboard-nav-link <?= ($file_name === "savings.php") || ($file_name === "wallet.php") || ($file_name === "savings-request.php") || ($file_name === "active_savings.php")? 'active' : ''?>">
                 <a href="./savings">Savings</a>
             </li>
             <li class="dashboard-nav-link <?= ($file_name === "order_details.php") || ($file_name === "orders.php")? 'active' : ''?>">

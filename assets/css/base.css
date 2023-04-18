@@ -1,144 +1,229 @@
-*, *::after, *::before{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-:root{
-    --primary-color: #FF5C00;
-    --secondary-color: #FF8124;
-    --success: #28a745;
-    --danger: #dc3545;
-    --white: #FFF;
-    --black: #000;
-    --grey: #969696;
-    --dark-grey: #828282;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-body{
-    font-family: 'monserrat', sans-serif !important;
-    background-image: url(../images/body.png);
-    background-repeat: no-repeat;
-    background-size: cover; 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-::selection{
-    background-color: var(--primary-color);
-    color: var(--white);
+@-webkit-keyframes slideInUp {
+  from {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes slideInDown {
+  from {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes slideInDown {
+  from {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #ff5c00;
+  --secondary-color: #ff8124;
+  --success: #28a745;
+  --danger: #dc3545;
+  --white: #fff;
+  --black: #000;
+  --grey: #969696;
+  --dark-grey: #828282;
+}
+
+body {
+  font-family: "monserrat", sans-serif !important;
+  background-image: url(../images/body.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+::selection {
+  background-color: var(--primary-color);
+  color: var(--white);
 }
 
 /* width */
 ::-webkit-scrollbar {
-    width: 5px;
+  width: 5px;
 }
-  
+
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
-  
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
+  background: var(--primary-color);
 }
-  
+
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-color);
+  background: var(--secondary-color);
 }
 
 /* MEDIA QUERIES FOR THE ROOT ELEMENT */
-    
-html{
-    font-size: 63.5%;
+
+html {
+  font-size: 63.5%;
 }
 
 /* width < 1200? */
-@media only screen and (max-width: 75em){
-    html{
-        font-size: 56.25%; /* 1 rem = 9px, 9/16 * 100% = 56.25% */
-    }
+@media only screen and (max-width: 75em) {
+  html {
+    font-size: 56.25%; /* 1 rem = 9px, 9/16 * 100% = 56.25% */
+  }
 }
 
 /* width < 900? */
-@media only screen and (max-width: 56.25em){
-    html{
-        font-size: 50%; /* 1 rem = 8px, 8px/16px * 100% = 50% */
-    }
+@media only screen and (max-width: 56.25em) {
+  html {
+    font-size: 50%; /* 1 rem = 8px, 8px/16px * 100% = 50% */
+  }
 }
 
 /* width < 400? */
-@media only screen and (max-width: 25em){
-    html{
-        font-size: 40%; /* 1rem = 6.4px, 6.4px/16 * 100% = 40%  */ 
-    }
+@media only screen and (max-width: 25em) {
+  html {
+    font-size: 40%; /* 1rem = 6.4px, 6.4px/16 * 100% = 40%  */
+  }
 }
 
 /* width > 1800? */
-@media only screen and (min-width: 112.5em){
-    html{
-        font-size: 85%; /* 1 rem = 13.6px, 13.6/16  * 100% = 75%; */
-    }
+@media only screen and (min-width: 112.5em) {
+  html {
+    font-size: 85%; /* 1 rem = 13.6px, 13.6/16  * 100% = 75%; */
+  }
 }
 
-.main-title{
-    color: var(--primary-color);
-    font-size: 6rem;
-    margin-bottom: 30px;
+.main-title {
+  color: var(--primary-color);
+  font-size: 6rem;
+  margin-bottom: 30px;
 }
 
-
-.sub-title{
-    color: var(--primary-color);
-    font-size: 4rem;
-    margin-bottom: 10px;
+.sub-title {
+  color: var(--primary-color);
+  font-size: 4rem;
+  margin-bottom: 10px;
 }
 
-.hide{
-    display: none !important;
+.hide {
+  display: none !important;
 }
 
-.spinner-wrapper{
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    inset: 0px;
-    background-color: rgba(255,255,255,.7);
-    transition: .5s ease-in;
-    opacity: 0;
-    visibility: hidden;
-    z-index: 100;
+.spinner-wrapper {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(255, 255, 255, 0.7);
+  transition: 0.5s ease-in;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 100;
 }
 
-
-.spinner-wrapper.active{
-    opacity: 1;
-    visibility: visible;
+.spinner-wrapper.active {
+  opacity: 1;
+  visibility: visible;
 }
-
 
 .spinner-container {
-    flex: 0 0 100px;
+  flex: 0 0 100px;
 }
 
-.spinner-container img{
-    max-width: 100%;
-    margin-bottom: 20px;
+.spinner-container img {
+  max-width: 100%;
+  margin-bottom: 20px;
 }
-  
-.spinner-container .spinner{
-    border: 3px solid #f3f3f3; /* Light grey */
-    border-top: 5px solid var(--primary-color); /* Blue */
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto;
+
+.spinner-container .spinner {
+  border: 3px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid var(--primary-color); /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+button i.rotate{
+  animation: spin .5s linear infinite;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

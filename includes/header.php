@@ -1,6 +1,3 @@
-<?php
-    $url = strval($url);
-?>
 <header>
     <div class="top-header">
         <a href="<?= $url ?>" class="logo-container">
@@ -47,7 +44,7 @@
     </div>
     <div class="bottom-header">
         <div class="categories-btn-container">
-            <a href="all-products?view-categories">Categories</a>
+            <a href="<?= $url ?>all-products?view-categories">Categories</a>
         </div>
         <div class="search-container">
             <form class="search-box" action="search/">
@@ -74,7 +71,7 @@
                     <ul class="menu">
                         <li><a href="<?= $url ?>user/">Dashboard</a></li>
                         <li><a href="<?= $url ?>user/orders">Orders</a></li>
-                        <li><a onclick="displayActiveRequest()" href="javascript:void(0)"> <span class="circle"></span> Requests</a></li>
+                        <li><?= $isActiveRequest? '<a onclick="displayActiveRequest()" href="javascript:void(0)"> <span class="circle"></span> Requests</a>' : '<a href="' . $url . 'user/savings?requests"> Requests</a>' ?> </li>
                         <li><a href="<?= $url ?>logout?rd=home">Log out</a></li>
                     </ul>
                 <?php
@@ -83,4 +80,4 @@
             </div>
         </div>
     </div>
-</header>
+</header

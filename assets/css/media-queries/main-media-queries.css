@@ -485,6 +485,18 @@
     .cart-menu{
         width: 400px;
     }
+
+    .payment-plan-container{
+        max-width: 500px;
+    }
+
+    .payment-plans #required-radio-container > label{
+        flex: 0 0 100%;
+    }
+
+    .payment-plans #required-radio-container .just-validate-error-label{
+        text-align: left;
+    }
 }
 
 /* < 500px */ 
@@ -625,6 +637,15 @@
     .cart-menu{
         width: 300px;
     }
+
+    .product .product-image-container{
+        width: 100px;
+        height: 100px;
+    }
+
+    .payment-plan-container .savings-product-image-container{
+        flex: 0 0 100px;
+    }
 }
 
 /* < 400px */
@@ -672,8 +693,8 @@
     }
 
     .menu-container .menu{
-        top: 20px;
-        width: 80px;
+        top: 30px;
+        width: 90px;
     }
 
     .input-container{
@@ -712,7 +733,6 @@
     }
 
     .payment-plan-container{
-        width: 350px;
         max-width: 350px;
         margin: 0 30px;
     }

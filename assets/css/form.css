@@ -25,6 +25,7 @@ header{
 
 .form-logo-img-container{
     flex: 0 0 80px;
+    height: 35px;
     margin-right: 5px;
 }
 
@@ -356,6 +357,11 @@ input[type="file"]#pimages{
 .agreement-container label input{
     margin-right: 10px;
     accent-color: var(--primary-color);
+}
+
+.agreement-container label a{
+    margin-left: 5px;
+    color: var(--primary-color);
 }
 
 .agreement-container .just-validate-error-label{

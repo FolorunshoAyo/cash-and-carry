@@ -6,6 +6,7 @@ require(dirname(__DIR__) . '/auth-library/resources.php');
 //   'en_US', 
 //   \NumberFormatter::PADDING_POSITION
 // );
+$url = strval($url);
 
 $inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
 
@@ -38,9 +39,11 @@ if ($inSession) {
     <!-- IZITOAST CSS -->
     <link rel="stylesheet" href="../auth-library/vendor/dist/css/iziToast.min.css">
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/base.css?v=1" />
+    <!-- CUSTOM FORMS CSS -->
+    <link rel="stylesheet" href="../assets/css/form.css" />
     <!-- CUSTOM CSS (HOME) -->
-    <link rel="stylesheet" href="../assets/css/index.css" type="text/css" />
+    <link rel="stylesheet" href="../assets/css/index.css?v=1" type="text/css" />
     <!-- PRODUCT PAGE CSS -->
     <link rel="stylesheet" href="../assets/css/cart.css" type="text/css" />
     <!-- MEDIA QUERIES -->
@@ -132,7 +135,7 @@ if ($inSession) {
                             </a>
                         </div>
                         <div>
-                            <a href="#" class="btn">Proceed to checkout</a>
+                            <a href="../checkout/" class="btn">Proceed to checkout</a>
                             <button class="btn">Start Saving</button>
                         </div>
                     </div>
@@ -142,6 +145,161 @@ if ($inSession) {
                 ?>
             </div>
         </section>
+        <?php
+        if (isset($_SESSION['shopping_cart'])) {
+        ?>
+            <div class="payment-plan-wrapper">
+                <section class="payment-plan-container">
+                    <header>
+                        <h2>Choose your plan</h2>
+                        <a href="javascript:void(0)">close</a>
+                    </header>
+                    <section class="products-section">
+                        <?php
+                        if (count($_SESSION['shopping_cart']) > 1) {
+                        ?>
+                            <div class="controls-container">
+                                <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
+                                <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                        <div class="products-container">
+                            <?php
+                            $productMonths = array();
+                            $productPrices = array();
+                            foreach ($_SESSION['shopping_cart'] as $key => $values) {
+                                $product_id = $values['product_id'];
+                                $sql_get_product_savings_duration = $db->query("SELECT price,duration_of_payment FROM products WHERE product_id = {$product_id}");
+
+                                // SAVINGS DURATION OF EACH PRODUCT
+                                $product_details = $sql_get_product_savings_duration->fetch_assoc();
+                                $product_savings_duration = intval($product_details['duration_of_payment']);
+                                $product_price = $product_details['price'];
+
+                                array_push($productMonths, $product_savings_duration);
+                                array_push($productPrices, ($product_price * $values['product_quantity']));
+
+                                if ($key == 0) {
+                            ?>
+                                    <div class="savings-product active">
+                                        <div class="savings-product-image-container">
+                                            <img src="<?= $values['product_image'] ?>" alt="<?= $values['product_name'] ?>">
+                                        </div>
+                                        <div class="savings-product-details">
+                                            <span class="savings-product-name"><?= $values['product_name'] ?></span>
+                                            <span class="savings-product-qty">Qty: <?= $values['product_quantity'] ?></span>
+                                        </div>
+                                    </div>
+                                <?php
+                                } else {
+                                ?>
+                                    <div class="savings-product">
+                                        <div class="savings-product-image-container">
+                                            <img src="<?= $values['product_image'] ?>" alt="<?= $values['product_name'] ?>">
+                                        </div>
+                                        <div class="savings-product-details">
+                                            <span class="savings-product-name"><?= $values['product_name'] ?></span>
+                                            <span class="savings-product-qty">Qty: <?= $values['product_quantity'] ?></span>
+                                        </div>
+                                    </div>
+                            <?php
+                                }
+                            }
+                            ?>
+                        </div>
+                    </section>
+                    <?php
+                    // DETERMINING MAXIMUM SAVINGS PERIOD AND TOTAL PRODUCT PRICES PLUS INTTEREST
+                    $max_month = max($productMonths);
+                    $total_price = 0;
+
+                    foreach ($productPrices as $price) {
+                        $total_price += $price;
+                    }
+
+                    // CALCUALTING INTEREST
+                    $final_price = (20 / 100) * $total_price + $total_price;
+
+                    $daysWeeksMonths = getDaysWeeks($max_month);
+
+                    ?>
+                    <form id="savings-form">
+                        <div class="payment-plans">
+                            <div id="required-radio-container">
+                                <input type="radio" name="payment-plan" value="1" id="payment-plan-1" />
+                                <label for="payment-plan-1" class="payment-plan">
+                                    <div class="radio-container">
+                                        <div class="custom-radio"></div>
+                                    </div>
+                                    <div class="payment-plan-info">
+                                        <h3>Daily payment</h3>
+                                        <p>Save daily to aquire this product</p>
+                                        <p><sup>₦</sup> <span> <?= number_format(($final_price / $daysWeeksMonths['days']), 2) ?> </span><sub>/day</sub></p>
+                                    </div>
+                                </label>
+                                <input type="radio" name="payment-plan" value="2" id="payment-plan-2" />
+                                <label for="payment-plan-2" class="payment-plan">
+                                    <div class="radio-container">
+                                        <div class="custom-radio"></div>
+                                    </div>
+                                    <div class="payment-plan-info">
+                                        <h3>Weekly payment</h3>
+                                        <p>Save weekly to aquire this product</p>
+                                        <p><sup>₦</sup> <span> <?= number_format(($final_price / $daysWeeksMonths['weeks']), 2) ?> </span><sub>/week</sub></p>
+                                    </div>
+                                </label>
+                                <input type="radio" name="payment-plan" value="3" id="payment-plan-3" />
+                                <label for="payment-plan-3" class="payment-plan">
+                                    <div class="radio-container">
+                                        <div class="custom-radio"></div>
+                                    </div>
+                                    <div class="payment-plan-info">
+                                        <h3>Monthly payment</h3>
+                                        <p>Save monthly to aquire this product</p>
+                                        <p><sup>₦</sup> <span> <?= number_format(($final_price / $daysWeeksMonths['months']), 2) ?> </span><sub>/month</sub></p>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="form-group-container">
+                                <div class="form-group animate">
+                                    <select name="agent_id" id="agent_id">
+                                        <option value="">Choose manager</option>
+                                        <?php
+                                        $sql_get_all_agents = $db->query("SELECT * FROM agents");
+
+                                        while ($agent_details = $sql_get_all_agents->fetch_assoc()) {
+                                        ?>
+                                            <option value="<?= $agent_details['agent_id'] ?>"><?= $agent_details['last_name'] . " " . $agent_details['first_name'] ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
+                                    <label for="agent_id">Select Relationship Manager</label>
+                                </div>
+                            </div>
+
+                            <div class="important-message-container">
+                                <i class="fa fa-info-circle"></i> Items in cart requested to save are to be paid 50% percent upfront irrespective of selected plan</i>
+                            </div>
+
+                            <div class="savings-action-btn-container">
+                                <button class="btn" type="submit">Proceed</button>
+                            </div>
+                        </div>
+                    </form>
+                    <footer class="modal-footer">
+                        <div class="total-amount-container">
+                            Amount to save: <br> <span class="total-amount">NGN <?= number_format($final_price, 2) ?></span>
+                        </div>
+                        <a href="<?= $url ?>user/">Back to dashboard</a>
+                    </footer>
+                </section>
+            </div>
+        <?php
+        }
+        ?>
     </main>
     <?php
     include("../includes/footer.php");
@@ -154,9 +312,83 @@ if ($inSession) {
     <script src="../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- SLICK SLIDER SCRIPT -->
     <script src="../assets/js/slick/slick.js"></script>
+    <!-- SWEET ALERT SCRIPT -->
+    <script src="../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- IZI TOAST SCRIPT -->
     <script src="../auth-library/vendor/dist/js/iziToast.min.js"></script>
+    <!-- JUST VALIDATE LIBRARY -->
+    <script src="../assets/js/just-validate/just-validate.js"></script>
     <script>
+        function activateSavingsValidator() {
+            const validation = new JustValidate("#savings-form", {
+                errorFieldCssClass: "is-invalid",
+            });
+
+            validation
+                .addRequiredGroup("#required-radio-container", "Please select an option")
+                .addField("#agent_id", [{
+                    rule: "required",
+                    errorMessage: "Field is required",
+                }])
+                .onSuccess((event) => {
+                    const savingsForm = document.querySelector("#savings-form");
+
+                    const formData = new FormData(savingsForm);
+
+                    formData.append("submit", true);
+                    formData.append("type", "2");
+
+                    for (const [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
+
+                    // CREATE SAVINGS REQUEST
+                    $.ajax({
+                        url: "../controllers/make-savings-request.php",
+                        method: "POST",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function() {
+                            $(".spinner-wrapper").addClass("active");
+                            $(".savings-action-btn-container button.btn").html("<i class='fa fa-spinner rotate'></i>")
+                        },
+                        success: function(response) {
+                            response = JSON.parse(response);
+
+                            if (response.success == 1) {
+                                Swal.fire({
+                                    title: "Savings Request",
+                                    icon: "success",
+                                    text: "Your request has been placed successfully, your chosen agent would contact you shortly.",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                }).then((result) => {
+                                    location.href = `../user/savings-request?id=${response.savings_id}`;
+                                });
+                            } else {
+                                $(".spinner-wrapper").addClass("active");
+                                $(".savings-action-btn-container buttton.btn").html("<i class='fa fa-spinner rotate'></i>")
+
+                                Swal.fire({
+                                    title: "Savings Request Error",
+                                    icon: "error",
+                                    text: "Unable to place savings request. Please try again.",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                });
+                            }
+                        }
+                    });
+                });
+        }
+
+        activateSavingsValidator();
+
+        function displayActiveRequest() {
+            $(".savings-request-modal-wrapper").addClass("active");
+        }
+
         $(function() {
             const menuContainer = document.querySelector(".menu-container a");
             menuContainer.addEventListener("click", toggle);
@@ -201,6 +433,75 @@ if ($inSession) {
             window.onclick = function(event) {
                 closeAll.call(event.target);
             };
+
+            $(document).on("click", ".payment-plan-container header a", function() {
+                $(".payment-plan-wrapper").toggleClass("active");
+            });
+
+            <?php
+            if ($inSession) {
+            ?>
+
+                $(document).on("click", ".cart-action-btn-container button.btn", function() {
+                    const formData = new FormData();
+
+                    formData.append("submit", true);
+
+                    // FETCH SAVINGS DETAILS
+                    $.ajax({
+                        url: "controllers/generate-savings-plans.php",
+                        method: "POST",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function() {
+                            $(".spinner-wrapper").addClass("active");
+                        },
+                        success: function(response) {
+                            response = JSON.parse(response);
+                            // $("section.payment-plan-container").html(response);
+                            // $(".spinner-wrapper").removeClass("active");
+
+                            $("section.payment-plan-container section.products-section").html(response.products);
+                            $("section.payment-plan-container form#savings-form .payment-plan-info span").each(function(index) {
+                                $(this).html(response.savings_prices[index]);
+                            });
+
+                            $(".modal-footer .total-amount-container .total-amount").html("NGN " + response.total_amount);
+
+                            $(".spinner-wrapper").removeClass("active");
+                        }
+                    });
+
+                    $(".payment-plan-wrapper").addClass("active");
+                });
+
+            <?php
+            } else {
+            ?>
+
+                $(document).on("click", ".cart-action-btn-container .btn", function() {
+                    // ALERT ADMIN
+                    Swal.fire({
+                        title: "Savings Error",
+                        icon: "error",
+                        text: "You need to login to use this action.",
+                        showCancelButton: true,
+                        confirmButtonText: 'Login',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: '#2366B5',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // REDIRECT USER TO LOGIN PAGE
+                            location.replace("../login");
+                        }
+                    });
+                });
+
+            <?php
+            }
+            ?>
 
             load_cart_data();
 
@@ -261,7 +562,6 @@ if ($inSession) {
 
 
                 // ENABLE UPDATE BUTTON
-                // console.log(Numbe);
                 if (Number(product_quantity) > 0) {
                     enableUpdateCartButton();
 
@@ -297,9 +597,7 @@ if ($inSession) {
 
 
                 // ENABLE UPDATE BUTTON
-                // console.log(Numbe);
                 if (Number(product_quantity) > 0) {
-                    console.log("product quantity isn't zero");
 
                     enableUpdateCartButton();
 
@@ -324,7 +622,6 @@ if ($inSession) {
                         });
                     }
                 } else {
-                    console.log("product quantity is zero");
                     disableUpdateCartButton();
                 }
             });
@@ -415,6 +712,81 @@ if ($inSession) {
                 } else {
                     return false;
                 }
+            });
+
+            // SAVINGS PLAN MODAL FUNCTIONALITY 
+            let savingsProductCount = 1;
+            $(document).on("click", ".payment-plan-container .controls-container button", function() {
+                const btnClicked = $(this).attr("data-direction");
+                const savingsProducts = $(".payment-plan-container .products-container .savings-product");
+
+                if (btnClicked === "next") {
+                    savingsProducts.each(function() {
+                        $(this).removeClass("active");
+                    });
+
+                    savingsProductCount++;
+
+                    ($(savingsProducts[savingsProductCount - 1]).addClass("active"));
+                } else {
+                    savingsProducts.each(function() {
+                        $(this).removeClass("active");
+                    });
+
+                    savingsProductCount--;
+
+                    ($(savingsProducts[savingsProductCount - 1]).addClass("active"));
+                }
+
+                if (savingsProductCount === 1) {
+                    $(".payment-plan-container .controls-container button[data-direction = 'prev']").attr("disabled", true);
+                    $(".payment-plan-container .controls-container button[data-direction = 'next']").attr("disabled", false);
+                }
+
+                if (savingsProductCount === savingsProducts.length) {
+                    $(".payment-plan-container .controls-container button[data-direction = 'next']").attr("disabled", true);
+                    $(".payment-plan-container .controls-container button[data-direction = 'prev']").attr("disabled", false);
+                }
+            });
+
+            // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
+            let requestProductCount = 1;
+            $(document).on("click", ".savings-request-modal .controls-container button", function() {
+                const btnClicked = $(this).attr("data-direction");
+                const savingsProducts = $(".savings-request-modal .products-container .savings-product");
+
+                if (btnClicked === "next") {
+                    savingsProducts.each(function() {
+                        $(this).removeClass("active");
+                    });
+
+                    requestProductCount++;
+
+                    ($(savingsProducts[requestProductCount - 1]).addClass("active"));
+                } else {
+                    savingsProducts.each(function() {
+                        $(this).removeClass("active");
+                    });
+
+                    requestProductCount--;
+
+                    ($(savingsProducts[requestProductCount - 1]).addClass("active"));
+                }
+
+                if (requestProductCount === 1) {
+                    $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", true);
+                    $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", false);
+                }
+
+                if (requestProductCount === savingsProducts.length) {
+                    $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", true);
+                    $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", false);
+                }
+            });
+
+            // ACTIVE SAVINGS REQUEST MODAL EVENT
+            $(document).on("click", ".savings-request-modal .modal-header .close-container", function() {
+                $(".savings-request-modal-wrapper").removeClass("active");
             });
 
         });

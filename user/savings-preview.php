@@ -1,3 +1,20 @@
+<?php
+require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+Auth::User("login");
+$user_id = $_SESSION['user_id'];
+//==================================================================
+
+//CHECK IF ALL THE DATA ARE IN SESSION
+if (isset($_SESSION['amount']) && isset($_SESSION['savings_duration'])) {
+    //GET ALL THE SAVINGS INFO FROM SESSION
+    $get_amount = $_SESSION['amount'];
+    $get_days = $_SESSION['savings_duration'];
+
+}else{
+    //IF NO DATA ARE FOUND, REDIRECT BACK TO ADD SAVINGS PAGE
+    header("Location: ./");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,24 +23,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicon Icon -->
-    <link rel="icon" href="../../assets/images/logo-small.png">
+    <link rel="icon" href="../assets/images/halfcarry-logo.jpg">
     <!-- Custom Fonts (KyivType Sans and Inter) -->
-    <link rel="stylesheet" href="../../assets/css/fonts/fonts.css">
+    <link rel="stylesheet" href="../assets/css/fonts.css">
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="../../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
     <!-- PLAN PREVIEW CSS -->
-    <link rel="stylesheet" href="../../assets/css/dashboard/user-dash/savings-preview.css">
+    <link rel="stylesheet" href="../assets/css/dashboard/user-dash/savings-preview.css">
     <!-- MEDIA QUERIES (DASHBOARD) -->
-    <link rel="stylesheet" href="../../assets/css/media-queries/user-dash-mediaqueries.css">
-    <title>Plan Summary - StudentXtra</title>
+    <link rel="stylesheet" href="../assets/css/mediaqueries/dash-mediaqueries.css">
+    <title>Savings Summary - HalfCarry</title>
 </head>
 
 <body>
     <header class="plan-summary-header">
-        <a href="index.html" class="icon-container">
+        <div class="icon-container">
             <i class="fa fa fa-arrow-left"></i>
-        </a>
-        <h2>Plan Summary</h2>
+        </div>
+        <h2>Savings Summary</h2>
     </header>
 
     <section class="plan-summary-section">
@@ -35,7 +52,7 @@
                     </div>
                     <div class="plan-value">
                         <span class="currency">NGN</span>
-                        <span id="amount-to-save">5000</span>
+                        <?php echo(number_format($get_amount, 2)) ?>
                     </div>
                 </div>
                 <div class="plan-info plan-amount">
@@ -46,12 +63,12 @@
                         Daily
                     </div>
                 </div>
-                <div class="plan-info plan-amount">
+                <!-- <div class="plan-info plan-amount">
                     <div class="plan-label">
                         Start date
                     </div>
                     <div class="plan-value">
-                        23 Sept 2022.
+                        <?php // echo($get_start_date) ?>
                     </div>
                 </div>
                 <div class="plan-info plan-amount">
@@ -59,9 +76,9 @@
                         End date
                     </div>
                     <div class="plan-value">
-                        28 Sept 2022
+                        <?php // echo($get_end_date) ?>
                     </div>
-                </div>
+                </div> -->
                 <div class="plan-info plan-amount">
                     <div class="plan-label">
                         Lock Status
@@ -78,31 +95,24 @@
             </div>
         </div>
     </section>
-    <!-- FONT AWESOME JIT SCRIPT-->
-    <script src="https://kit.fontawesome.com/3ae896f9ec.js" crossorigin="anonymous"></script>
     <!-- JQUERY SCRIPT -->
     <script src="../../assets/js/jquery/jquery-3.6.min.js"></script>
     <!-- JQUERY MIGRATE SCRIPT (FOR OLDER JQUERY PACKAGES SUPPORT)-->
     <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
+    <!-- TOASTER PLUGIN -->
+    <script src="../../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>
     <script>
-        // CHANGE DEFAULT NUMBER TO READABLE FORM 
-        //CHANGE THE BALANCE TO A READABLE FORM
-        $(".amount-to-save").text("NGN "
-            +
-            $(".amount-to-save")
-                .text()
-                .replace(/\D/g, "")
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        );
         function makePayment(x, final_amt) {
             FlutterwaveCheckout({
+                // public_key: "FLWPUBK-8a73c7e27bc482383e107f69056d6c48-X",
                 public_key: "FLWPUBK_TEST-9907ef66591a80edfb5c7ea51208031d-X",
                 tx_ref: x,
                 amount: final_amt,
                 currency: "NGN",
                 payment_options: "card, banktransfer, ussd",
-                redirect_url: `https://studentxtra.codeweb.ng/student/controllers/process`,
+                // redirect_url: `https://studentextra.codeweb.ng/student/controllers/process`,
+                redirect_url: `https://localhost/studentextra/student/controllers/process`,
 
                 customer: {
                     email: "info@codeweb.ng",
@@ -112,7 +122,7 @@
                 customizations: {
                     title: "Savings Deposit",
                     description: '',
-                    logo: "https://laptopshop.codeweb.ng/images/icons/logo.jpg",
+                    logo: "https://studentxtra.codeweb.ng/assets/images/studentxtra-logo.jpg",
                 },
             });
         }
@@ -122,6 +132,7 @@
             var tran = "TRX-";
             return tran + randm;
         }
+
         $(".continue-btn-container button").on("click", function () {
             // GENERATING TRANSACTION REF:
             const tranx_ref = generateTransaction_ref();
@@ -131,9 +142,6 @@
             formData.append("submit", true);
             formData.append("tx_ref", tranx_ref);
 
-            for ([key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
 
             $.ajax({
                 url: '../controllers/create-savings.php',

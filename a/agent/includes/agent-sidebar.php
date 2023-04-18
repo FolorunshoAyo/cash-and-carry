@@ -34,7 +34,7 @@ $url = strval($url);
                 <li>
                     <a href="<?= $url ?>a/agent/requests/savings_requests">
                         <i class="fa fa-bullseye"></i>
-                        <span>Full savings</span>
+                        <span>Normal savings</span>
                     </a>
                 </li>
                 <li>
@@ -55,7 +55,7 @@ $url = strval($url);
 
     <ul class="side-menu-bottom">
         <li class="nav-item logout">
-            <a href="../logout">
+            <a href="<?= $url ?>a/logout">
                 <i class="fa fa-sign-out"></i>
                 <span>Logout</span>
             </a>

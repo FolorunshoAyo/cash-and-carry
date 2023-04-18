@@ -25,7 +25,7 @@ if ($inSession) {
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="assets/fonts/fonts.css">
     <!-- BASE CSS -->
-    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/base.css?v=1">
     <!-- IZITOAST CSS -->
     <link rel="stylesheet" href="auth-library/vendor/dist/css/iziToast.min.css">
     <!-- Slick plugin stylesheet -->
@@ -33,7 +33,7 @@ if ($inSession) {
     <!-- CUSTOM SLIDER STYLING -->
     <link rel="stylesheet" href="assets/css/slider-theme.css" type="text/css">
     <!-- CUSTOM CSS (HOME) -->
-    <link rel="stylesheet" href="assets/css/index.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/index.css?v=1" type="text/css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="assets/css/media-queries/main-media-queries.css">
     <title>Home - Halfcarry</title>
@@ -41,9 +41,9 @@ if ($inSession) {
 
 <body>
     <?php
-        include_once("includes/cart.php");
-        include_once("includes/savings-request-modal.php");
-        include_once("includes/header.php");
+    include_once("includes/cart.php");
+    include_once("includes/savings-request-modal.php");
+    include_once("includes/header.php");
     ?>
     <main>
         <section class="categories-section">
@@ -538,37 +538,37 @@ if ($inSession) {
 
 
             // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
-            let productCount = 1;
-            $(document).on("click", ".controls-container button", function() {
+            let requestProductCount = 1;
+            $(document).on("click", ".savings-request-modal .controls-container button", function() {
                 const btnClicked = $(this).attr("data-direction");
-                const savingsProducts = $(".savings-request-modal .products-container .product");
+                const savingsProducts = $(".savings-request-modal .products-container .savings-product");
 
                 if (btnClicked === "next") {
                     savingsProducts.each(function() {
                         $(this).removeClass("active");
                     });
 
-                    productCount++;
+                    requestProductCount++;
 
-                    ($(savingsProducts[productCount - 1]).addClass("active"));
+                    ($(savingsProducts[requestProductCount - 1]).addClass("active"));
                 } else {
                     savingsProducts.each(function() {
                         $(this).removeClass("active");
                     });
 
-                    productCount--;
+                    requestProductCount--;
 
-                    ($(savingsProducts[productCount - 1]).addClass("active"));
+                    ($(savingsProducts[requestProductCount - 1]).addClass("active"));
                 }
 
-                if (productCount === 1) {
-                    $(".controls-container button[data-direction = 'prev']").attr("disabled", true);
-                    $(".controls-container button[data-direction = 'next']").attr("disabled", false);
+                if (requestProductCount === 1) {
+                    $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", true);
+                    $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", false);
                 }
 
-                if (productCount === savingsProducts.length) {
-                    $(".controls-container button[data-direction = 'next']").attr("disabled", true);
-                    $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+                if (requestProductCount === savingsProducts.length) {
+                    $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", true);
+                    $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", false);
                 }
             });
 

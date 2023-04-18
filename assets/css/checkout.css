@@ -2,7 +2,7 @@ body{
     height: 100vh;
 }
 
-header{
+header.checkout-header{
     height: 100px;
     display: flex;
     padding: 0 4rem;
@@ -59,7 +59,7 @@ header{
 }
 
 .product .product-image-container img{
-    width: 100%;
+    max-width: 100%;
 }
 
 .product .order-information{
@@ -73,6 +73,7 @@ header{
 
 .order-information span{
     display: block;
+    font-size: 1.5rem;
 }
 
 .order-information span:not(:last-child){
@@ -81,12 +82,10 @@ header{
 
 .product-quantity,
 .product-price-single{
-    font-size: 1.8rem;
     font-weight: 600;
 }
 
 .product-name{
-    font-size: 2rem;
     font-weight: bold;
     color: var(--primary-color);
 }
@@ -126,8 +125,14 @@ header{
     margin-right: 5px;
 }
 
+#payment-form p label{
+    display: flex;
+    align-items: center;
+}
+
 #payment-form p input{
     accent-color: var(--primary-color);
+    margin-right: 10px;
 }
 
 .sum-container{

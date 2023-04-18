@@ -106,7 +106,7 @@ function showStatus($status)
               $total_wallets_created += intval($wallet_created); // $total_wallets_created = $total_wallets_created + intval($wallet_created);
             }
 
-            $sql_total_amount_store_wallets = $db->query("SELECT SUM(amount) as daily_revenue FROM installment_payments WHERE deposited_at LIKE '%$current_date%'");
+            $sql_total_amount_store_wallets = $db->query("SELECT SUM(amount) as daily_revenue FROM savings_history WHERE deposited_at LIKE '%$current_date%'");
             // $sql_total_amount_agent_wallets = $db->query("SELECT SUM(amount) as daily_revenue FROM agent_savings WHERE deposited_at LIKE '%$current_date%'");
             // $sql_total_amount_debtor_wallets = $db->query("SELECT SUM(amount) as daily_revenue FROM debtor_savings WHERE deposited_at LIKE '%$current_date%'");
             // $sql_total_amount_user_wallets = $db->query("SELECT SUM(amount) as total_amount FROM user_wallets WHERE deposited_at LIKE '%$current_date%'");
@@ -158,7 +158,7 @@ function showStatus($status)
               $total_weekly_wallets_created += intval($wallet_created);
             }
 
-            $sql_total_amount_weekly_store_wallets = $db->query("SELECT SUM(amount) as weekly_revenue FROM installment_payments WHERE YEARWEEK(deposited_at, 1) = YEARWEEK(CURDATE(), 1)");
+            $sql_total_amount_weekly_store_wallets = $db->query("SELECT SUM(amount) as weekly_revenue FROM savings_history WHERE YEARWEEK(deposited_at, 1) = YEARWEEK(CURDATE(), 1)");
             // $sql_total_amount_weekly_agent_wallets = $db->query("SELECT SUM(amount) as weekly_revenue FROM agent_savings WHERE YEARWEEK(deposited_at, 1) = YEARWEEK(CURDATE(), 1)");
             // $sql_total_amount_weekly_debtor_wallets = $db->query("SELECT SUM(amount) as weekly_revenue FROM debtor_savings WHERE YEARWEEK(deposited_at, 1) = YEARWEEK(CURDATE(), 1)");
             // $sql_total_amount_user_wallets = $db->query("SELECT SUM(amount) as total_amount FROM user_wallets WHERE deposited_at LIKE '%$current_date%'");
@@ -211,7 +211,7 @@ function showStatus($status)
             $total_monthly_wallets_created += intval($wallet_created);
           }
 
-          $sql_total_amount_monthly_store_wallets = $db->query("SELECT SUM(amount) as monthly_revenue FROM installment_payments WHERE deposited_at LIKE '%$this_month%'");
+          $sql_total_amount_monthly_store_wallets = $db->query("SELECT SUM(amount) as monthly_revenue FROM savings_history WHERE deposited_at LIKE '%$this_month%'");
           // $sql_total_amount_monthly_agent_wallets = $db->query("SELECT SUM(amount) as monthly_revenue FROM agent_savings WHERE deposited_at LIKE '%$this_month%'");
           // $sql_total_amount_monthly_debtor_wallets = $db->query("SELECT SUM(amount) as monthly_revenue FROM debtor_savings WHERE deposited_at LIKE '%$this_month%'");
           // $sql_total_amount_user_wallets = $db->query("SELECT SUM(amount) as total_amount FROM user_wallets WHERE deposited_at LIKE '%$current_date%'");
@@ -266,8 +266,8 @@ function showStatus($status)
             $this_month = lcfirst(date("Y-m"));
             $last_month = lcfirst(date("Y-m", strtotime("last month")));
             // REVENUE FROM EASY BUY
-            $sql_this_month_revenue_installment_payments = $db->query("select SUM(amount) as month_revenue from installment_payments where deposited_at LIKE '%$this_month%'");
-            $sql_last_month_revenue_installment_payments = $db->query("select SUM(amount) as month_revenue from installment_payments where deposited_at LIKE '%$last_month%'");
+            $sql_this_month_revenue_installment_payments = $db->query("select SUM(amount) as month_revenue from savings_history where deposited_at LIKE '%$this_month%'");
+            $sql_last_month_revenue_installment_payments = $db->query("select SUM(amount) as month_revenue from savings_history where deposited_at LIKE '%$last_month%'");
 
 
             // REVENUE FROM AGENT WALLETS
@@ -412,14 +412,13 @@ function showStatus($status)
                 <th>Current amount</th>
                 <th>Target Amount</th>
                 <th>Type of wallet</th>
-                <th>Product Name</th>
                 <th>Last deposit</th>
               </tr>
             </thead>
             <tbody>
               <?php
-              $sql_all_store_wallets = $db->query("SELECT *, products.name as product_name FROM 
-              ((store_wallets INNER JOIN users ON store_wallets.user_id=users.user_id) INNER JOIN products ON store_wallets.product_id=products.product_id) WHERE store_wallets.completed = 0");
+              $sql_all_store_wallets = $db->query("SELECT * FROM 
+              store_wallets INNER JOIN users ON store_wallets.user_id=users.user_id WHERE store_wallets.completed = 0");
 
               function getWalletType($type){
                 $output = "";
@@ -451,7 +450,6 @@ function showStatus($status)
                   <td>NGN <?php echo  number_format($wallet_details['current_amount']) ?></td>
                   <td>NGN <?php echo  number_format($wallet_details['target_amount']) ?></td>
                   <td><?php echo getWalletType($wallet_details['type']) ?></td>
-                  <td><?php echo $wallet_details['product_name'] ?></td>
                   <td>
                     <?php 
                       $wallet_id = $wallet_details['wallet_id'];

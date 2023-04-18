@@ -5,13 +5,13 @@ $url = strval($url);
 
 if ((isset($_GET['a']) && $_GET['a'] == "send") && isset($_SESSION['email'])) {
 	$email = $_SESSION['email'];
-	$subject = "CDS Email Verification";
+	$subject = "HalfCarry Email Verification";
 	$otp = rand(100000, 999999);
 	$_SESSION['otp_code'] = $otp;
 
 	$message = "<div class='container'>
 				  <div class='image-container'>
-				  	<img src='" . $url . "/assets/images/logo-small.png' alt='logo'/>
+				  	<img src='" . $url . "/assets/images/halfcarry-logo.jpeg' alt='logo'/>
 				  </div>
                   <div class='box'>
                     <h2>". greeting() . "!</h2>

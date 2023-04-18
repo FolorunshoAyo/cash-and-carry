@@ -29,88 +29,142 @@
     cursor: auto;
 }
 
-table{
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid #F5F5F5;
-}
-
-
-thead{
-    padding: 1rem 0.5rem;
-    background-color: #fdeee7;
-    color: var(--primary-color);
-    font-size: 1rem;
-    font-weight: lighter;
-}
-
-table.dataTable tbody th, table.dataTable tbody td{
-    padding: 2rem;
-    font-size: 1rem;
-}
-
-table.dataTable tbody td .item-name-container{
-    display: flex;
-    align-items: center;
-}
-
-table.dataTable tbody td i{
-    font-size: 1.5rem;
-    margin-right: 5px;
-    color: var(--primary-color);
-}
-
-table.dataTable tbody td .action-container{
-    display: flex;
-    align-items: center;
-}
-
-table.dataTable tbody td .action-container button{
-    padding: 12px 10px;
-    border-radius: 10px;
-    border: none;
-    font-size: 1rem;
-}
-
-.details-btn{
-    color: var(--primary-color);
-    background-color: #fdeee7;
-    margin-right: 10px;
-}
-
-td{
-    border-bottom: 2px solid #F5F5F5;
-}
-
-.dataTables_wrapper .dataTables_length{
+.tab-container{
+    visibility: hidden;
+    opacity: 0;
     display: none;
+    margin-bottom: 50px;
 }
 
-.dataTables_wrapper .dataTables_filter{
-    margin-bottom: 20px;
+.tab-container.active{
+    visibility: visible;
+    opacity: 1;
+    display: block;
+    animation: fadeIn .3s ease-in;
 }
 
-.dataTables_wrapper .dataTables_info{
-    padding-top: 30px;
-}
-
-.dataTables_wrapper .dataTables_paginate{
-    padding-top: 20px;
-}
-
-.view-btn-container{
-    margin-top: 20px;
-    text-align: end;
-}
-
-.view-btn-container button{
-    padding: 10px 15px;
-    border-radius: 10px;
-    border: none;
-    font-size: 1rem;
-    margin-right: 2rem;
-    color: var(--white);
-    background-color: var(--primary-color);
+.tab-container > p{
     font-size: 1.5rem;
-    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.list-items-container{
+    margin: 20px 0;
+}
+
+.list-items-container .savings-card{
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    margin: 0 20px;
+    background-color: var(--white);
+    display: flex;
+    height: 100px;
+}
+
+.savings-card .savings-icon-container{
+    flex: 0 0 100px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    background-color: #fdeee7;
+    margin-right: 20px;
+}
+
+.savings-card .savings-request-info-container{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-size: 1.2rem;
+}
+
+.savings-card .savings-request-info-container .savings-request-id,
+.savings-card .savings-info-container .savings-request-id{
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all .3s ease-in;
+}
+
+.savings-card .savings-request-info-container .savings-request-id:hover,
+.savings-card .savings-info-container .savings-request-id:hover{
+    text-decoration: underline;
+}
+
+.savings-card .savings-info-wrapper{
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.savings-card .savings-info-container{
+    flex: 1;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 70px;
+}
+
+
+.savings-card .savings-info-container .savings-days{
+    color: var(--grey);
+}
+
+.savings-card .savings-amount{
+    margin-left: auto;
+    align-self: center;
+    font-size: 15px;
+    color: var(--primary-color);
+}
+
+.savings-card .savings-progress-thumb{
+    background-color: #fdeee7;
+    border-radius: 10px;
+    height: 5px;
+    flex: 0 0 100%;
+    overflow: hidden;
+}
+
+.savings-card .savings-progress-thumb .progress-pill{
+    background-color: var(--primary-color);
+    height: 100%;
+    border-radius: 10px;
+}
+
+.dot{
+    display: inline-block;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    vertical-align: middle;
+}
+
+.dot.pending{
+    background-color: #1270B0;
+}
+
+.dot.granted{
+    background-color: var(--success);
+}
+
+.dot.rejected{
+    background-color: var(--danger);
+}
+
+.savings-card .savings-target-price{
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: var(--primary-color);
+}
+
+.list-items-container .savings-card:not(:last-child){
+    margin-bottom: 15px;
 }
