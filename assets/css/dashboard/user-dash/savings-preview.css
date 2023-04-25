@@ -1,11 +1,10 @@
-    .plan-summary-header{
+.plan-summary-header{
     height: 10vh;
     padding: 15px 30px;
     display: flex;
     align-items: center;
     font-size: 1.5rem;
 }
-
 
 .icon-container{
     display: flex;

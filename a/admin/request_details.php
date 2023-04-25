@@ -1,6 +1,7 @@
 <?php
 require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-AgentAuth::User("a/login");
+AdminAuth::User("a/login");
+$admin_id = $_SESSION['admin_id'];
 
 if (isset($_GET['sid']) && !empty($_GET['sid'])) {
     $rid = $_GET['sid'];
@@ -21,7 +22,7 @@ if (isset($_GET['sid']) && !empty($_GET['sid'])) {
 
     $request_details = $get_request_details->fetch_assoc();
 } else {
-    header("Location: ./requests/halfsavings_requests");
+    header("Location: ./all_savings");
 }
 
 function generateStatus($status)
@@ -33,7 +34,7 @@ function generateStatus($status)
             $html = '<span class="dot pending"> </span> pending';
             break;
         case "2":
-            $html = '<span class="dot approved"> </span> approved';
+            $html = '<span class="dot approved"> </span> granted';
             break;
         case "3":
             $html = '<span class="dot rejected"> </span> rejected';
@@ -54,6 +55,8 @@ function generateStatus($status)
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- DROP DOWN MENU CSS -->
+    <link rel="stylesheet" href="../../assets/css/dropdown.css" />
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="../../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
@@ -64,17 +67,17 @@ function generateStatus($status)
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/savings-request.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Request Details (#<?= $request_details['savings_id'] ?>) - HalfCarry Agent</title>
+    <title>Agent - Halfcarry Admin</title>
 </head>
 
 <body style="background-color: #fafafa">
     <div class="dash-wrapper">
         <?php
-        include("includes/agent-sidebar.php");
+        include("includes/admin-sidebar.php");
         ?>
         <section class="page-wrapper">
             <header class="dash-header">
-                <a href="./requests/halfsavings_requests.php" class="back-link">
+                <a href="./all_savings" class="back-link">
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
@@ -202,42 +205,48 @@ function generateStatus($status)
     <script src="../../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- METIS MENU JS -->
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
+    <!-- Sweet Alert JS -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- DROP DOWN JS -->
+    <script type="text/javascript" src="../../assets/js/dropdown/dropdown.min.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
-        // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
-        let productCount = 1;
-        $(document).on("click", ".controls-container button", function() {
-            const btnClicked = $(this).attr("data-direction");
-            const savingsProducts = $(".products-container .savings-product");
+        $(function() {
+            // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
+            let productCount = 1;
+            $(document).on("click", ".controls-container button", function() {
+                const btnClicked = $(this).attr("data-direction");
+                const savingsProducts = $(".products-container .savings-product");
 
-            if (btnClicked === "next") {
-                savingsProducts.each(function() {
-                    $(this).removeClass("active");
-                });
+                if (btnClicked === "next") {
+                    savingsProducts.each(function() {
+                        $(this).removeClass("active");
+                    });
 
-                productCount++;
+                    productCount++;
 
-                ($(savingsProducts[productCount - 1]).addClass("active"));
-            } else {
-                savingsProducts.each(function() {
-                    $(this).removeClass("active");
-                });
+                    ($(savingsProducts[productCount - 1]).addClass("active"));
+                } else {
+                    savingsProducts.each(function() {
+                        $(this).removeClass("active");
+                    });
 
-                productCount--;
+                    productCount--;
 
-                ($(savingsProducts[productCount - 1]).addClass("active"));
-            }
+                    ($(savingsProducts[productCount - 1]).addClass("active"));
+                }
 
-            if (productCount === 1) {
-                $(".controls-container button[data-direction = 'prev']").attr("disabled", true);
-                $(".controls-container button[data-direction = 'next']").attr("disabled", false);
-            }
+                if (productCount === 1) {
+                    $(".controls-container button[data-direction = 'prev']").attr("disabled", true);
+                    $(".controls-container button[data-direction = 'next']").attr("disabled", false);
+                }
 
-            if (productCount === savingsProducts.length) {
-                $(".controls-container button[data-direction = 'next']").attr("disabled", true);
-                $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
-            }
+                if (productCount === savingsProducts.length) {
+                    $(".controls-container button[data-direction = 'next']").attr("disabled", true);
+                    $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+                }
+            });
         });
     </script>
 </body>

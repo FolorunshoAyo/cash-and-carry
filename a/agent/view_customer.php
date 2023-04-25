@@ -39,7 +39,7 @@ if (isset($_GET['uid']) && !empty($_GET['uid'])) {
             margin-top: 10px;
         }
 
-        .address-count{
+        .address-count {
             font-size: 2rem;
         }
 
@@ -54,26 +54,39 @@ if (isset($_GET['uid']) && !empty($_GET['uid'])) {
             margin-bottom: 20px;
         }
 
-        .address-count{
+        .address-count {
             color: var(--primary-color);
             margin-bottom: 10px;
         }
 
-        .address-card p{
+        .address-card p {
             margin-bottom: 10px;
         }
 
-        .address-label{
+        .address-label {
             color: var(--primary-color);
             font-weight: bold;
         }
 
-        .address-value{
+        .address-value {
             line-height: 1.5;
         }
 
-        .address-info:not(:last-child){
+        .address-info:not(:last-child) {
             margin-bottom: 10px;
+        }
+
+        .address-status-container {
+            text-align: end;
+            margin-top: 10px;
+        }
+
+        .address-status-container {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            background-color: var(--primary-color);
+            color: var(--white);
         }
     </style>
     <title>View customer - Hallfcarry Agent</title>
@@ -90,10 +103,10 @@ if (isset($_GET['uid']) && !empty($_GET['uid'])) {
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
-            <div class="product-form-wrapper">
-                <h2 class="product-form-title">Customer Details</h2>
+            <div class="form-wrapper">
+                <h2 class="form-title">Customer Details</h2>
 
-                <div class="product-form-container">
+                <div class="form-container">
                     <form id="customer-upload-form">
                         <div class="form-groupings">
                             <div class="form-group-container">
@@ -138,41 +151,68 @@ if (isset($_GET['uid']) && !empty($_GET['uid'])) {
                                     </div>
                                 </div>
 
+                                <h2 class="product-form-title">Customer Addresses</h2>
+
                                 <?php
                                 $sql_check_addresses = $db->query("SELECT * FROM users_addresses WHERE user_id = {$uid}");
 
                                 $hasAddress = $sql_check_addresses->num_rows > 0;
 
-                                if($hasAddress){
+                                if ($hasAddress) {
                                 ?>
-                                <h2 class="product-form-title">Customer Addresses</h2>
+                                    <div class="address-cards">
+                                        <?php
+                                        $get_user_addresses = $db->query("SELECT * FROM users_addresses WHERE user_id={$uid}");
+                                        $count = 1;
+                                        while ($address = $get_user_addresses->fetch_assoc()) {
+                                            $get_address_details = $db->query("SELECT * FROM adddresses WHERE address_id = {$address['address_id']}");
 
-                                <div class="address-cards">
-                                    <div class="address-card">
-                                        <h3 class="address-count">#1</h3>
+                                            $address_details = $get_address_details->fetch_assoc();
 
-                                        <p>Recipients info:</p>
-                                        <div class="address-info">
-                                            <span class="address-label">Name:</span>
-                                            <span class="address-value">Shodiya Folorunsho</span>
-                                        </div>
-                                        <div class="address-info">
-                                            <span class="address-label">Phone no:</span>
-                                            <span class="address-value">07087857141</span>
-                                        </div>
-                                        <div class="address-info">
-                                            <span class="address-label">Delivery Address:</span>
-                                            <span class="address-value">Plot 5a, Olaoluwa Ige St. Ikorodu, Ogun State. (1102345)</span>
-                                        </div>
-                                        <div class="address-info">
-                                            <span class="address-label">Additional Info:</span>
-                                            <span class="address-value">Some additional information is to be placed here</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php
+                                        ?>
+                                            <div class="address-card">
+                                                <h3 class="address-count">#<?= $count ?></h3>
+
+                                                <p>Recipients info:</p>
+                                                <div class="address-info">
+                                                    <span class="address-label">Name:</span>
+                                                    <span class="address-value"><?= $address_details['recipient_name'] ?></span>
+                                                </div>
+                                                <div class="address-info">
+                                                    <span class="address-label">Phone no:</span>
+                                                    <span class="address-value"><?= $address_details['recipient_phone_no'] ?></span>
+                                                </div>
+                                                <div class="address-info">
+                                                    <span class="address-label">Delivery Address:</span>
+                                                    <span class="address-value">Plot 5a, Olaoluwa Ige St. Ikorodu, Ogun State. (1102345)</span>
+                                                </div>
+                                                <?php
+                                                if ($address_details['additional_information']) {
+                                                ?>
+                                                    <div class="address-info">
+                                                        <span class="address-label">Additional Info:</span>
+                                                        <span class="address-value"><?= $address_details['additional_information'] ?></span>
+                                                    </div>
+                                                <?php
+                                                }
+                                                if ($address['active'] === "1") {
+                                                ?>
+                                                    <div class="address-status-container">
+                                                        <span>active</span>
+                                                    </div>
+                                                <?php
+                                                }
+                                                ?>
+                                            </div>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                } else {
+                                    echo "<p style='text-align: center; font-size: 2rem; color: var(--primary-color)'>No address yet</p>";
                                 }
-                                ?>
+                                    ?>
+                                    </div>
                             </div>
                         </div>
                     </form>

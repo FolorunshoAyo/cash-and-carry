@@ -470,6 +470,8 @@ if ($inSession) {
                             $(".modal-footer .total-amount-container .total-amount").html("NGN " + response.total_amount);
 
                             $(".spinner-wrapper").removeClass("active");
+
+                            savingsProductCount = 1;
                         }
                     });
 
@@ -727,7 +729,7 @@ if ($inSession) {
 
                     savingsProductCount++;
 
-                    ($(savingsProducts[savingsProductCount - 1]).addClass("active"));
+                    $(savingsProducts[savingsProductCount - 1]).addClass("active");
                 } else {
                     savingsProducts.each(function() {
                         $(this).removeClass("active");
@@ -735,7 +737,7 @@ if ($inSession) {
 
                     savingsProductCount--;
 
-                    ($(savingsProducts[savingsProductCount - 1]).addClass("active"));
+                    $(savingsProducts[savingsProductCount - 1]).addClass("active");
                 }
 
                 if (savingsProductCount === 1) {

@@ -11,6 +11,7 @@ if(isset($_POST['verify'])) {
 		$sql = $db->query("UPDATE users SET is_email_verified=1 WHERE email='{$email}'");
 		if($sql) {
 			unset($_SESSION['email']);
+			unset($_SESSION['first_name']);
 			unset($_SESSION['otp_code']);
 			header("location: ".$url."success");
 		}else{

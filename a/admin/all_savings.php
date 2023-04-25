@@ -1,23 +1,45 @@
-<?php 
-  require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-  AdminAuth::User("a/login");
-  $admin_id = $_SESSION['admin_id'];
+<?php
+require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+AdminAuth::User("a/login");
+$admin_id = $_SESSION['admin_id'];
 
 //   $date_time = $db->query("SELECT NOW() AS nowdate");
 //   $row = $date_time->fetch_assoc();
 //   $dated = $row['nowdate'];
 //   $now = strtotime($dated);
-  // $time = date("M d Y, h:i A", $now);
+// $time = date("M d Y, h:i A", $now);
 
-  $current_date = date('Y-m-d');
-  $str_current_date = strtotime(date('Y-m-d'));
+$current_date = date('Y-m-d');
+$str_current_date = strtotime(date('Y-m-d'));
 
-  $admin_sql = $db->query("SELECT * FROM admin WHERE admin_id={$admin_id}");
-  if($admin_sql->num_rows == 1){
-      $row_admin = $admin_sql->fetch_assoc();
-  }else{
-      header("Location: ../login");
-  }
+$admin_sql = $db->query("SELECT * FROM admin WHERE admin_id={$admin_id}");
+if ($admin_sql->num_rows == 1) {
+    $row_admin = $admin_sql->fetch_assoc();
+} else {
+    header("Location: ../login");
+}
+
+
+function showStatus($status)
+{
+    $html = "";
+    switch ($status) {
+        case "1":
+            $html = "<span class='dot pending-dot'></span> pending";
+            break;
+        case "2":
+            $html = "<span class='dot completed-dot'></span> granted";
+            break;
+        case "3":
+            $html = "<span class='dot cancelled-dot'></span> rejected";
+            break;
+        default:
+            $html = "Unable to detect status";
+            break;
+    }
+
+    return $html;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,95 +66,23 @@
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/all-savings.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Products - CDS</title>
+    <title>Savings - Halfcarry Admin</title>
 </head>
 
 <body style="background-color: #fafafa">
-    <div class="full-loader">
-        <div class="spinner"></div>
-    </div>
     <div class="dash-wrapper">
-        <div class="mobile-backdrop"></div>
-        <aside class="dash-menu">
-            <div class="logo">
-                <div class="menu-icon">
-                    <i class="fa fa-bars"></i>
-                    <i class="fa fa-times"></i>
-                </div>
-                <a href="./" class="logo">
-                    <i class="fa fa-home"></i>
-                    <span> CDS ADMIN </span>
-                </a>
-            </div>
-            <ul class="side-menu" id="side-menu">
-                <li class="nav-item">
-                    <a href="./">
-                        <i class="fa fa-tachometer"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0">
-                        <i class="fa fa-signal"></i>
-                        <span>Statistics</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="./orders">
-                        <i class="fa fa-usd"></i>
-                        <span>Orders</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0">
-                        <i class="fa fa-recycle"></i>
-                        <span>Shipping</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="./products">
-                        <i class="fa fa-shopping-bag"></i>
-                        <span>Products</span>
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="./agents">
-                        <i class="fa fa-users"></i>
-                        <span>Agents</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0">
-                        <i class="fa fa-commenting-o"></i>
-                        <span>Messages</span>
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="side-menu-bottom">
-                <li class="nav-tem">
-                    <a href="javascript:void(0)">
-                        <i class="fa fa-gear"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-                <li class="nav-item logout">
-                    <a href="../logout">
-                        <i class="fa fa-sign-out"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
+        <?php
+        include("includes/admin-sidebar.php");
+        ?>
         <section class="page-wrapper">
             <div class="table-wrapper">
                 <div class="tabs-container">
                     <div class="tabs">
                         <div class="tab active" data-tab="1">
-                            DS Savings
+                            Active
                         </div>
                         <div class="tab" data-tab="2">
-                            EB Savings
+                            Requests
                         </div>
                     </div>
                 </div>
@@ -141,57 +91,96 @@
                     <table class="savings-table main-table">
                         <thead>
                             <tr>
-                                <th>S/N</th>
-                                <th>Agent Name</th>
-                                <th>Customer Name</th>
-                                <th>Product</th>
-                                <th>Amount paid</th>
-                                <th>Days saved</th>
-                                <th>Period covered</th>
-                                <th>Deposited at</th>
+                                <th>
+                                    #
+                                </th>
+                                <!-- <th>
+                                    No. of products
+                                </th> -->
+                                <th>
+                                    Type of savings
+                                </th>
+                                <th>
+                                    Duration of Savings
+                                </th>
+                                <th>
+                                    Installment Amount
+                                </th>
+                                <th>
+                                    Current Amount
+                                </th>
+                                <th>
+                                    Target Amount
+                                </th>
+                                <th>
+                                    Ass. Agent
+                                </th>
+                                <th>
+
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
-                                $sql_agent_savings = $db->query("SELECT agents.last_name as agent_last_name, agents.first_name as agent_first_name, agent_customers.first_name as customer_first_name, agent_customers.last_name as customer_last_name, products.name, agent_savings.savings_days, agent_savings.amount, agent_savings.start_date, agent_savings.end_date, agent_savings.deposited_at
-                                FROM ((((agent_wallets
-                                INNER JOIN agents ON agent_wallets.agent_id = agents.agent_id)
-                                INNER JOIN agent_customers ON agent_wallets.agent_customer_id = agent_customers.agent_customer_id)
-                                INNER JOIN products ON agent_wallets.product_id = products.product_id)
-                                INNER JOIN agent_savings ON agent_wallets.wallet_id = agent_savings.wallet_id)");
-
-                                $savings_count = 1;
-                                while($savings_details = $sql_agent_savings->fetch_assoc()){
-                            ?>
-                            <tr>
-                                <td>
-                                    #<?php echo $savings_count ?>
-                                </td>
-                                <td>
-                                    <?php echo $savings_details['agent_last_name'] . " " . $savings_details['agent_first_name'] ?>
-                                </td>
-                                <td>
-                                    <?php echo $savings_details['customer_last_name'] . " " . $savings_details['customer_first_name'] ?>
-                                </td>
-                                <td>
-                                    <?php echo $savings_details['name'] ?>
-                                </td>
-                                <td>
-                                    NGN <?php echo $savings_details['amount'] ?>
-                                </td>
-                                <td>
-                                    <?php echo $savings_details['savings_days'] ?> days
-                                </td>
-                                <td>
-                                    <?php echo date("d M, Y", strtotime($savings_details['start_date'])) . " - " . date("d M, Y", strtotime($savings_details['end_date'])) ?>
-                                </td>
-                                <td>
-                                    <?php echo date("d M, Y", strtotime($savings_details['deposited_at'])) . "<br>" . date("H:i a", strtotime($savings_details['deposited_at']))?>
-                                </td>
-                            </tr>
                             <?php
-                                    $savings_count++;
-                                }
+                            $sql_active_wallets = $db->query("SELECT store_wallets.*, savings_requests.installment_type as installment_type, savings_requests.duration_of_savings as duration_of_savings,
+                            savings_requests.installment_amount as installment_amount, savings_requests.target_amount as target_amount, savings_requests.type_of_savings as type_of_savings, agents.first_name as agent_first_name,
+                            agents.last_name as agent_last_name
+                           FROM ((store_wallets INNER JOIN savings_requests ON store_wallets.wallet_no = savings_requests.savings_id) INNER JOIN agents ON store_wallets.agent_id=agents.agent_id)
+                           WHERE savings_requests.status = 2 ORDER BY store_wallets.wallet_id DESC");
+
+                            $wallets_count = 2;
+                            while ($wallet_details = $sql_active_wallets->fetch_assoc()) {
+                            ?>
+                                <tr>
+                                    <td>
+                                        <?= $wallet_details['wallet_no'] ?>
+                                    </td>
+                                    <!-- <td>
+                                        <?php
+                                        // $get_products_in_request = $db->query("SELECT COUNT(*) as num_of_products FROM savings_products WHERE savings_id={$wallet_details['wallet_no']}");
+
+                                        // $number_of_products = $get_products_in_request->fetch_assoc()['num_of_products'];
+
+                                        ?>
+                                        <?php // $number_of_products 
+                                        ?>
+                                    </td> -->
+                                    <td>
+                                        <?= $wallet_details['type_of_savings'] === "1" ? "Normal Savings" : "Half Savings" ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $period_suffix = $wallet_details['installment_type'] === "1" ? "day(s)" : ($wallet_details['installment_type'] === "2" ? "week(s)" : "month(s)");
+
+                                        echo $wallet_details['duration_of_savings'] . " " . $period_suffix;
+                                        ?>
+                                    </td>
+                                    <td>
+                                        ₦ <?= number_format($wallet_details['installment_amount'], 2) ?>
+                                    </td>
+                                    <td>
+                                        ₦ <?= number_format($wallet_details['amount'], 2) ?>
+                                    </td>
+                                    <td>
+                                        ₦ <?= number_format($wallet_details['target_amount'], 2) ?>
+                                    </td>
+                                    <td>
+                                        Agt. <?= $wallet_details['agent_last_name'] . " " . $wallet_details['agent_first_name'] ?>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown" style="font-size: 10px;">
+                                            <button class="dropdown-toggle" data-dd-target="<?php echo $wallets_count ?>" aria-label="Dropdown Menu">
+                                                o<br>o<br>o
+                                            </button>
+                                            <div class="dropdown-menu" data-dd-path="<?php echo $wallets_count ?>">
+                                                <a class="dropdown-menu__link" href="wallet?id=<?= $wallet_details['wallet_no'] ?>">View Wallet</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php
+                                $wallets_count += 2;
+                            }
                             ?>
                         </tbody>
                     </table>
@@ -200,57 +189,87 @@
                     <table class="savings-table main-table">
                         <thead>
                             <tr>
-                                <th>S/N</th>
-                                <th>Agent Name</th>
-                                <th>Customer Name</th>
-                                <th>Product</th>
-                                <th>Amount paid</th>
-                                <th>Days saved</th>
-                                <th>Period covered</th>
-                                <th>Deposited at</th>
+                                <!-- <th>
+                                    Product(s)
+                                </th> -->
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>
+                                    Customer
+                                </th>
+                                <th>
+                                    status
+                                </th>
+                                <th>
+                                    Installment Amount
+                                </th>
+                                <th>
+                                    Target Amount
+                                </th>
+                                <th>
+                                    Action
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
-                                $sql_easybuy_savings_query = $db->query("SELECT agents.last_name as agent_last_name, agents.first_name as agent_first_name, easybuy_agent_customers.first_name as customer_first_name, easybuy_agent_customers.last_name as customer_last_name, products.name, easybuy_agent_savings.savings_days, easybuy_agent_savings.amount, easybuy_agent_savings.start_date, easybuy_agent_savings.end_date, easybuy_agent_savings.deposited_at
-                                FROM ((((easybuy_agent_wallets
-                                INNER JOIN agents ON easybuy_agent_wallets.agent_id = agents.agent_id)
-                                INNER JOIN easybuy_agent_customers ON easybuy_agent_wallets.agent_customer_id = easybuy_agent_customers.agent_customer_id)
-                                INNER JOIN products ON easybuy_agent_wallets.product_id = products.product_id)
-                                INNER JOIN easybuy_agent_savings ON easybuy_agent_wallets.wallet_id = easybuy_agent_savings.wallet_id) LIMIT 10");
-
-                                $savings_count = 1;
-                                while($easybuy_savings_details = $sql_easybuy_savings_query->fetch_assoc()){
-                            ?>
-                            <tr>
-                                <td>
-                                    #<?php echo $savings_count ?>
-                                </td>
-                                <td>
-                                    <?php echo $easybuy_savings_details['agent_last_name'] . " " . $easybuy_savings_details['agent_first_name'] ?>
-                                </td>
-                                <td>
-                                    <?php echo $easybuy_savings_details['customer_last_name'] . " " . $easybuy_savings_details['customer_first_name'] ?>
-                                </td>
-                                <td>
-                                    <?php echo $easybuy_savings_details['name'] ?>
-                                </td>
-                                <td>
-                                    NGN <?php echo $easybuy_savings_details['amount'] ?>
-                                </td>
-                                <td>
-                                    <?php echo $easybuy_savings_details['savings_days'] ?> days
-                                </td>
-                                <td>
-                                    <?php echo date("d M, Y", strtotime($easybuy_savings_details['start_date'])) . " - " . date("d M, Y", strtotime($easybuy_savings_details['end_date'])) ?>
-                                </td>
-                                <td>
-                                    <?php echo date("d M, Y", strtotime($easybuy_savings_details['deposited_at'])) . "<br>" . date("H:i a", strtotime($easybuy_savings_details['deposited_at']))?>
-                                </td>
-                            </tr>
                             <?php
-                                    $savings_count++;
-                                }
+                            $sql_all_savings_requests = $db->query("SELECT * FROM savings_requests INNER JOIN users ON savings_requests.user_id = users.user_id ORDER BY id DESC");
+
+                            $count = 1;
+                            while ($request_details = $sql_all_savings_requests->fetch_assoc()) {
+                            ?>
+                                <tr>
+                                    <!-- <td>
+                                    <div class="product-details-container">
+                                        <div class="product-img-container">
+                                            <img src="images/iphone13-green.jpg" alt="Product Image" />
+                                        </div>
+                                        <div class="product-details">
+                                            <span class="product-title">Iphone 13 green</span>
+                                            <span class="product-span">Category: Phone</span>
+                                        </div>
+                                    </div>
+                                </td> -->
+                                    <td>
+                                        #<?php echo $request_details['savings_id'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo date("F j, Y", strtotime($request_details['requested_at'])) ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $name = ucfirst($request_details['last_name'])  . " " . ucfirst($request_details['first_name']);
+                                        echo $name;
+                                        ?>
+                                    </td>
+                                    <td class="status-cell-<?php echo $request_details['savings_id'] ?>">
+                                        <?php echo showStatus($request_details['status']) ?>
+                                    </td>
+                                    <td>
+                                        NGN <?php echo number_format($request_details['installment_amount'], 2) ?>
+                                    </td>
+                                    <td>
+                                        NGN <?php echo number_format($request_details['target_amount'], 2) ?>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
+                                                o<br>o<br>o
+                                            </button>
+                                            <div style="font-size: 1rem;" class="dropdown-menu" data-dd-path="<?php echo $count ?>">
+                                                <a class="dropdown-menu__link" href="request_details?sid=<?php echo $request_details['savings_id'] ?>">View request</a>
+                                                <!-- <a class="dropdown-menu__link deleteEl" href="javascript:void(0)" data-productId="1"></a> -->
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php
+                                $count += 2;
+                            }
                             ?>
                         </tbody>
                     </table>
@@ -278,25 +297,25 @@
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
-        $(function () {
-            $(".savings-table").each(function (){
+        $(function() {
+            $(".savings-table").each(function() {
                 $(this).DataTable({
                     "pageLength": 50
                 });
             });
 
             // TAB FUNCTIONALITY
-            $(".tab").each(function(){
-                $(this).on("click", function(){
+            $(".tab").each(function() {
+                $(this).on("click", function() {
                     const selectedTabNo = $(this).attr("data-tab");
 
-                    $(".tab").each(function(){
+                    $(".tab").each(function() {
                         $(this).removeClass("active");
                     })
 
                     $(this).addClass("active");
 
-                    $(".tab-content").each(function(){
+                    $(".tab-content").each(function() {
                         $(this).removeClass("active");
                     });
 

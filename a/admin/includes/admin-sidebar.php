@@ -40,6 +40,12 @@ $file_name = end($page_info);
                 <span>Agents</span>
             </a>
         </li>
+        <li title="orders" class="nav-item <?= ($file_name === "all_savings.php") || ($file_name === "request_details.php") || ($file_name === "wallet.php")? 'active' : ''?>">
+            <a href="./all_savings">
+                <i class="fa fa-money"></i>
+                <span>Savings</span>
+            </a>
+        </li>
         <li title="shipping" class="nav-item">
             <a href="javascript:void(0)">
                 <i class="fa fa-recycle"></i>

@@ -19,7 +19,7 @@ function showStatus($status)
             $html = "<span class='dot pending-dot'></span> pending";
             break;
         case "2":
-            $html = "<span class='dot shipped-dot'></span> granted";
+            $html = "<span class='dot completed-dot'></span> granted";
             break;
         case "3":
             $html = "<span class='dot cancelled-dot'></span> rejected";
@@ -139,9 +139,9 @@ function showStatus($status)
                                             <?php
                                             $status = $request_details['status'];
                                             ?>
-                                            <select class="request-status-select" name="request-status-<?= $request_details['id'] ?>" data-requestID="<?php echo $request_details['id'] ?>" data-userID="<?= $request_details['user_id'] ?>">
+                                            <select class="request-status-select" name="request-status-<?= $request_details['id'] ?>" data-requestID="<?php echo $request_details['id'] ?>" data-userID="<?= $request_details['user_id'] ?>" <?= ($status === "2" || $status === "3")? "disabled" : "" ?>>
                                                 <option <?php echo $status === "1" ? "selected" : "" ?> value="1">pending</option>
-                                                <option <?php echo $status === "2" ? "selected" : "" ?> value="2">approved</option>
+                                                <option <?php echo $status === "2" ? "selected" : "" ?> value="2">granted</option>
                                                 <option <?php echo $status === "3" ? "selected" : "" ?> value="3">rejected</option>
                                             </select>
                                         </form>

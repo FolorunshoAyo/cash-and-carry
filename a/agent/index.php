@@ -53,10 +53,7 @@ $agent_id = $_SESSION['agent_id'];
                                     Phone number
                                 </th>
                                 <th>
-                                    Active Wallet
-                                </th>
-                                <th>
-                                    Date added
+                                    Joined on
                                 </th>
                                 <th>
 
@@ -65,23 +62,23 @@ $agent_id = $_SESSION['agent_id'];
                         </thead>
                         <tbody>
                             <?php
-                            $sql_agent_customers = $db->query("SELECT * FROM store_wallets  
-                            INNER JOIN users ON store_wallets.user_id = users.user_id
-                            WHERE store_wallets.agent_id='$agent_id' AND store_wallets.completed = 0  ORDER BY store_wallets.wallet_id DESC");
+                            $sql_agent_customers = $db->query("SELECT DISTINCT store_wallets.*, users.first_name as user_first_name, users.last_name as user_last_name, users.email as user_email, users.phone_no as user_phone_no 
+                            FROM store_wallets INNER JOIN users ON store_wallets.user_id = users.user_id
+                            WHERE store_wallets.agent_id='$agent_id' ORDER BY store_wallets.wallet_id DESC");
 
                             $count = 1;
                             while ($customer = $sql_agent_customers->fetch_assoc()) {
                             ?>
                                 <tr>
                                     <td>
-                                        <?php echo $customer['last_name'] . " " . $customer['first_name']
+                                        <?php echo $customer['user_last_name'] . " " . $customer['user_first_name']
                                         ?>
                                     </td>
                                     <td>
-                                        <?php echo  $customer['email']  ?>
+                                        <?php echo  $customer['user_email']  ?>
                                     </td>
                                     <td>
-                                        <?php echo $customer['phone_no'] ?>
+                                        <?php echo $customer['user_phone_no'] ?>
                                     </td>
                                     <td>
                                         <?php
@@ -94,7 +91,8 @@ $agent_id = $_SESSION['agent_id'];
                                                 o<br>o<br>o
                                             </button>
                                             <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
-                                                <a class="dropdown-menu__link" href="view_customer?cid=<?php echo $customer['agent_id'] ?>">View Customer Details</a
+                                                <a class="dropdown-menu__link" href="view_customer?uid=<?php echo $customer['user_id'] ?>">View Profile</a>
+                                                <a class="dropdown-menu__link" href="user_wallets?uid=<?php echo $customer['user_id'] ?>">Assigned Wallets</a>
                                             </div>
                                         </div>
                                     </td>

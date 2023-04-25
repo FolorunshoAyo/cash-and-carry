@@ -37,11 +37,6 @@ $admin_id = $_SESSION['admin_id'];
         include("includes/admin-sidebar.php");
         ?>
         <section class="page-wrapper">
-            <header class="dash-header">
-                <a href="products" class="back-link">
-                    <i class="fa fa-arrow-left"></i>
-                </a>
-            </header>
             <div class="table-wrapper">
                 <h2 class="table-title">All Agents</h2>
 

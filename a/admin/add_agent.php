@@ -35,10 +35,10 @@
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
-            <div class="product-form-wrapper">
-                <h2 class="product-form-title">Register a New Agent</h2>
+            <div class="form-wrapper">
+                <h2 class="form-title">Register a New Agent</h2>
 
-                <div class="product-form-container">
+                <div class="form-container">
                     <form id="agent-upload-form">
                         <div class="form-groupings">
                             <div class="form-group-container">

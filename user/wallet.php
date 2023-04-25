@@ -4,6 +4,40 @@ Auth::User("login");
 
 $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
+
+if (isset($_GET['id']) && !empty($_GET['id'])) {
+    $savings_id = $_GET['id'];
+    $products = array();
+    $months = array();
+
+    $get_wallet_details = $db->query("SELECT * FROM savings_requests INNER JOIN store_wallets ON savings_requests.savings_id=store_wallets.wallet_no WHERE store_wallets.wallet_no = {$savings_id}");
+
+    $get_products = $db->query("SELECT savings_products.*, products.pictures as product_pictures, products.name as product_name, products.duration_of_payment as duration_of_payment FROM savings_products INNER JOIN products ON savings_products.product_id = products.product_id WHERE savings_id={$savings_id}");
+
+    while ($product = $get_products->fetch_assoc()) {
+        $product_picture = explode(",", $product['product_pictures'])[0];
+        $product_object = array("product_name" => $product['product_name'], "product_picture" => $product_picture, "product_quantity" => $product['quantity']);
+
+        array_push($products, $product_object);
+        array_push($months, $product['duration_of_payment']);
+    }
+
+    $savings_month = max($months);
+
+    $request_details = $get_wallet_details->fetch_assoc();
+} else {
+    header("location: ./");
+}
+
+if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && isset($_SESSION['end_period']) && isset($_SESSION['period_to_pay']) && isset($_SESSION['wallet_no'])) {
+    // UNSETS AND DELETES ALL ENTRIES OF SET TRANSACTIOIN DETAILS
+    unset($_SESSION['amount_to_pay']);
+    unset($_SESSION['start_period']);
+    unset($_SESSION['end_period']);
+    unset($_SESSION['installment_type']);
+    unset($_SESSION['period_to_pay']);
+    unset($_SESSION['wallet_no']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,8 +48,6 @@ $user_name = $_SESSION['user_name'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
-    <!-- PAGINATE CSS -->
-    <link rel="stylesheet" href="../assets/css/jquery.paginate.css">
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
@@ -32,14 +64,14 @@ $user_name = $_SESSION['user_name'];
     <link rel="stylesheet" href="../assets/css/dashboard/user-dash/wallet.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/user-dash-mediaqueries.css" />
-    <title> Wallet (#123456) - Halfcarry</title>
+    <title> Wallet (#<?= $savings_id ?>) - Halfcarry</title>
 </head>
 
 <body>
     <!-- SPINNER -->
     <div class="spinner-wrapper">
         <div class="spinner-container">
-            <img src="assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
+            <img src="../assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
             <div class="spinner"></div>
         </div>
     </div>
@@ -58,10 +90,10 @@ $user_name = $_SESSION['user_name'];
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <All class="dropdown-item" href="#">All products</a>
+                            <All class="dropdown-item" href="../all-products/">All products</a>
                         </li>
-                        <li><a class="dropdown-item" href="#">Active Wallets</a></li>
-                        <li><a class="dropdown-item" href="#">Savings Request</a></li>
+                        <li><a class="dropdown-item" href="savings?active">Active Wallets</a></li>
+                        <li><a class="dropdown-item" href="savings?requests">Savings Request</a></li>
                     </ul>
                 </div>
                 <div>
@@ -82,64 +114,98 @@ $user_name = $_SESSION['user_name'];
                 <div class="dashboard-main-container">
                     <div class="wallet-wrapper">
                         <div class="wallet-title-container">
-                            <h1 class="dashboard-main-title" style="font-size: 3rem;">Wallet <span style="color: var(--primary-color);">(#123456)</span></h1>
+                            <h1 class="dashboard-main-title" style="font-size: 3rem;">Wallet <span style="color: var(--primary-color);">(#<?= $savings_id ?>)</span></h1>
                             <button class="add-wallet-btn"><i class="fa fa-plus"></i> Add to wallet</button>
                         </div>
 
-                        <div class="controls-container">
-                            <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
-                            <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
-                        </div>
-                        <div class="products-container">
-                            <div class="savings-product active">
-                                <div class="savings-product-image-container">
-                                    <img src="<?= $url ?>assets/images/web-cam-1.jpg" alt="Web cam #1">
-                                </div>
-                                <div class="savings-product-details">
-                                    <span class="savings-product-name">Web cam 2.0</span>
-                                    <span class="savings-product-qty">Qty: 3</span>
-                                </div>
+                        <?php
+                        if (count($products) > 1) {
+                        ?>
+                            <div class="controls-container">
+                                <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
+                                <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
                             </div>
-                            <div class="savings-product">
-                                <div class="savings-product-image-container">
-                                    <img src="<?= $url ?>assets/images/web-cam-1.jpg" alt="Web cam #1">
-                                </div>
-                                <div class="savings-product-details">
-                                    <span class="savings-product-name">Web cam 2.0</span>
-                                    <span class="savings-product-qty">Qty: 5</span>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+                        }
+                        ?>
 
+                        <div class="products-container">
+                            <?php
+                            foreach ($products as $key => $product) {
+                                if ($key == 0) {
+                            ?>
+                                    <div class="savings-product active">
+                                        <div class="savings-product-image-container">
+                                            <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                        </div>
+                                        <div class="savings-product-details">
+                                            <span class="savings-product-name"><?= $product['product_name'] ?></span>
+                                            <span class="savings-product-qty">Qty: <?= $product['product_quantity'] ?></span>
+                                        </div>
+                                    </div>
+                                <?php
+                                } else {
+                                ?>
+                                    <div class="savings-product">
+                                        <div class="savings-product-image-container">
+                                            <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                        </div>
+                                        <div class="savings-product-details">
+                                            <span class="savings-product-name"><?= $product['product_name'] ?></span>
+                                            <span class="savings-product-qty">Qty: <?= $product['product_quantity'] ?></span>
+                                        </div>
+                                    </div>
+                            <?php
+                                }
+                            }
+                            ?>
+                        </div>
                         <div class="wallet-card">
                             <header class="wallet-header">
                                 <div class="wallet-icon-container">
                                     <i class="fa fa-archive"></i>
                                 </div>
                                 <div class="wallet-balance-container">
-                                    NGN 23,000
+                                    NGN <?= number_format($request_details['amount'], 2) ?>
                                 </div>
                             </header>
                             <div class="wallet-progress">
                                 <div class="progress-top">
                                     <span class="days-left">
-                                        6 months left
+                                        <?php
+                                        $time_left = $request_details['duration_of_savings'] - $request_details['paid_for'];
+                                        $installment_type = $request_details['installment_type'];
+
+                                        $period_suffix = $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months");
+
+                                        echo $time_left . " " . $period_suffix;
+                                        ?>
+                                        left
                                     </span>
 
                                     <span class="target-date">
-                                        1 January 2024
+                                        <?php
+                                        $exp_date_of_completion = date("d F Y", strtotime($request_details['created_at'] . "+ $savings_month months"))
+                                        ?>
+                                        Exp. Date of Completion - <?= $exp_date_of_completion ?>
                                     </span>
                                 </div>
+                                <?php
+                                $progress_percentage = round(($request_details['amount'] / $request_details['target_amount']) * 100);
+                                ?>
                                 <div class="progress-thumb">
-                                    <div class="progress-pill" style="width: 45%;"></div>
+                                    <div class="progress-pill" style="width: <?= $progress_percentage ?>%;"></div>
                                 </div>
+                                <?php
+
+                                ?>
                                 <div class="progress-bottom">
                                     <span class="progress-percent">
-                                        <i class="fa fa-bullseye"></i> Your Target (88%)
+                                        <i class="fa fa-bullseye"></i> Your Target (<?= $progress_percentage ?>%)
                                     </span>
 
                                     <span class="wallet-target-amount">
-                                        ₦300,000
+                                        ₦ <?= number_format($request_details['target_amount'], 2) ?>
                                     </span>
                                 </div>
                             </div>
@@ -147,44 +213,37 @@ $user_name = $_SESSION['user_name'];
 
                         <div class="savings-history-container">
                             <h2 class="title">Savings History</h2>
-                            <ul class="savings-history">
-                                <li>
-                                    <div class="savings-history-icon-container">
-                                        <i class="fa fa-plus"></i>
-                                    </div>
-                                    <div class="savings-history-info">
-                                        <span class="saved-for">+ 3 weeks</span>
-                                        <span class="paid-date">Wednesday, 1 Dec 22</span>
-                                    </div>
-                                    <div class="savings-history-price">
-                                        + ₦3,000
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="savings-history-icon-container">
-                                        <i class="fa fa-plus"></i>
-                                    </div>
-                                    <div class="savings-history-info">
-                                        <span class="saved-for">+ 3 weeks</span>
-                                        <span class="paid-date">Wednesday, 1 Dec 22</span>
-                                    </div>
-                                    <div class="savings-history-price">
-                                        + ₦3,000
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="savings-history-icon-container">
-                                        <i class="fa fa-plus"></i>
-                                    </div>
-                                    <div class="savings-history-info">
-                                        <span class="saved-for">+ 3 weeks</span>
-                                        <span class="paid-date">Wednesday, 1 Dec 22</span>
-                                    </div>
-                                    <div class="savings-history-price">
-                                        + ₦3,000
-                                    </div>
-                                </li>
-                            </ul>
+                            <?php
+                            $get_savings_history = $db->query("SELECT * FROM savings_history WHERE wallet_no = {$savings_id} AND payment_status = 1");
+
+                            if ($get_savings_history->num_rows === 0) {
+                            ?>
+                                <p style="text-align: center; font-size: 1.5rem; color: var(--primary-color);">No savings history recorded</p>
+                            <?php
+                            } else {
+                            ?>
+                                <ul class="savings-history <?= $get_savings_history->num_rows > 20? "paginated" : ""?>">
+                                    <?php
+                                    while ($savings_history_details = $get_savings_history->fetch_assoc()) {
+                                    ?>
+                                        <li>
+                                            <div class="savings-history-icon-container">
+                                                <i class="fa fa-plus"></i>
+                                            </div>
+                                            <div class="savings-history-info">
+                                                <span class="saved-for">+ <?php echo $savings_history_details['paid_for'] . " " . $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months"); ?></span>
+                                                <span class="deposited-by">Deposited by: <?= $request_details['deposited_by'] === "1" ? "You" : "Agent" ?></span>
+                                                <span class="paid-date"><?= date("F, d Y", strtotime($savings_history_details['deposited_at'])) ?>Wednesday, 1 Dec 22</span>
+                                            </div>
+                                            <div class="savings-history-price">
+                                                + ₦ <?= number_format($savings_history_details['amount'], 2) ?>
+                                            </div>
+                                        </li>
+                                <?php
+                                    }
+                                }
+                                ?>
+                                </ul>
                         </div>
 
                         <div class="add-to-wallet-container">
@@ -206,15 +265,28 @@ $user_name = $_SESSION['user_name'];
             <section class="wallet-details-section">
                 <p>Add to your savings to aquire your selected products by crediting your wallet.</p>
 
-                <p><span>NGN 2,000</span><sub>/week</sub></p>
+                <p><span>NGN <?= number_format($request_details['installment_amount'], 2) ?></span><sub>/<?= $installment_type === "1" ? "day" : ($installment_type === "2" ? "week" : "month"); ?></sub></p>
             </section>
             <div class="payment-form-container">
                 <h2>Enter Transaction Details</h2>
                 <form id="credit-wallet-form">
                     <div class="form-group-container">
                         <div class="form-group animate">
-                            <input type="number" name="amount" id="amount" class="form-input" placeholder=" " required />
-                            <label for="Amount">Number of weeks to save</label>
+                            <?php
+                            // AUTO POPULATE WEEKS TO BE CLEARED FOR HALF PAYMENT
+                            $to_pay_half = $request_details['type_of_savings'] === "2" && $request_details['amount'] === "0.00";
+                            if ($to_pay_half) {
+                                $to_pay = round($request_details['duration_of_savings'] / 2);
+                            ?>
+                                <input type="number" name="amount" id="amount" class="form-input" placeholder=" " value="<?= $to_pay ?>" disabled/>
+                            <?php
+                            } else {
+                            ?>
+                                <input type="number" name="amount" id="amount" class="form-input" placeholder=" " />
+                            <?php
+                            }
+                            ?>
+                            <label for="Amount">Number of <?= $period_suffix ?> to save</label>
                         </div>
                     </div>
 
@@ -252,25 +324,25 @@ $user_name = $_SESSION['user_name'];
             }])
             .onSuccess((event) => {
                 const savingsForm = document.querySelector("#credit-wallet-form");
-
                 const formData = new FormData(savingsForm);
 
+
                 formData.append("submit", true);
+                formData.append("wid", <?= $request_details['wallet_no']?>)
+                <?php
+                    echo $to_pay_half? "formData.set('amount', $to_pay)" : "";
+                ?>
 
-                for (const [key, value] of formData.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
-
-                // CREATE SAVINGS REQUEST
+                // PROCESS SAVINGS  
                 $.ajax({
-                    url: "../controllers/process-savings.php",
+                    url: "controllers/process-savings.php",
                     method: "POST",
                     data: formData,
                     contentType: false,
                     processData: false,
                     beforeSend: function() {
                         $(".spinner-wrapper").addClass("active");
-                        $(".credit-wallet-section .credit-wallet-container .action-btn button").html("<i class='fa fa-spinner rotate'></i>")
+                        $(".credit-wallet-modal .credit-wallet-container .action-btn button").html("<i class='fa fa-spinner rotate'></i>")
                     },
                     success: function(response) {
                         response = JSON.parse(response);
@@ -278,13 +350,13 @@ $user_name = $_SESSION['user_name'];
                         if (response.success == 1) {
                             location.href = "./savings-preview";
                         } else {
-                            $(".spinner-wrapper").addClass("active");
-                            $(".credit-wallet-section .credit-wallet-container .action-btn button").html("<i class='fa fa-spinner rotate'></i>");
+                            $(".spinner-wrapper").removeClass("active");
+                            $(".credit-wallet-modal .credit-wallet-container .action-btn button").html("Proceed to Pay");
 
                             Swal.fire({
                                 title: "Savings Deposit",
                                 icon: "error",
-                                text: "Unable to place savings request. Please try again.",
+                                text: "Unable to process savings",
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
                             });
@@ -295,11 +367,11 @@ $user_name = $_SESSION['user_name'];
 
         // CREDIT WALLET MODAL FUNCTIONALITY
         // --------------------------------
-        $(".add-wallet-btn").on("click", function(){
+        $(".add-wallet-btn").on("click", function() {
             $(".credit-wallet-modal").addClass("active");
         });
 
-        $(".credit-wallet-container .close-container").on("click", function(){
+        $(".credit-wallet-container .close-container").on("click", function() {
             $(".credit-wallet-modal").removeClass("active");
         });
         // -------------------------------
@@ -344,7 +416,7 @@ $user_name = $_SESSION['user_name'];
         $(".savings-history-container .savings-history.paginated").paginate({
             scope: $(".savings-history-container .savings-history li"),
             paginatePosition: ['bottom'],
-            perPage: 10
+            perPage: 20
         });
     </script>
 </body>

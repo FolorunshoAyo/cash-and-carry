@@ -2,13 +2,13 @@
     function greeting(){
         $theDate = date("H"); 
         if($theDate < 12){
-            return "Good morning to you";
+            return "Good morning";
         }  
         else if($theDate < 18) {
-            return "Good afternoon to you"; 
+            return "Good afternoon"; 
         }
         else{
-            return "Good evening to you"; 
+            return "Good evening"; 
         } 
     }
 

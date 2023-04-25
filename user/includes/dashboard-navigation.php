@@ -18,7 +18,7 @@
                 <a href="./profile">My profile</a>
             </li>
             <li class="dashboard-nav-link logout">
-                <a href="../">Logout</a>
+                <a href="<?= $url ?>logout">Logout</a>
             </li>
         </ul>
     </div>

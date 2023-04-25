@@ -139,7 +139,7 @@ function showStatus($status)
                                             <?php
                                             $status = $request_details['status'];
                                             ?>
-                                            <select class="request-status-select" name="request-status-<?= $request_details['id'] ?>" data-requestID="<?php echo $request_details['id'] ?>" data-userID="<?= $request_details['user_id'] ?>">
+                                            <select class="request-status-select" name="request-status-<?= $request_details['id'] ?>" data-requestID="<?php echo $request_details['savings_id'] ?>" data-userID="<?= $request_details['user_id'] ?>" <?= ($status === "2" || $status === "3")? "disabled" : "" ?>>
                                                 <option <?php echo $status === "1" ? "selected" : "" ?> value="1">pending</option>
                                                 <option <?php echo $status === "2" ? "selected" : "" ?> value="2">approved</option>
                                                 <option <?php echo $status === "3" ? "selected" : "" ?> value="3">canceled</option>
@@ -235,7 +235,7 @@ function showStatus($status)
             });
 
             function updateAndDisableSavingsRequest(requestId, selectEl, userId, status) {
-                $.post("controllers/update-saving-request", {
+                $.post("controllers/update-savings-request", {
                     rid: requestId,
                     status: status,
                     user_id: userId,

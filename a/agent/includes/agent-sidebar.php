@@ -19,7 +19,7 @@ $url = strval($url);
     </div>
     <ul class="side-menu" id="side-menu">
         <li class="nav-item">
-            <a href="./">
+            <a href="<?= $url ?>a/agent/">
                 <i class="fa fa-users"></i>
                 <span>Customers</span>
             </a>
@@ -46,7 +46,7 @@ $url = strval($url);
             </ul>
         </li>
         <li class="nav-item">
-            <a href="./all_wallets">
+            <a href="<?= $url ?>a/agent/active_wallets">
                 <i class="fa fa-money"></i>
                 <span>Active Wallets</span>
             </a>

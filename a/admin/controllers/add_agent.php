@@ -18,20 +18,32 @@
             $sql_add_agent = $db->query("INSERT INTO agents (last_name, first_name, other_name, email, passkey, phone_no, account_status) VALUES('$lname', '$fname', '$oname', '$email', '$passkey', '$phoneno', '$account_status')");
 
             if($sql_add_agent){
-                // $subject = "Halfcarry Agent Verification";
-                // // SEND MAIL
-                // $message = "<div>
-				//   <div>
-				//   	<img src='" . $url . "/assets/images/halfcarry-logo.jpeg' alt='logo' width='200' height='200'/>
-				//   </div>
-                //   <div>
-                //     <h2>". greeting() . "!</h2>
-                //     <p>Agent" . ucfirst($fname) . "</p>
-                //     <p>Your password is <b>" . $random_pass . "<b></p>                              
-                //   </div>
-                // </div>";
+                $subject = "Halfcarry Agent Verification";
+                // SEND MAIL
+                $html = "<!DOCTYPE html>
+                <html>
+                  <head>
+                    <link rel='stylesheet' href='https://halfcarry.com.ng/assets/fonts/fonts.css' />
+                  </head>
+                  <body style='
+                  font-family: 'Inter', sans-serif !important'>
+                
+                    <header style='margin: 50px 0; text-align: center;'>
+                      <img src='https://halfcarry.com.ng/assets/images/halfcarry-logo.jpeg' style='width: 150px; height: 80px;'/>
+                    </header>
+                    <main>
+                      <section style='margin: 50px 10px; font-size: 14px;'>
+                      <p style='margin-bottom: 10px; line-height: 1.5;'>'" . greeting() . $first_name . ",</p>
+                
+                        <p style='margin-bottom: 10px; line-height: 1.5; text-align: justify;'>
+                          Welcome to <b>HalfCarry</b> Your agent password is <b>" . $random_pass . "</b>
+                        </p>
+                    </main>
+                    </body>
+                    </html>
+                    ";
 
-                // send_raw_mail($email, $subject, $message);
+                // send_custom_mail($email, $subject, $message);
                 echo json_encode(array('success' => 1, 'agent_name' => $fname, 'random_pass' => $random_pass));
             }
         }

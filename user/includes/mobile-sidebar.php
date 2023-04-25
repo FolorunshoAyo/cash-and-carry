@@ -30,7 +30,7 @@ $file_name = end($page_info);
                 <a href="./profile" class="nav-link"> My profile </a>
             </li>
             <li class="nav-link-item">
-                <a href="../logout" class="nav-link logout"> Logout </a>
+                <a href="<?= $url ?>logout" class="nav-link logout"> Logout </a>
             </li>
         </ul>
     </div>

@@ -3,7 +3,15 @@ header{
     display: block;
 }
 
-.dashboard-main-container .controls-container button{
+.page-wrapper{
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 2rem 4rem;
+    margin: 60px 0 0 120px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.wallet-wrapper .controls-container button{
     padding: 0.5rem 1rem;
     font-size: 1.3rem;
     border-radius: 10px;
@@ -14,20 +22,20 @@ header{
     cursor: pointer;
 }
 
-.dashboard-main-container .controls-container button:disabled{
+.wallet-wrapper .controls-container button:disabled{
     opacity: .7;
     cursor: default;
 }
 
-.dashboard-main-container .controls-container button:not(:last-child){
+.wallet-wrapper .controls-container button:not(:last-child){
     margin-right: 5px;
 }
 
-.dashboard-main-container .products-container{
+.wallet-wrapper .products-container{
     margin: 15px 0;
 }
 
-.dashboard-main-container .savings-product{
+.wallet-wrapper .savings-product{
     padding: 1rem 2rem;
     display: none;
     border: 2px solid var(--primary-color);
@@ -35,20 +43,20 @@ header{
     margin: 20px;
 }
 
-.dashboard-main-container .savings-product.active{
+.wallet-wrapper .savings-product.active{
     display: flex;
 }
 
-.dashboard-main-container .savings-product-image-container{
+.wallet-wrapper .savings-product-image-container{
     flex: 0 0 150px;
     margin-right: 10px;
 }
 
-.dashboard-main-container .savings-product-image-container img{
+.wallet-wrapper .savings-product-image-container img{
     max-width: 100%;
 }
 
-.dashboard-main-container .savings-product-details
+.wallet-wrapper .savings-product-details
 {
     display: flex;
     flex-direction: column;
@@ -56,7 +64,7 @@ header{
     font-size: 1.5rem;
 }
 
-.dashboard-main-container .savings-product-details .savings-product-name{
+.wallet-wrapper .savings-product-details .savings-product-name{
     color: var(--primary-color);
 }
 
@@ -66,17 +74,12 @@ header{
     align-items: center;
     justify-content: space-between;
     margin: 0px 10px 20px;
+    padding: 2rem 0;
 
-}
-
-.wallet-wrapper .wallet-title-container .dashboard-main-title{
-    margin-bottom: 0px;
 }
 
 .wallet-card{
-    margin-top: 150px;
-    background-color: var(--white);
-    border-radius: 10px 10px 0 0;
+    margin: 150px 0 20px;
     padding: 1rem 2rem;
 }
 
@@ -148,7 +151,7 @@ header{
 }
 
 .savings-history-container{
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 }
 
 
@@ -167,6 +170,10 @@ header{
     display: flex;
     padding: 1rem 0.5rem;
     height: 100px;
+}
+
+.savings-history-container .savings-history li{
+    background-color: transparent;
 }
 
 .savings-history-container .savings-history li:not(:last-child){
@@ -198,9 +205,6 @@ header{
     font-size: 2rem;
 }
 
-.savings-history-container .savings-history .savings-history-info .deposited-by{
-    font-size: 1.5rem;
-}
 
 .savings-history-container .savings-history .savings-history-info .paid-date{
     color: var(--grey);
@@ -236,12 +240,13 @@ header{
 .wallet-title-container button,
 .credit-wallet-modal .credit-wallet-container .action-btn button{
     background-color: var(--primary-color);
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: var(--white);
     padding: 1rem 2rem;
     border-radius: 10px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     border: none;
+    cursor: pointer;
 }
 
 .credit-wallet-modal{
