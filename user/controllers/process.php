@@ -39,30 +39,32 @@ if (isset($_GET["transaction_id"]) && isset($_GET["status"]) && isset($_GET["tx_
 		$api_amount = $result->data->amount;
 		$api_charged_amount = $result->data->charged_amount;
 
-		$savings_history_id = $_SESSION['savings_history__id'];
+		$savings_history_id = $_SESSION['savings_history_id'];
 		$wallet_no = $_SESSION['wallet_no'];
+		$period_to_pay = $_SESSION['period_to_pay'];
 
-		$sql_wallet = $db->query("SELECT amount FROM store_wallets WHERE wallet_no ={$wallet_no}");
+		$sql_wallet = $db->query("SELECT amount, paid_for FROM store_wallets WHERE wallet_no ={$wallet_no}");
 
-		$current_balance = $sql_wallet->fetch_assoc();
+		$wallet_details = $sql_wallet->fetch_assoc();
 
 		$sql_deposit = $db->query("UPDATE deposits SET deposit_status=1, deposit_amount={$api_amount} WHERE transaction_ref='{$api_tranx_ref}'");
-		$sql_savings = $db->query("UPDATE savings SET savings_status=1 WHERE savings_status=0 AND id={$savings_history_id}");
+		$sql_savings = $db->query("UPDATE savings_history SET payment_status=1 WHERE payment_status=0 AND id={$savings_history_id}");
 		// $sql_add_to_logs = $db->query("INSERT INTO logs(student_id, log_message) VALUES({$student_id}, 'Deposited $api_amount NGN')");
 
 		// UPDATE AMOUNT IN WALLET
-		if (!$current_balance["amount"]) {
-			$sql_wallet = $db->query("UPDATE wallets SET total_amount={$api_amount} WHERE student_id={$student_id}");
+		if (!$wallet_details["amount"]) {
+			$sql_wallet = $db->query("UPDATE store_wallets SET amount={$api_amount}, paid_for = {$period_to_pay} WHERE wallet_no={$wallet_no}");
 		} else {
-			$total_amount = $current_balance["amount"];
-			$sql_wallet = $db->query("UPDATE store_wallets SET amount={$total_amount} + {$api_amount} WHERE wallet_no={$wallet_no}");
+			$total_amount = $wallet_details["amount"];
+			$paid_for = $wallet_details['paid_for'];
+
+			$sql_wallet = $db->query("UPDATE store_wallets SET amount={$total_amount} + {$api_amount}, paid_for = {$paid_for} + {$period_to_pay} WHERE wallet_no={$wallet_no}");
 		}
 
 		if ($sql_deposit == true && $sql_savings == true) {
 			unset($_SESSION['amount_to_pay']);
 			unset($_SESSION['start_period']);
 			unset($_SESSION['end_period']);
-			unset($_SESSION['wallet_no']);
 
 			header("location: ../successful-payment");
 		} else {

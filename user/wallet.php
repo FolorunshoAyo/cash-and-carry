@@ -173,7 +173,7 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                                 <div class="progress-top">
                                     <span class="days-left">
                                         <?php
-                                        $time_left = $request_details['duration_of_savings'] - $request_details['paid_for'];
+                                        $time_left = intval($request_details['duration_of_savings']) - intval($request_details['paid_for']);
                                         $installment_type = $request_details['installment_type'];
 
                                         $period_suffix = $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months");
@@ -231,9 +231,9 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                                                 <i class="fa fa-plus"></i>
                                             </div>
                                             <div class="savings-history-info">
-                                                <span class="saved-for">+ <?php echo $savings_history_details['paid_for'] . " " . $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months"); ?></span>
-                                                <span class="deposited-by">Deposited by: <?= $request_details['deposited_by'] === "1" ? "You" : "Agent" ?></span>
-                                                <span class="paid-date"><?= date("F, d Y", strtotime($savings_history_details['deposited_at'])) ?>Wednesday, 1 Dec 22</span>
+                                                <span class="saved-for">+ <?= $savings_history_details['paid_for']?> <?= $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months"); ?></span>
+                                                <span class="deposited-by">Deposited by: <?= $savings_history_details['deposited_by'] === "1" ? "You" : "Agent" ?></span>
+                                                <span class="paid-date"><?= date("l, d F Y", strtotime($savings_history_details['deposited_at'])) ?></span>
                                             </div>
                                             <div class="savings-history-price">
                                                 + ₦ <?= number_format($savings_history_details['amount'], 2) ?>

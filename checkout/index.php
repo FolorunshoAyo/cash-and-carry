@@ -43,8 +43,12 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
 </head>
 
 <body>
-    <div class="full-loader">
-        <div class="spinner"></div>
+    <!-- CUSTOM SPINNER/LOADER -->
+    <div class="spinner-wrapper">
+        <div class="spinner-container">
+            <img src="../assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
+            <div class="spinner"></div>
+        </div>
     </div>
     <header class="checkout-header">
         <div class="header-title-container">
@@ -344,7 +348,55 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
                     errorMessage: "Field is required",
                 }])
                 .onSuccess((event) => {
-                    console.log(event);
+                    const savingsForm = document.querySelector("#savings-form");
+
+                    const formData = new FormData(savingsForm);
+
+                    formData.append("submit", true);
+                    formData.append("type", "2");
+
+                    for (const [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
+
+                    // CREATE SAVINGS REQUEST
+                    $.ajax({
+                        url: "../controllers/make-savings-request.php",
+                        method: "POST",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function() {
+                            $(".spinner-wrapper").addClass("active");
+                            $(".savings-action-btn-container button.btn").html("<i class='fa fa-spinner rotate'></i>")
+                        },
+                        success: function(response) {
+                            response = JSON.parse(response);
+
+                            if (response.success == 1) {
+                                Swal.fire({
+                                    title: "Savings Request",
+                                    icon: "success",
+                                    text: "Your request has been placed successfully, your chosen agent would contact you shortly.",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                }).then((result) => {
+                                    location.href = `../user/savings-request?id=${response.savings_id}`;
+                                });
+                            } else {
+                                $(".spinner-wrapper").removeClass("active");
+                                $(".savings-action-btn-container buttton.btn").html("Proceed")
+
+                                Swal.fire({
+                                    title: "Savings Request Error",
+                                    icon: "error",
+                                    text: "Unable to place savings request. Please try again.",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                });
+                            }
+                        }
+                    });
                 });
         }
 
@@ -427,8 +479,41 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
                     }
                 }
             });
+        });
 
+        // SAVINGS PLAN MODAL FUNCTIONALITY 
+        let savingsProductCount = 1;
+        $(document).on("click", ".payment-plan-container .controls-container button", function() {
+            const btnClicked = $(this).attr("data-direction");
+            const savingsProducts = $(".payment-plan-container .products-container .savings-product");
 
+            if (btnClicked === "next") {
+                savingsProducts.each(function() {
+                    $(this).removeClass("active");
+                });
+
+                savingsProductCount++;
+
+                $(savingsProducts[savingsProductCount - 1]).addClass("active");
+            } else {
+                savingsProducts.each(function() {
+                    $(this).removeClass("active");
+                });
+
+                savingsProductCount--;
+
+                $(savingsProducts[savingsProductCount - 1]).addClass("active");
+            }
+
+            if (savingsProductCount === 1) {
+                $(".payment-plan-container .controls-container button[data-direction = 'prev']").attr("disabled", true);
+                $(".payment-plan-container .controls-container button[data-direction = 'next']").attr("disabled", false);
+            }
+
+            if (savingsProductCount === savingsProducts.length) {
+                $(".payment-plan-container .controls-container button[data-direction = 'next']").attr("disabled", true);
+                $(".payment-plan-container .controls-container button[data-direction = 'prev']").attr("disabled", false);
+            }
         });
     </script>
 </body>

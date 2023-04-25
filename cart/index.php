@@ -367,8 +367,8 @@ if ($inSession) {
                                     location.href = `../user/savings-request?id=${response.savings_id}`;
                                 });
                             } else {
-                                $(".spinner-wrapper").addClass("active");
-                                $(".savings-action-btn-container buttton.btn").html("<i class='fa fa-spinner rotate'></i>")
+                                $(".spinner-wrapper").removeClass("active");
+                                $(".savings-action-btn-container buttton.btn").html("Proceed")
 
                                 Swal.fire({
                                     title: "Savings Request Error",

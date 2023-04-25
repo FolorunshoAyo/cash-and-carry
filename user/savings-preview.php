@@ -163,10 +163,10 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                     response = JSON.parse(response);
 
                     if (response.success === 1) {
-                        makePayment(tranx_ref, response.amount_charged);
                         $(".spinner-wrapper").removeClass("active");
                         btnEl.html("continue");
                         btnEl.attr("disabled", false);
+                        makePayment(tranx_ref, response.amount_charged);
                     } else {
                         // ALERT THE USER UPON FAILED REQUEST/RESPONSE
                         $(".spinner-wrapper").removeClass("active");
