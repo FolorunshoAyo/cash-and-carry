@@ -19,7 +19,7 @@ function showStatus($status)
             $html = "<span class='dot pending-dot'></span> pending";
             break;
         case "2":
-            $html = "<span class='dot shipped-dot'></span> granted";
+            $html = "<span class='dot completed-dot'></span> granted";
             break;
         case "3":
             $html = "<span class='dot cancelled-dot'></span> rejected";
@@ -206,7 +206,7 @@ function showStatus($status)
 
                     const selectedRequestId = $(this).attr("data-requestID");
 
-                    $(selectEl).after("<img src='../../../assets/images/loading-gif.gif' alt='Loading'>")
+                    $(selectEl).after("<img src='../../../assets/images/loading-gif.gif' alt='Loading'>");
 
                     // PREVENT UPDATE IF PENDING
                     if (selectedRequestStatus === "1") return;

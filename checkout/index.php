@@ -7,6 +7,52 @@ $userID = $_SESSION['user_id'];
 if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
     $shopping_cart = $_SESSION['shopping_cart'];
 
+    // GATHER PRODUCT NAME AND IN STOCK ERRORS
+    $products_stock_error_details = array();
+
+    foreach ($_SESSION['shopping_cart'] as $key => $values) {
+        $product_id = $values['product_id'];
+
+        $sql_get_stock_details = $db->query("SELECT name,in_stock FROM products WHERE product_id = {$product_id}");
+
+        $product_details = $sql_get_stock_details->fetch_assoc();
+
+        if (intval($product_details['in_stock']) < intval($values['product_quantity'])) {
+            // STOCK ERROR
+            array_push($products_stock_error_details, array('product_name' => $values['product_name'], 'product_stock' => $product_details['in_stock']));
+        }
+    }
+
+    // CHECK FOR STOCK ERROR
+
+    if (count($products_stock_error_details) > 0) {
+        $error_message = "";
+
+        foreach ($products_stock_error_details as $key => $values) {
+            if (($key + 1) === count($products_stock_error_details)) {
+                $error_message .= $values['product_name'];
+            } else {
+                $error_message .= $values['product_name'] . ", ";
+            }
+        }
+
+        $error_message .= " has only ";
+
+        foreach ($products_stock_error_details as $key => $values) {
+            if (($key + 1) === count($products_stock_error_details)) {
+                $error_message .= $values['product_stock'];
+            } else {
+                $error_message .= $values['product_stock'] . ", ";
+            }
+        }
+
+        $error_message .= " in stock";
+
+        $_SESSION['stock_error_message'] = $error_message;
+        
+        header("location: ../cart");
+    }
+
     $sql_user_address = $db->query("SELECT *
     FROM addresses INNER JOIN users_addresses ON 
     addresses.address_id = users_addresses.address_id WHERE user_id={$userID} AND active=1");
@@ -18,6 +64,11 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
     $_SESSION['email'] = $email;
 } else {
     header("location: ../cart");
+}
+
+if (isset($_SESSION['order_no']) && isset($_SESSION['order_type'])) {
+    unset($_SESSION['order_type']);
+    unset($_SESSION['order_no']);
 }
 ?>
 <!DOCTYPE html>
@@ -103,7 +154,8 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
                     </h2>
                     <div class="card-body">
                         <?php
-                        if ($sql_user_address->num_rows === 0) {
+                        $no_address = $sql_user_address->num_rows === 0;
+                        if ($no_address) {
                         ?>
                             <p>You do not have an address yet. Click <a href="../user/add-address">here</a> to create one.</p>
                         <?php
@@ -335,6 +387,9 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
     <script src="../assets/js/jquery/jquery-migrate-1.4.1.min.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
     <script src="../assets/js/just-validate/just-validate.js"></script>
+    <!-- SWEET ALERT SCRIPT -->
+    <script src="../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
     <script>
         function activateSavingsValidator() {
             const validation = new JustValidate("#savings-form", {
@@ -402,7 +457,37 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
 
         activateSavingsValidator();
 
-        let selectedOrder = "";
+        function makePayment(x, final_amt) {
+            FlutterwaveCheckout({
+                // public_key: "FLWPUBK-8a73c7e27bc482383e107f69056d6c48-X",
+                public_key: "FLWPUBK_TEST-9907ef66591a80edfb5c7ea51208031d-X",
+                tx_ref: x,
+                amount: final_amt,
+                currency: "NGN",
+                payment_options: "card, banktransfer, ussd",
+                // redirect_url: `https://studentextra.codeweb.ng/student/controllers/process`,
+                redirect_url: `https://localhost/cash-and-carry/controllers/process-order-payment`,
+
+                customer: {
+                    email: "info@halfcarry.com.ng",
+                    phone_number: "123456789",
+                    name: "Halfcarry",
+                },
+                customizations: {
+                    title: "Order Payment",
+                    description: '',
+                    logo: "https://halfcarry.com.ng/assets/images/halfcarry-logo.jpeg",
+                },
+            });
+        }
+
+        function generateTransaction_ref() {
+            var randm = Math.floor((Math.random() * 100000000) + 1);
+            var tran = "TRX-";
+            return tran + randm;
+        }
+
+        let selectedOrder = "card";
         const orderBtnContainer = $(".order-btn-container");
         const $paymentPlanDialogCloseBtn = $(".payment-plan-container header a");
 
@@ -426,7 +511,9 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
                         <i class="fa fa-money"></i>
                         Place Your Order
                     </button>`);
-                } else {
+                }
+
+                if (radioBtn.val() === "card") {
                     selectedOrder = "card";
                     orderBtnContainer.children()[1].remove();
                     orderBtnContainer.append(`<button>
@@ -437,48 +524,91 @@ if (isset($_SESSION['shopping_cart']) && !empty($_SESSION['shopping_cart'])) {
             });
         });
 
-        $(document).on("click", ".order-btn-contaiiner button:nth-of-type(2)", function() {
-            if (selectedOrder === "card") return;
-
-            const formData = new FormData();
-
-            formData.append("submit", true);
-            formData.append("pid", <?php //echo $selectedProductDetails['pid'] 
-                                    ?>);
-            formData.append("uid", <?php //echo $userID 
-                                    ?>);
-            formData.append("amount", <?php //echo $qty 
-                                        ?>);
-            formData.append("total", <?php //echo $total 
-                                        ?>);
-
-            $.ajax({
-                url: "./controllers/process-order.php",
-                type: "post",
-                data: formData,
-                processData: false,
-                contentType: false,
-                beforeSend: function() {
-                    $(".full-loader").addClass("active");
-                },
-                success: function(response) {
-                    response = JSON.parse(response);
-                    if (response.success === 1) {
-                        location.replace("./checkout_success");
-                    } else {
-                        // ALERT USER
-                        Swal.fire({
-                            title: response.error_title,
-                            icon: "error",
-                            text: response.error_msg,
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                        });
-
-                        $(".full-loader").removeClass("active");
+        $(document).on("click", ".order-btn-container button:nth-of-type(2)", function() {
+            <?php
+            if ($no_address) {
+            ?>
+                Swal.fire({
+                    title: "Process Order",
+                    icon: "info",
+                    text: "Please add an address to continue with this order",
+                    showCancelButton: true,
+                    confirmButtonText: 'Add address',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: '#2366B5',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.href = "../user/add-address";
                     }
+                });
+            <?php
+            } else {
+            ?>
+                const formData = new FormData();
+                btnEl = $(this);
+
+                formData.append("submit", true);
+                formData.append("uid", <?php echo $userID ?>);
+
+                if (selectedOrder === "card") {
+                    formData.append("trx_ref", generateTransaction_ref());
                 }
-            });
+
+                Swal.fire({
+                    title: "Process Order",
+                    icon: "info",
+                    text: selectedOrder === "card" ? "Proceed to payment" : "proceed to place order",
+                    showCancelButton: true,
+                    confirmButtonText: 'Proceed',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: '#2366B5',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // PROCESS ORDER
+                        $.ajax({
+                            url: "../controllers/process-order.php",
+                            type: "post",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            beforeSend: function() {
+                                $(".spinner-wrapper").addClass("active");
+                                btnEl.attr("disabled", true);
+                                btnEl.html("Processing....");
+                            },
+                            success: function(response) {
+                                response = JSON.parse(response);
+                                if (response.success === 1) {
+                                    if (response.type === "cash") {
+                                        // ALERT USER UPON COMPLETED ORDER
+                                        location.replace("../order-success");
+                                    }
+                                    if (response.type === "card") {
+                                        // INITIATE FLUTTERWAVE
+                                        makePayment(response.trx_ref, response.amount_charged);
+                                    }
+                                } else {
+                                    // ALERT USER
+                                    Swal.fire({
+                                        title: response.error_title,
+                                        icon: "error",
+                                        text: response.error_msg,
+                                        allowOutsideClick: false,
+                                        allowEscapeKey: false,
+                                    });
+
+                                    $(".spinner-wrapper").removeClass("active");
+                                }
+                            }
+                        });
+                    }
+                });
+
+            <?php
+            }
+            ?>
         });
 
         // SAVINGS PLAN MODAL FUNCTIONALITY 

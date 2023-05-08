@@ -25,11 +25,13 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     $savings_month = max($months);
 
     $request_details = $get_wallet_details->fetch_assoc();
+
+    $is_wallet_completed = $request_details['paid_for'] === $request_details['duration_of_savings'];
 } else {
     header("location: ./");
 }
 
-if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && isset($_SESSION['end_period']) && isset($_SESSION['period_to_pay']) && isset($_SESSION['wallet_no'])) {
+if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && isset($_SESSION['period_to_pay']) && isset($_SESSION['end_period']) && isset($_SESSION['period_to_pay']) && isset($_SESSION['wallet_no']) && isset($_SESSION['duration_of_savings'])) {
     // UNSETS AND DELETES ALL ENTRIES OF SET TRANSACTIOIN DETAILS
     unset($_SESSION['amount_to_pay']);
     unset($_SESSION['start_period']);
@@ -37,6 +39,7 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
     unset($_SESSION['installment_type']);
     unset($_SESSION['period_to_pay']);
     unset($_SESSION['wallet_no']);
+    unset($_SESSION['duration_of_savings']);
 }
 ?>
 <!DOCTYPE html>
@@ -90,14 +93,14 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <All class="dropdown-item" href="../all-products/">All products</a>
+                            <All class="dropdown-item" href="<?= $url ?>all-products/">All products</a>
                         </li>
                         <li><a class="dropdown-item" href="savings?active">Active Wallets</a></li>
                         <li><a class="dropdown-item" href="savings?requests">Savings Request</a></li>
                     </ul>
                 </div>
                 <div>
-                    <a class="header-link" href="../">Homepage</a>
+                    <a class="header-link" href="<?= $url ?>">Homepage</a>
                 </div>
                 <div>
                     <a class="header-link" href="#">Help</a>
@@ -115,7 +118,7 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                     <div class="wallet-wrapper">
                         <div class="wallet-title-container">
                             <h1 class="dashboard-main-title" style="font-size: 3rem;">Wallet <span style="color: var(--primary-color);">(#<?= $savings_id ?>)</span></h1>
-                            <button class="add-wallet-btn"><i class="fa fa-plus"></i> Add to wallet</button>
+                            <?= $is_wallet_completed ? '' : '<button class="add-wallet-btn"><i class="fa fa-plus"></i> Add to wallet</button>' ?>
                         </div>
 
                         <?php
@@ -136,7 +139,7 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                             ?>
                                     <div class="savings-product active">
                                         <div class="savings-product-image-container">
-                                            <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                            <img src="<?= $url ?>assets/product-images/<?= $product['product_picture'] ?>" alt="Web cam #1">
                                         </div>
                                         <div class="savings-product-details">
                                             <span class="savings-product-name"><?= $product['product_name'] ?></span>
@@ -148,7 +151,7 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                                 ?>
                                     <div class="savings-product">
                                         <div class="savings-product-image-container">
-                                            <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                            <img src="<?= $url ?>assets/product-images/<?= $product['product_picture'] ?>" alt="Web cam #1">
                                         </div>
                                         <div class="savings-product-details">
                                             <span class="savings-product-name"><?= $product['product_name'] ?></span>
@@ -166,7 +169,7 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                                     <i class="fa fa-archive"></i>
                                 </div>
                                 <div class="wallet-balance-container">
-                                    NGN <?= number_format($request_details['amount'], 2) ?>
+                                    NGN <?= number_format(round($request_details['amount'], 2), 2) ?>
                                 </div>
                             </header>
                             <div class="wallet-progress">
@@ -178,9 +181,8 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
 
                                         $period_suffix = $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months");
 
-                                        echo $time_left . " " . $period_suffix;
+                                        echo $time_left === 0 ? "completed" : "$time_left $period_suffix left";
                                         ?>
-                                        left
                                     </span>
 
                                     <span class="target-date">
@@ -222,7 +224,7 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                             <?php
                             } else {
                             ?>
-                                <ul class="savings-history <?= $get_savings_history->num_rows > 20? "paginated" : ""?>">
+                                <ul class="savings-history <?= $get_savings_history->num_rows > 20 ? "paginated" : "" ?>">
                                     <?php
                                     while ($savings_history_details = $get_savings_history->fetch_assoc()) {
                                     ?>
@@ -231,7 +233,7 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                                                 <i class="fa fa-plus"></i>
                                             </div>
                                             <div class="savings-history-info">
-                                                <span class="saved-for">+ <?= $savings_history_details['paid_for']?> <?= $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months"); ?></span>
+                                                <span class="saved-for">+ <?= $savings_history_details['paid_for'] ?> <?= $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months"); ?></span>
                                                 <span class="deposited-by">Deposited by: <?= $savings_history_details['deposited_by'] === "1" ? "You" : "Agent" ?></span>
                                                 <span class="paid-date"><?= date("l, d F Y", strtotime($savings_history_details['deposited_at'])) ?></span>
                                             </div>
@@ -246,9 +248,9 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                                 </ul>
                         </div>
 
-                        <div class="add-to-wallet-container">
-                            <button class="add-wallet-btn"><i class="fa fa-plus"></i> Add to wallet</button>
-                        </div>
+                        <?= $is_wallet_completed ? '' : ' <div class="add-to-wallet-container">
+                    <button class="add-wallet-btn"><i class="fa fa-plus"></i> Add to wallet</button>
+                </div>' ?>
                     </div>
                 </div>
             </div>
@@ -274,11 +276,11 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                         <div class="form-group animate">
                             <?php
                             // AUTO POPULATE WEEKS TO BE CLEARED FOR HALF PAYMENT
-                            $to_pay_half = $request_details['type_of_savings'] === "2" && $request_details['amount'] === "0.00";
+                            $to_pay_half = $request_details['type_of_savings'] === "2" && $request_details['amount'] === "0.0000";
                             if ($to_pay_half) {
                                 $to_pay = round($request_details['duration_of_savings'] / 2);
                             ?>
-                                <input type="number" name="amount" id="amount" class="form-input" placeholder=" " value="<?= $to_pay ?>" disabled/>
+                                <input type="number" name="amount" id="amount" class="form-input" placeholder=" " value="<?= $to_pay ?>" disabled />
                             <?php
                             } else {
                             ?>
@@ -308,6 +310,8 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <!-- JQUERY PAGINATE -->
     <script src="../assets/js/jquery.paginate.js"></script>
+    <!-- SWEET ALERT SCRIPT -->
+    <script src="../auth-library/vendor/dist/sweetalert2.all.min.js"></script>
     <!-- CUSTOM DASHBOARD SCRIPT -->
     <script src="../assets/js/user-dash.js"></script>
     <!-- JUST VALIDATE LIBRARY -->
@@ -319,18 +323,24 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
 
         validation
             .addField("#amount", [{
-                rule: "required",
-                errorMessage: "Field is required",
-            }])
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+                {
+                    rule: "maxNumber",
+                    value: <?= $time_left ?>,
+                    errorMessage: "Number of <?= $period_suffix ?> to save should not be more than <?= $time_left . " " . $period_suffix ?>"
+                }
+            ])
             .onSuccess((event) => {
                 const savingsForm = document.querySelector("#credit-wallet-form");
                 const formData = new FormData(savingsForm);
 
 
                 formData.append("submit", true);
-                formData.append("wid", <?= $request_details['wallet_no']?>)
+                formData.append("wid", <?= $request_details['wallet_no'] ?>)
                 <?php
-                    echo $to_pay_half? "formData.set('amount', $to_pay)" : "";
+                echo $to_pay_half ? "formData.set('amount', $to_pay)" : "";
                 ?>
 
                 // PROCESS SAVINGS  
@@ -356,7 +366,7 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
                             Swal.fire({
                                 title: "Savings Deposit",
                                 icon: "error",
-                                text: "Unable to process savings",
+                                text: response.error_msg,
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
                             });

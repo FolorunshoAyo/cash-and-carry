@@ -67,7 +67,7 @@ function generateStatus($status)
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/savings-request.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Agent - Halfcarry Admin</title>
+    <title>Request Details - <?= $rid ?> - Halfcarry Admin</title>
 </head>
 
 <body style="background-color: #fafafa">
@@ -107,7 +107,7 @@ function generateStatus($status)
                     ?>
                             <div class="savings-product active">
                                 <div class="savings-product-image-container">
-                                    <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                    <img src="<?= $url ?>assets/product-images/<?= $product['product_picture'] ?>" alt="Web cam #1">
                                 </div>
                                 <div class="savings-product-details">
                                     <span class="savings-product-name"><?= $product['product_name'] ?></span>

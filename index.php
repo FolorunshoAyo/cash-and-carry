@@ -83,7 +83,7 @@ if ($inSession) {
                         <div class="product-desc product-category">
                             <div>
                                 <span>Furnitures</span>
-                                <img src="assets/images/bed-3.jpeg" alt="#">
+                                <img src="assets/images/bed-20.jpg" alt="#">
                             </div>
                         </div>
                         <div class="product-desc product-category">
@@ -124,7 +124,7 @@ if ($inSession) {
                 </div>
                 <div class="available-goods">
                     <?php
-                    $recentProductsSql = $db->query("SELECT * FROM products ORDER BY product_id desc LIMIT 8");
+                    $recentProductsSql = $db->query("SELECT * FROM products ORDER BY RAND() LIMIT 8");
 
                     while ($rowProduct = $recentProductsSql->fetch_assoc()) {
                         $interest_amount = (30 / 100) * $rowProduct['price'];
@@ -136,6 +136,8 @@ if ($inSession) {
                         $calculatedDays = $calculatedPeriods['days'];
                         $calculatedWeeks = $calculatedPeriods['weeks'];
                         $calculatedMonths = $calculatedPeriods['months'];
+
+                        $inStock = $rowProduct['in_stock'] === "0" ? 0 : 1;
                     ?>
                         <div class="available-good">
                             <?php
@@ -145,7 +147,7 @@ if ($inSession) {
                             ?>
                             <a href="product/?pid=<?= $rowProduct['product_id'] ?>">
                                 <figure>
-                                    <img id="product-image-<?= $rowProduct['product_id'] ?>" src="<?php echo $url ?>a/admin/images/<?php echo explode(",", $rowProduct['pictures'])[0] ?>" alt="<?php echo $rowProduct['name'] ?>">
+                                    <img id="product-image-<?= $rowProduct['product_id'] ?>" src="<?php echo $url ?>assets/product-images/<?php echo explode(",", $rowProduct['pictures'])[0] ?>" alt="<?php echo $rowProduct['name'] ?>">
                                     <figcaption>
                                         <div class="payment-plans">
                                             <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?>/day (<?= $calculatedPeriods['days'] ?> days)</span>
@@ -159,15 +161,30 @@ if ($inSession) {
                                     </figcaption>
                                 </figure>
                             </a>
-                            <div class="add-to-cart-btn">
-                                <button data-product-id="<?php echo $rowProduct['product_id'] ?>">Add to Cart</button>
+
+                            <?php
+                            if (!$inStock) {
+                            ?>
+                                <div class='out-of-stock-container'>
+                                    <span class='dot red'></span> Out of Stock
+                                </div>
+                            <?php
+                            } else {
+                            ?>
+
+                                <div class='add-to-cart-btn'>
+                                    <button data-product-id='<?= $rowProduct['product_id'] ?>'>Add to Cart</button>
                             </div>
+                            <?php
+                            }
+                            ?>
+
                         </div>
                     <?php
                     }
                     ?>
                 </div>
-                <div class="view-all-container">
+                <div class=" view-all-container">
                     <a href="./all-products/">view all</a>
                 </div>
             </div>
@@ -564,6 +581,11 @@ if ($inSession) {
                 if (requestProductCount === 1) {
                     $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", true);
                     $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", false);
+                }
+
+                if (requestProductCount > 1 && requestProductCount < savingsProducts.length) {
+                    $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+                    $(".controls-container button[data-direction = 'next']").attr("disabled", false);
                 }
 
                 if (requestProductCount === savingsProducts.length) {

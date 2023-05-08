@@ -33,6 +33,8 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     $savings_month = max($months);
 
     $request_details = $get_wallet_details->fetch_assoc();
+
+    $is_wallet_completed = $request_details['paid_for'] === $request_details['duration_of_savings'];
 } else {
     header("location: ./");
 }
@@ -96,10 +98,17 @@ function generateStatus($status)
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/user-wallet.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Wallet (#123456) - Halfcarry Agent</title>
+    <title>Wallet (#<?= $request_details['wallet_no'] ?>) - Halfcarry Agent</title>
 </head>
 
 <body style="background-color: #fafafa">
+    <!-- SPINNER -->
+    <div class="spinner-wrapper">
+        <div class="spinner-container">
+            <img src="<?= $url ?>assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
+            <div class="spinner"></div>
+        </div>
+    </div>
     <div class="dash-wrapper">
         <?php
         include("includes/agent-sidebar.php");
@@ -107,8 +116,8 @@ function generateStatus($status)
         <section class="page-wrapper">
             <div class="wallet-wrapper">
                 <div class="wallet-title-container">
-                    <h1 class="dashboard-main-title" style="font-size: 3rem;">Wallet <span style="color: var(--primary-color);">(#<?= $savings_id ?>)</span></h1>
-                    <button class="add-wallet-btn"><i class="fa fa-plus"></i> Add to wallet</button>
+                    <h1 class="dashboard-main-title" style="font-size: 2.5rem;">Wallet <span style="color: var(--primary-color);">(#<?= $savings_id ?>)</span></h1>
+                    <?= $is_wallet_completed? '' : '<button class="add-wallet-btn"><i class="fa fa-plus"></i> Add to wallet</button>' ?>
                 </div>
 
                 <?php
@@ -129,7 +138,7 @@ function generateStatus($status)
                     ?>
                             <div class="savings-product active">
                                 <div class="savings-product-image-container">
-                                    <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                    <img src="<?= $url ?>assets/product-images/<?= $product['product_picture'] ?>" alt="Web cam #1">
                                 </div>
                                 <div class="savings-product-details">
                                     <span class="savings-product-name"><?= $product['product_name'] ?></span>
@@ -141,7 +150,7 @@ function generateStatus($status)
                         ?>
                             <div class="savings-product">
                                 <div class="savings-product-image-container">
-                                    <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                    <img src="<?= $url ?>assets/product-images/<?= $product['product_picture'] ?>" alt="Web cam #1">
                                 </div>
                                 <div class="savings-product-details">
                                     <span class="savings-product-name"><?= $product['product_name'] ?></span>
@@ -171,9 +180,8 @@ function generateStatus($status)
 
                                 $period_suffix = $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months");
 
-                                echo $time_left . " " . $period_suffix;
+                                echo $time_left === 0 ? "completed" : "$time_left $period_suffix left";
                                 ?>
-                                left
                             </span>
 
                             <span class="target-date">
@@ -224,9 +232,9 @@ function generateStatus($status)
                                         <i class="fa fa-plus"></i>
                                     </div>
                                     <div class="savings-history-info">
-                                        <span class="saved-for">+ <?php echo $savings_history_details['paid_for'] . " " . $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months"); ?></span>
-                                        <span class="deposited-by">Deposited by: <?= $request_details['deposited_by'] === "1" ? "You" : "Agent" ?></span>
-                                        <span class="paid-date"><?= date("F, d Y", strtotime($savings_history_details['deposited_at'])) ?>Wednesday, 1 Dec 22</span>
+                                        <span class="saved-for">+ <?= $savings_history_details['paid_for'] ?> <?= $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months"); ?></span>
+                                        <span class="deposited-by">Deposited by: <?= $savings_history_details['deposited_by'] === "1" ? "You" : "Agent" ?></span>
+                                        <span class="paid-date"><?= date("l, d F Y", strtotime($savings_history_details['deposited_at'])) ?></span>
                                     </div>
                                     <div class="savings-history-price">
                                         + ₦ <?= number_format($savings_history_details['amount'], 2) ?>
@@ -239,9 +247,9 @@ function generateStatus($status)
                         </ul>
                 </div>
 
-                <div class="add-to-wallet-container">
+                <?= $is_wallet_completed? '' : ' <div class="add-to-wallet-container">
                     <button class="add-wallet-btn"><i class="fa fa-plus"></i> Add to wallet</button>
-                </div>
+                </div>'?>
             </div>
         </section>
     </div>
@@ -254,7 +262,7 @@ function generateStatus($status)
                 </div>
             </header>
             <section class="wallet-details-section">
-                <p>Add to your savings to aquire your selected products by crediting your wallet.</p>
+                <p>Manually credit this users wallet.</p>
 
                 <p><span>NGN <?= number_format($request_details['installment_amount'], 2) ?></span><sub>/<?= $installment_type === "1" ? "day" : ($installment_type === "2" ? "week" : "month"); ?></sub></p>
             </section>
@@ -265,7 +273,7 @@ function generateStatus($status)
                         <div class="form-group animate">
                             <?php
                             // AUTO POPULATE WEEKS TO BE CLEARED FOR HALF PAYMENT
-                            $to_pay_half = $request_details['type_of_savings'] === "2" && $request_details['amount'] === "0.00";
+                            $to_pay_half = $request_details['type_of_savings'] === "2" && $request_details['amount'] === "0.0000";
                             if ($to_pay_half) {
                                 $to_pay = round($request_details['duration_of_savings'] / 2);
                             ?>
@@ -278,6 +286,13 @@ function generateStatus($status)
                             }
                             ?>
                             <label for="Amount">Number of <?= $period_suffix ?> to save</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group-container">
+                        <div class="form-group animate">
+                            <input type="password" name="pwd" id="pwd" class="form-input" placeholder=" " />
+                            <label for="pwd">Agent Password</label>
                         </div>
                     </div>
 
@@ -303,7 +318,79 @@ function generateStatus($status)
     <script src="../../assets/js/jquery.paginate.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
+    <!-- JUST VALIDATE LIBRARY -->
+    <script src="../../assets/js/just-validate/just-validate.js"></script>
     <script>
+        const validation = new JustValidate("#credit-wallet-form", {
+            errorFieldCssClass: "is-invalid",
+        });
+
+        validation
+            .addField("#amount", [{
+                    rule: "required",
+                    errorMessage: "Field is required",
+                },
+                {
+                    rule: "maxNumber",
+                    value: <?= $time_left ?>,
+                    errorMessage: "Number of <?= $period_suffix ?> to save should not be more than <?= $time_left . " " . $period_suffix ?>"
+                }
+            ])
+            .addField("#pwd", [{
+                rule: "required",
+                errorMessage: "please provide agent password",
+            }])
+            .onSuccess((event) => {
+                const savingsForm = document.querySelector("#credit-wallet-form");
+                const formData = new FormData(savingsForm);
+
+
+                formData.append("submit", true);
+                formData.append("wid", <?= $request_details['wallet_no'] ?>)
+
+                <?php
+                echo $to_pay_half ? "formData.set('amount', $to_pay)" : "";
+                ?>
+
+                // PROCESS SAVINGS  
+                $.ajax({
+                    url: "controllers/update_wallet.php",
+                    method: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $(".spinner-wrapper").addClass("active");
+                        $(".credit-wallet-modal .credit-wallet-container .action-btn button").html("<i class='fa fa-spinner rotate'></i>")
+                    },
+                    success: function(response) {
+                        response = JSON.parse(response);
+
+                        if (response.success == 1) {
+                            Swal.fire({
+                                title: "Savings Deposit",
+                                icon: "success",
+                                text: response.message,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            $(".spinner-wrapper").removeClass("active");
+                            $(".credit-wallet-modal .credit-wallet-container .action-btn button").html("Proceed to Pay");
+
+                            Swal.fire({
+                                title: "Savings Deposit",
+                                icon: "error",
+                                text: response.error_msg,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            });
+                        }
+                    }
+                });
+            });
         $(function() {
             // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
             let productCount = 1;

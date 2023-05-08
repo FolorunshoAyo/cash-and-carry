@@ -55,7 +55,7 @@ function showStatus($status)
     <link rel="stylesheet" href="../../../assets/css/dashboard/admin-dash/orders.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>HalfSavings Request - Halfcarry Agent</title>
+    <title>HalfSavings Requests - Halfcarry Agent</title>
 </head>
 
 <body style="background-color: #fafafa">

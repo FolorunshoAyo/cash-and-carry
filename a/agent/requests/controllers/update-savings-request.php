@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
 
   $savings_type = $request_details['type_of_savings'];
   $installment_type = $request_details['installment_type'];
-
+  $installment_amount = $request_details['installment_amount'];
   $type_of_savings = $savings_type === "1"? "Normal Savings" : "Half Savings";
   $installment_type_plural = $installment_type === "1" ? 'Days' : ($installment_type === "2" ? 'Weeks' : 'Months');
   $installment_type_adjective = ($installment_type === "1" ? 'Daily' : ($installment_type === "2" ? 'Weekly' : 'Monthly'));
@@ -170,7 +170,7 @@ if (isset($_POST['submit'])) {
         </html>
             ';
 
-    send_custom_mail($user_details['email'], "Your Halfcarry Savings Request - ($savings_id) has been " . (($status === "2")? "granted" : "rejected"), $user_message);
+    // send_custom_mail($user_details['email'], "Your Halfcarry Savings Request - ($savings_id) has been " . (($status === "2")? "granted" : "rejected"), $user_message);
 
   if ($sql_update_savings_request) {
     echo json_encode(array('success' => 1));

@@ -1,6 +1,7 @@
 <?php
     require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-    AdminAuth::User("");
+    AdminAuth::User("a/login");
+    
     $admin_id = $_SESSION['admin_id'];
 ?>
 <!DOCTYPE html>

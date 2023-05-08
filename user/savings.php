@@ -87,7 +87,7 @@ function generateStatus($status)
           </ul>
         </div>
         <div>
-          <a class="header-link" href="#">Homepage</a>
+          <a class="header-link" href="<?= $url ?>">Homepage</a>
         </div>
         <div>
           <a class="header-link" href="#">Help</a>
@@ -143,7 +143,7 @@ function generateStatus($status)
                         <?php
                         $period_left = $wallet_details['duration_of_savings'] - $wallet_details['paid_for'];
                         ?>
-                        <span class="savings-days"><?= $period_left . " " . getWalletIntallmentType($wallet_details['installment_type']) ?> left</span>
+                        <span class="savings-days"><?= $period_left === 0? "completed" : $period_left . " " . getWalletIntallmentType($wallet_details['installment_type']) . " left" ?></span>
                         <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> <?= $wallet_details['type_of_savings'] === "1" ? "Normal Savings" : "Half Savings" ?></span>
                       </div>
                       <span class="savings-amount">
@@ -151,7 +151,7 @@ function generateStatus($status)
                       </span>
                       <div class="savings-progress-thumb">
                         <?php
-                        $percentage_of_savings = (($wallet_details['target_amount'] - $wallet_details['current_amount']) / $wallet_details['target_amount']) * 100;
+                        $percentage_of_savings = round(($wallet_details['amount'] / $wallet_details['target_amount']) * 100);
                         ?>
                         <div class="progress-pill" style="width: <?= $percentage_of_savings ?>%;"></div>
                       </div>

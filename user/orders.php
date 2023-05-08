@@ -6,7 +6,7 @@ $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
 
 $sql_user_orders = $db->query("SELECT *
-  FROM orders WHERE user_id={$user_id}");
+  FROM orders WHERE user_id={$user_id} AND placed_successfully = 1");
 
 function showStatus($status)
 {
@@ -16,10 +16,10 @@ function showStatus($status)
       $html = "<span class='status-badge pending'>pending</span>";
       break;
     case "2":
-      $html = "<span class='status-badge shipped'>shipped</span>";
+      $html = "<span class='status-badge awaiting-shipment'>awaiting shipment</span>";
       break;
     case "3":
-      $html = "<span class='status-badge awaiting-shipment'>awaiting shipment</span>";
+      $html = "<span class='status-badge shipped'>shipped</span>";
       break;
     case "4":
       $html = "<span class='status-badge completed'>completed</span>";
@@ -56,7 +56,7 @@ function showStatus($status)
   <link rel="stylesheet" href="../assets/css/dashboard/user-dash/orders.css">
   <!-- DASHHBOARD MEDIA QUERIES -->
   <link rel="stylesheet" href="../assets/css/media-queries/user-dash-mediaqueries.css" />
-  <title>User Orders - CDS</title>
+  <title>User Orders - Halfcarry</title>
 </head>
 
 <body>
@@ -74,9 +74,9 @@ function showStatus($status)
             Browse
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href="../all-products/">All products</a></li>
+            <li><a class="dropdown-item" href="savings?active">Active Wallets</a></li>
+            <li><a class="dropdown-item" href="savings?requests">Savings Request</a></li>
           </ul>
         </div>
         <div>
@@ -95,7 +95,7 @@ function showStatus($status)
       ?>
       <div class="dashboard-main-section">
         <div class="dashboard-main-container">
-          <h1 class="dashboard-main-title">Open Orders</h1>
+          <h1 class="dashboard-main-title">All Orders</h1>
           <?php
           if ($sql_user_orders->num_rows == 0) {
           ?>
@@ -103,38 +103,62 @@ function showStatus($status)
               <p>No orders yet</p>
             </div>
           <?php
-          } else {
+          }
           ?>
-            <div id="user-orders">
-              <?php
-              while ($row_order = $sql_user_orders->fetch_assoc()) {
-              ?>
-                <div class="order-container">
-                  <div class="product-info-container">
-                    <div class="product-image-container">
-                      <?php
-                      $product_image = explode(",", $row_order['pictures'])[0];
-                      ?>
-                      <img src="../a/admin/images/<?php echo $product_image ?>" alt="<?php echo $row_order['name'] ?>" />
+          <ul class="user-orders">
+            <?php
+            while ($row_order = $sql_user_orders->fetch_assoc()) {
+              $get_order_products = $db->query("SELECT product_id FROM orders_products WHERE order_no={$row_order['order_no']}")
+            ?>
+              <li class="order-container">
+                <div class="product-images-container">
+                  <?php
+                  $total_products_count = $get_order_products->num_rows;
+                  $remaining_count = $total_products_count - 2;
+
+                  $loop_product_count = 1;
+                  while ($order_products = $get_order_products->fetch_assoc()) {
+                    $get_product_picture = $db->query("SELECT name, pictures FROM products WHERE product_id = {$order_products['product_id']}");
+
+                    $product_details = $get_product_picture->fetch_assoc();
+
+                    $picture = explode(",", $product_details['pictures'])[0];
+
+                    if ($loop_product_count > 2) {
+                      break;
+                    }
+                  ?>
+                    <img src="../assets/product-images/<?= $picture ?>" alt="<?= $product_details['name'] ?>" style="width: <?= $total_products_count > 1 ? "48%" : "100%" ?>" />
+                  <?php
+                    $loop_product_count++;
+                  }
+                  ?>
+                  <?php
+                  if ($remaining_count > 0) {
+                  ?>
+                    <div class="additional-products-count">
+                      <?= $remaining_count ?> +
                     </div>
-                    <div class="product-info">
-                      <h3 class="product-name"><?php echo $row_order['name'] ?></h3>
-                      <span class="order-no">Order <?php echo $row_order['order_no'] ?></span>
-                      <div class="order-meta-details">
-                        <?php echo showStatus($row_order['status']) ?>
-                        <span class="order-date">On <?php echo explode(" ", $row_order['ord_date'])[0] ?> </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="see-details-container">
-                    <a href="./order-details?oid=<?php echo $row_order['order_id'] ?>" class="see-details-btn">see details</a>
+                  <?php
+                  }
+                  ?>
+                </div>
+                <div class="product-info">
+                  <a class="order-id" href="./order-details?oid=<?= $row_order['order_no'] ?>">Order #<?= $row_order['order_no'] ?></a>
+                  <div class="order-meta-details">
+                    <?php echo showStatus($row_order['status'])
+                    ?>
+                    <span class="order-date">On <?php echo explode(" ", $row_order['ordered_at'])[0] ?> </span>
                   </div>
                 </div>
+                <div class="order-price-container">
+                  NGN <?= number_format($row_order['amount'], 2) ?>
+                </div>
+              </li>
             <?php
-              }
             }
             ?>
-            </div>
+          </ul>
         </div>
       </div>
     </div>

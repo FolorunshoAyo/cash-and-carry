@@ -7,12 +7,24 @@ $user_name = $_SESSION['user_name'];
 
 if (isset($_GET['oid']) && !empty($_GET['oid'])) {
   $oid = $_GET['oid'];
+  $products = array();
 
-  $sql_order = $db->query("SELECT *
-    FROM orders INNER JOIN products ON 
-    orders.product_id = products.product_id WHERE user_id={$user_id} AND order_id={$oid}");
+  $get_order_details = $db->query("SELECT * FROM orders WHERE order_no = {$oid}");
 
-  $order_details = $sql_order->fetch_assoc();
+  $get_products = $db->query("SELECT orders_products.*, products.pictures as product_pictures, products.name as product_name, products.price as product_price FROM orders_products INNER JOIN products ON orders_products.product_id = products.product_id WHERE order_no={$oid}");
+
+  while ($product = $get_products->fetch_assoc()) {
+    $product_picture = explode(",", $product['product_pictures'])[0];
+    $product_object = array("product_name" => $product['product_name'], "product_picture" => $product_picture, "product_quantity" => $product['quantity'], "product_price" => $product['product_price']);
+
+    array_push($products, $product_object);
+  }
+
+  $order_details  = $get_order_details->fetch_assoc();
+
+  $get_ordered_products_quantity = $db->query("SELECT COUNT(quantity) as no_of_items FROM orders_products WHERE order_no = {$oid}");
+
+  $no_of_items_ordered = $get_ordered_products_quantity->fetch_assoc()['no_of_items'];
 } else {
   header("Location: ./orders");
 }
@@ -25,10 +37,10 @@ function showStatus($status)
       $html = "<span class='product-status pending'>pending</span>";
       break;
     case "2":
-      $html = "<span class='product-status shipped'>shipped</span>";
+      $html = "<span class='product-status awaiting-shipment'>awaiting shipment</span>";
       break;
     case "3":
-      $html = "<span class='product-status awaiting-shipment'>awaiting shipment</span>";
+      $html = "<span class='product-status shipped'>shipped</span>";
       break;
     case "4":
       $html = "<span class='product-status completed'>completed</span>";
@@ -82,9 +94,9 @@ function showStatus($status)
             Browse
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href="../all-products/">All products</a></li>
+            <li><a class="dropdown-item" href="savings?active">Active Wallets</a></li>
+            <li><a class="dropdown-item" href="savings?requests">Savings Request</a></li>
           </ul>
         </div>
         <div>
@@ -113,32 +125,66 @@ function showStatus($status)
             <div class="order-meta">
               <h2 class="order-no">Order n<sup>o</sup> <?php echo $order_details['order_no'] ?> </h2>
               <div class="order-product-details">
-                <span class="product-quantity">1 item(s)</span>
-                <span class="order-date">Placed on <?php echo explode(" ", $order_details['ord_date'])[0] ?> </span>
-                <span class="product-price">₦ <?php echo number_format(intval($order_details['purch_amt'])) ?></span>
+                <span class="product-quantity"><?= $no_of_items_ordered ?> item(s)</span>
+                <span class="order-date">Placed on <?php echo explode(" ", $order_details['ordered_at'])[0] ?> </span>
+                <span class="product-price">₦ <?php echo number_format($order_details['amount'], 2) ?></span>
               </div>
             </div>
 
             <h2 class="order-details-title">Item(s) Ordered</h2>
 
-            <div class="order-item">
-              <?php echo showStatus($order_details['status']) ?>
-              <span class="product-status completed">non-returnable</span>
-
-              <div class="product-info">
-                <div class="product-image-container">
-                  <?php
-                  $product_image = explode(",", $order_details['pictures'])[0];
-                  ?>
-                  <img src="../a/admin/images/<?php echo $product_image ?>" alt="Product picture">
-                </div>
-                <div class="product-details">
-                  <span class="product-name"><?php echo $order_details['name'] ?></span>
-                  <span class="product-qty">Qty: <?php echo $order_details['amount'] ?></span>
-                  <span class="product-price">₦ <?php echo number_format(intval($order_details['purch_amt'])) ?></span>
-                </div>
+            <?php
+            if (count($products) > 1) {
+            ?>
+              <div class="controls-container">
+                <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
+                <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
               </div>
-            </div>
+            <?php
+            }
+            ?>
+
+            <?php
+            foreach ($products as $key => $product) {
+              if ($key == 0) {
+            ?>
+                <div class="order-item active">
+                  <?php echo showStatus($order_details['status']) ?>
+                  <span class="product-status completed">non-returnable</span>
+
+                  <div class="product-info">
+                    <div class="product-image-container">
+                      <img src="../assets/product-images/<?= $product['product_picture'] ?>" alt="<?= $product['product_name'] ?>">
+                    </div>
+                    <div class="product-details">
+                      <span class="product-name"><?= $product['product_name'] ?></span>
+                      <span class="product-qty">Qty: <?= $product['product_quantity'] ?></span>
+                      <span class="product-price">₦ <?php echo number_format($product['product_price'], 2) ?></span>
+                    </div>
+                  </div>
+                </div>
+              <?php
+              } else {
+              ?>
+                <div class="order-item">
+                  <?php echo showStatus($order_details['status']) ?>
+                  <span class="product-status completed">non-returnable</span>
+
+                  <div class="product-info">
+                    <div class="product-image-container">
+                      <img src="../assets/product-images/<?= $product['product_picture'] ?>" alt="<?= $product['product_name'] ?>">
+                    </div>
+                    <div class="product-details">
+                      <span class="product-name"><?= $product['product_name'] ?></span>
+                      <span class="product-qty">Qty: <?= $product['product_quantity'] ?></span>
+                      <span class="product-price">₦ <?php echo number_format($product['product_price'], 2) ?></span>
+                    </div>
+                  </div>
+                </div>
+            <?php
+              }
+            }
+            ?>
 
             <div class="order-info-cards">
               <div class="order-info-card">
@@ -148,15 +194,15 @@ function showStatus($status)
                 <div class="order-card-body">
                   <div class="order-card-body-group">
                     <h3>Payment Method</h3>
-                    <p>Cash on Delivery</p>
+                    <p><?= $order_details['payment_method'] === "1"? "Paid with cards, ussd or bank transfers" : "Cash on Delivery" ?> </p>
                   </div>
 
                   <div class="order-card-body-group">
                     <h3> Payment Details </h3>
-                    <p>Item total: ₦ <?php echo number_format(intval($order_details['purch_amt'])) ?></p>
+                    <p>Item total: ₦ <?php echo number_format($order_details['amount']) ?></p>
                     <p>Shipping Fee: none</p>
                     <!-- <p>Promotional Discount: ₦ 5,600</p> -->
-                    <p>Total: ₦ <?php echo number_format(intval($order_details['purch_amt'])) ?> </p>
+                    <p>Total: ₦ <?php echo number_format($order_details['amount'], 2) ?> </p>
                   </div>
                 </div>
               </div>
@@ -203,6 +249,47 @@ function showStatus($status)
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
   <!-- CUSTOM DASHBOARD SCRIPT -->
   <script src="../assets/js/user-dash.js"></script>
+  <script>
+    // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
+    let productCount = 1;
+    $(document).on("click", ".controls-container button", function() {
+      const btnClicked = $(this).attr("data-direction");
+      const orderItems = $(".order-item");
+
+      if (btnClicked === "next") {
+        orderItems.each(function() {
+          $(this).removeClass("active");
+        });
+
+        productCount++;
+
+        ($(orderItems[productCount - 1]).addClass("active"));
+      } else {
+        orderItems.each(function() {
+          $(this).removeClass("active");
+        });
+
+        productCount--;
+
+        ($(orderItems[productCount - 1]).addClass("active"));
+      }
+
+      if (productCount === 1) {
+        $(".controls-container button[data-direction = 'prev']").attr("disabled", true);
+        $(".controls-container button[data-direction = 'next']").attr("disabled", false);
+      }
+
+      if(productCount > 1 && productCount < orderItems.length){
+        $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+        $(".controls-container button[data-direction = 'next']").attr("disabled", false);
+      }
+
+      if (productCount === orderItems.length) {
+        $(".controls-container button[data-direction = 'next']").attr("disabled", true);
+        $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+      }
+    });
+  </script>
 </body>
 
 </html>

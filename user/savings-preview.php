@@ -147,7 +147,6 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
             formData.append("tx_ref", tranx_ref);
             formData.append("wallet_no", <?= $wallet_no ?>);
 
-
             $.ajax({
                 url: 'controllers/create-savings.php',
                 type: 'post',
@@ -164,8 +163,6 @@ if (isset($_SESSION['amount_to_pay']) && isset($_SESSION['start_period']) && iss
 
                     if (response.success === 1) {
                         $(".spinner-wrapper").removeClass("active");
-                        btnEl.html("continue");
-                        btnEl.attr("disabled", false);
                         makePayment(tranx_ref, response.amount_charged);
                     } else {
                         // ALERT THE USER UPON FAILED REQUEST/RESPONSE

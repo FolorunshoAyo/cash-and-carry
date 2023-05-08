@@ -37,6 +37,13 @@ if (isset($_GET['aid']) && !empty($_GET['aid'])) {
 </head>
 
 <body>
+  <!-- CUSTOM SPINNER/LOADER -->
+  <div class="spinner-wrapper">
+    <div class="spinner-container">
+      <img src="../assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
+      <div class="spinner"></div>
+    </div>
+  </div>
   <?php
   include("includes/mobile-sidebar.php");
   ?>
@@ -116,29 +123,14 @@ if (isset($_GET['aid']) && !empty($_GET['aid'])) {
               </div>
               <div class="form-group-container">
                 <div class="form-group animate">
-                  <input type="text" name="pcode" id="pcode" class="form-input" value="<?php echo $address_details['address_postalcode'] ?>" placeholder=" " required />
+                  <input type="text" name="pcode" id="pcode" class="form-input" value="<?php echo $address_details['address_postal_code'] ?>" placeholder=" " required />
                   <label for="pcode">Zip/Postal code</label>
                 </div>
               </div>
               <div class="form-group-container">
                 <div class="form-group animate">
+                  <!-- AUTO GENREATED WITH JAVASCRIPT -->
                   <select name="state" id="state">
-                    <option value="">Choose State</option>
-                    <?php
-                    $sql_states = $db->query("SELECT * FROM states");
-
-                    while ($state = $sql_states->fetch_assoc()) {
-                      if ($state['state_name'] === $address_details['address_state']) {
-                    ?>
-                        <option selected><?php echo $state['state_name'] ?></option>
-                      <?php
-                      } else {
-                      ?>
-                        <option><?php echo $state['state_name'] ?></option>
-                    <?php
-                      }
-                    }
-                    ?>
                   </select>
                   <label for="state">State</label>
                 </div>
@@ -224,6 +216,7 @@ if (isset($_GET['aid']) && !empty($_GET['aid'])) {
           contentType: false,
           dataType: 'json',
           beforeSend: function() {
+            $(".spinner-wrapper").addClass("active");
             $(".submit-btn-container button").html("Editing...");
             $(".submit-btn-container button").attr("disabled", true);
           },
@@ -244,6 +237,7 @@ if (isset($_GET['aid']) && !empty($_GET['aid'])) {
                   }
                 })
               } else {
+                $(".spinner-wrapper").removeClass("active");
                 $(".submit-btn-container button").attr("disabled", false);
                 $(".submit-btn-container button").html("Save Changes");
 
@@ -265,6 +259,26 @@ if (isset($_GET['aid']) && !empty($_GET['aid'])) {
           },
         });
       });
+
+    const active_state = "<?= $address_details['address_state'] ?>";
+
+    // RETRIVE STATES FROM JSON
+    fetch("../states.json").then((response) => {
+      return response.json();
+    }).then(value => {
+      let states_html = "";
+      states_html += "<option value=''>Choose State</option>";
+      value.states.forEach(state => {
+        states_html += `<option ${state === active_state? "selected" : ""}>${state}</option>`;
+      });
+
+      insertStatesToDom(states_html);
+    });
+
+
+    function insertStatesToDom(states_html) {
+      $("#state").html(states_html);
+    }
   </script>
 </body>
 

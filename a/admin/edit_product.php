@@ -1,16 +1,16 @@
 <?php
-  require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-  AdminAuth::User("a/login");
-  
-  if(isset($_GET['pid']) && !empty($_GET['pid'])){
+require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+AdminAuth::User("a/login");
+
+if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     $pid = $_GET['pid'];
 
     $sql_product = $db->query("SELECT * FROM products WHERE product_id={$pid}");
 
     $product_details = $sql_product->fetch_assoc();
-  }else{
+} else {
     header("Location: ./products");
-  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,28 +33,64 @@
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Edit <?php echo($product_details['name']); ?> - Codeweb Store</title>
+    <title>Edit <?php echo ($product_details['name']); ?> - Codeweb Store</title>
     <style>
-        .summer-note-container.textarea{
+        .product-images-container {
+            display: flex;
+            margin-bottom: 40px;
+        }
+
+        .main-image-container {
+            width: 250px;
+            height: 250px;
+            margin-right: 30px;
+        }
+
+        .main-image-container img {
+            max-width: 100%;
+            height: 100%;
+        }
+
+        .additional-images-container {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .additional-images-container img {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        .main-image-container img,
+        .additional-images-container img {
+            /* background-color: #fafafa; */
+            padding: 10px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .summer-note-container.textarea {
             all: revert;
         }
 
-        .summer-note-container.textarea label[for="pdesc"]{
+        .summer-note-container.textarea label[for="pdesc"] {
             color: var(--primary-color);
             margin-bottom: 10px;
             font-size: 1.5rem;
             display: inline-block;
         }
 
-        .note-editable *, .note-editable *:hover{
+        .note-editable *,
+        .note-editable *:hover {
             all: revert !important;
         }
 
-        .note-editable{
+        .note-editable {
             background-color: var(--white);
             font-size: 1.5rem;
         }
-
     </style>
 </head>
 
@@ -64,44 +100,44 @@
         <aside class="dash-menu">
             <div class="logo">
                 <div class="menu-icon">
-                <i class="fa fa-bars"></i>
-                <i class="fa fa-times"></i>
+                    <i class="fa fa-bars"></i>
+                    <i class="fa fa-times"></i>
                 </div>
                 <a href="./" class="logo">
-                <i class="fa fa-home"></i>
-                <span> CODEWEB STORE </span>
+                    <i class="fa fa-home"></i>
+                    <span> CODEWEB STORE </span>
                 </a>
             </div>
             <ul class="side-menu" id="side-menu">
                 <li title="dashboard" class="nav-item">
-                <a href="./">
-                    <i class="fa fa-tachometer"></i>
-                    <span>Dashboard</span>
-                </a>
+                    <a href="./">
+                        <i class="fa fa-tachometer"></i>
+                        <span>Dashboard</span>
+                    </a>
                 </li>
                 <li title="statistics" class="nav-item">
-                <a href="javascript:void(0)">
-                    <i class="fa fa-signal"></i>
-                    <span>Statistics</span>
-                </a>
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-signal"></i>
+                        <span>Statistics</span>
+                    </a>
                 </li>
                 <li title="orders" class="nav-item">
-                <a href="./orders">
-                    <i class="fa fa-usd"></i>
-                    <span>Orders</span>
-                </a>
+                    <a href="./orders">
+                        <i class="fa fa-usd"></i>
+                        <span>Orders</span>
+                    </a>
                 </li>
                 <li title="shipping" class="nav-item">
-                <a href="javascript:void(0)">
-                    <i class="fa fa-recycle"></i>
-                    <span>Shipping</span>
-                </a>
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-recycle"></i>
+                        <span>Shipping</span>
+                    </a>
                 </li>
                 <li title="products" class="nav-item active">
-                <a href="./products">
-                    <i class="fa fa-shopping-bag"></i>
-                    <span>Products</span>
-                </a>
+                    <a href="./products">
+                        <i class="fa fa-shopping-bag"></i>
+                        <span>Products</span>
+                    </a>
                 </li>
                 <li title="messages" class="nav-item">
                     <a href="javascript:void(0)">
@@ -113,16 +149,16 @@
 
             <ul title="settings" class="side-menu-bottom">
                 <li class="nav-tem">
-                <a href="javascript:void(0)">
-                    <i class="fa fa-gear"></i>
-                    <span>Settings</span>
-                </a>
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
                 </li>
                 <li title="logout" class="nav-item logout">
-                <a href="../logout">
-                    <i class="fa fa-sign-out"></i>
-                    <span>Logout</span>
-                </a>
+                    <a href="../logout">
+                        <i class="fa fa-sign-out"></i>
+                        <span>Logout</span>
+                    </a>
                 </li>
             </ul>
         </aside>
@@ -132,33 +168,61 @@
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </header>
-            <div class="product-form-wrapper">
-                <h2 class="product-form-title">Edit Product Details</h2>
+            <div class="form-wrapper">
+                <h2 class="form-title">Edit Product Details</h2>
 
-                <div class="product-form-container">
+                <div class="form-container">
+                    <div class="product-images-container">
+                        <?php
+                        // DISPLAY PRODUCT IMAGES
+                        $all_product_pictures = explode(",", $product_details['pictures']);
+
+                        $first_upload = $all_product_pictures[0];
+
+                        $remaining_uploads = array_slice($all_product_pictures, 1);
+                        ?>
+                        <div class="main-image-container">
+                            <img src="<?= $url ?>assets/product-images/<?= $first_upload ?>" alt="product image 1">
+                        </div>
+
+                        <?php
+                        if (count($remaining_uploads) >= 1) {
+                        ?>
+                            <div class="additional-images-container">
+                                <?php
+                                $remaining_uploads_count = 2;
+                                foreach ($remaining_uploads as $remaining_images) {
+                                ?>
+                                    <img src="<?= $url ?>assets/product-images/<?= $remaining_images ?>" alt="product image <?= $remaining_uploads_count ?>">
+                                <?php
+                                    $remaining_uploads_count++;
+                                }
+                                ?>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
                     <form id="product-upload-form">
                         <div class="form-groupings">
                             <div class="form-group-container">
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="pname" id="pname" class="form-input" placeholder=" "
-                                            required value="<?php echo($product_details['name']); ?>" />
+                                        <input type="text" name="pname" id="pname" class="form-input" placeholder=" " required value="<?php echo ($product_details['name']); ?>" />
                                         <label for="pname">Product Name</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="file" multiple name="pimages[]" id="pimages" class="form-input"
-                                            placeholder=" " required />
+                                        <input type="file" multiple name="pimages[]" id="pimages" class="form-input" placeholder=" " required />
                                         <label for="pimages">Upload media</label>
                                     </div>
                                 </div>
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                        <input type="text" name="pprice" id="pprice" class="form-input format"
-                                            placeholder=" " required value="<?php echo(round(intval($product_details['price']), 0)); ?>" />
+                                        <input type="text" name="pprice" id="pprice" class="form-input format" placeholder=" " required value="<?php echo (round(intval($product_details['price']), 0)); ?>" />
                                         <label for="pprice">Price</label>
                                     </div>
                                 </div>
@@ -167,9 +231,8 @@
                                     <div class="form-group animate">
                                         <select name="duration" id="duration" class="form-input">
                                             <option value="">Choose option</option>
-                                            <option value="3" <?php echo $product_details['duration_of_payment'] === "3" ? "selected" : ""?>>3 months</option>
-                                            <option value="6" <?php echo $product_details['duration_of_payment'] === "6" ? "selected" : ""?>>6 months</option>
-                                            <option value="10" <?php echo $product_details['duration_of_payment'] === "10" ? "selected" : ""?>>10 months</option>
+                                            <option value="3" <?php echo $product_details['duration_of_payment'] === "3" ? "selected" : "" ?>>3 months</option>
+                                            <option value="6" <?php echo $product_details['duration_of_payment'] === "4" ? "selected" : "" ?>>4 months</option>
                                         </select>
                                         <label for="duration">Duration of installmental payments in months</label>
                                     </div>
@@ -187,13 +250,13 @@
                                     <div class="form-group animate">
                                         <select name="category" id="category">
                                             <option value="">Choose category</option>
-                                            <?php 
-                                                $sql_categories = $db->query("SELECT * FROM product_categories");
-                                                while($row_category = $sql_categories->fetch_assoc()){
-                                            ?>
-                                                <option <?php echo($product_details['category'] === $row_category['category_id']? "selected" : "");?> value="<?php echo($row_category['category_id']); ?>"><?php echo($row_category['category_name']); ?></option>
                                             <?php
-                                                }
+                                            $sql_categories = $db->query("SELECT * FROM product_categories");
+                                            while ($row_category = $sql_categories->fetch_assoc()) {
+                                            ?>
+                                                <option <?php echo ($product_details['category'] === $row_category['category_id'] ? "selected" : ""); ?> value="<?php echo ($row_category['category_id']); ?>"><?php echo ($row_category['category_name']); ?></option>
+                                            <?php
+                                            }
                                             ?>
                                         </select>
                                         <label for="category">Category</label>
@@ -202,15 +265,48 @@
 
                                 <div class="form-group-container">
                                     <div class="form-group animate">
-                                       <select name="active" id="active">
-                                        <option value="">Choose option</option>
-                                        <?php
-                                            $isProductActive = $product_details['active'];
-                                        ?>
-                                        <option <?php echo($isProductActive == 1? "selected" : ""); ?> value="yes">Yes</option>
-                                        <option <?php echo($isProductActive == 0? "selected" : ""); ?> value="no">No</option>
-                                       </select>
-                                        <label for="active">Active</label>
+                                        <select name="visible" id="visible">
+                                            <option value="">Choose option</option>
+                                            <?php
+                                            $isProductActive = $product_details['visibility'];
+                                            ?>
+                                            <option <?php echo ($isProductActive == 1 ? "selected" : ""); ?> value="yes">Yes</option>
+                                            <option <?php echo ($isProductActive == 0 ? "selected" : ""); ?> value="no">No</option>
+                                        </select>
+                                        <label for="visible">Visible</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <select name="sid" id="sid">
+                                            <option value="">Choose option</option>
+                                            <?php
+                                            $get_stores = $db->query("SELECT * FROM stores");
+
+                                            while ($store_details = $get_stores->fetch_assoc()) {
+                                            ?>
+                                                <?php
+                                                if ($product_details['store_id'] === $store_details['id']) {
+                                                ?>
+                                                    <option selected value="<?= $store_details['id'] ?>"><?= $store_details['name'] ?></option>
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    <option value="<?= $store_details['id'] ?>"><?= $store_details['name'] ?></option>
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                        <label for="sid">Store Owner</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-container">
+                                    <div class="form-group animate">
+                                        <input type="text" name="in_stock" id="in_stock" class="form-input format" placeholder=" " value="<?= $product_details['in_stock'] ?>" required />
+                                        <label for="in_stock">Number of Items in stock</label>
                                     </div>
                                 </div>
 
@@ -262,19 +358,19 @@
         $(".note-editable").html('<?php echo $product_details['details'] ?>');
 
         // CHANGE DEFAULT NUMBER TO READABLE FORM 
-        $("input.format").val(function (index, value) {
+        $("input.format").val(function(index, value) {
             return value
                 .replace(/\D/g, "")
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         });
 
         // COVERT NUMBER TO READABLE FORM
-        $('input.format').keyup(function (event) {
+        $('input.format').keyup(function(event) {
             // skip for arrow keys
             if (event.which >= 37 && event.which <= 40) return;
 
             // format number
-            $(this).val(function (index, value) {
+            $(this).val(function(index, value) {
                 return value
                     .replace(/\D/g, "")
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -286,8 +382,7 @@
             if (input.setSelectionRange) {
                 input.focus();
                 input.setSelectionRange(selectionStart, selectionEnd);
-            }
-            else if (input.createTextRange) {
+            } else if (input.createTextRange) {
                 var range = input.createTextRange();
                 range.collapse(true);
                 range.moveEnd('character', selectionEnd);
@@ -296,12 +391,12 @@
             }
         }
 
-        function setCaretToPos (input, pos) {
+        function setCaretToPos(input, pos) {
             setSelectionRange(input, pos, pos);
         }
 
-        $("#pdesc").on("click", function(){
-            if($("#pdesc").val().trim().length === 0) {
+        $("#pdesc").on("click", function() {
+            if ($("#pdesc").val().trim().length === 0) {
                 setCaretToPos(document.getElementById("pdesc"));
             }
         });
@@ -313,66 +408,68 @@
         });
 
         validation
-            .addField("#pname", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#pprice", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#duration", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#active", [
-                {
-                    rule: "required",
-                    errorMessage: "Field is required",
-                },
-            ])
-            .addField("#pimages", [
-                {
-                    rule: 'minFilesCount',
-                    value: 1,
-                },
-                {
-                    rule: 'maxFilesCount',
-                    value: 3,
-                },
-                {
-                    rule: 'files',
-                    value: {
-                        files: {
-                            extensions: ['jpeg', 'png', "jpg"],
-                            maxSize: 3000000,
-                            minSize: 1000,
-                            types: ['image/jpeg', 'image/png'],
-                        },
-                    },
-                },
-            ])
+            .addField("#pname", [{
+                rule: "required",
+                errorMessage: "Field is required",
+            }, ])
+            .addField("#pprice", [{
+                rule: "required",
+                errorMessage: "Field is required",
+            }, ])
+            .addField("#duration", [{
+                rule: "required",
+                errorMessage: "Field is required",
+            }, ])
+            .addField("#in_stock", [{
+                rule: "required",
+                errorMessage: "Field is required",
+            }, ])
+            .addField("#sid", [{
+                rule: "required",
+                errorMessage: "Field is required",
+            }, ])
+            .addField("#visible", [{
+                rule: "required",
+                errorMessage: "Field is required",
+            }, ])
+            // .addField("#pimages", [{
+            //         rule: 'minFilesCount',
+            //         value: 1,
+            //     },
+            //     {
+            //         rule: 'maxFilesCount',
+            //         value: 3,
+            //     },
+            //     {
+            //         rule: 'files',
+            //         value: {
+            //             files: {
+            //                 extensions: ['jpeg', 'png', "jpg"],
+            //                 maxSize: 3000000,
+            //                 minSize: 1000,
+            //                 types: ['image/jpeg', 'image/png'],
+            //             },
+            //         },
+            //     },
+            // ])
             .onSuccess((event) => {
                 const pdesc = $(".note-editable").html().trim();
-                if(pdesc.length === 0) { alert("Please provide a product description"); return; }
+                if (pdesc.length === 0) {
+                    alert("Please provide a product description");
+                    return;
+                }
                 const form = document.getElementById("product-upload-form");
 
                 // GATHERING FORM DATA
                 const formData = new FormData(form);
                 formData.append("submit", true);
-                formData.append("product_id", <?php echo($product_details['product_id']); ?>)
+                formData.append("product_id", <?php echo ($product_details['product_id']); ?>)
 
                 // CONVERTING FORMATTED(HUMAN READABLE) FIELDS BACK TO NUMBER 
                 const formatedFields = [];
 
                 for (let [key, value] of formData.entries()) {
-                    if (key === "pprice") {
+                    if (key === "pprice" || key === "in_stock") {
                         formatedFields.push(value);
                     }
                 }
@@ -380,6 +477,7 @@
                 const modifiedFormatedFields = formatedFields.map(value => value.replace(/,/g, ""));
 
                 formData.set("pprice", modifiedFormatedFields[0]);
+                formData.set("in_stock", modifiedFormatedFields[1]);
 
                 for (let [key, value] of formData.entries()) {
                     console.log(`${key}: ${value}`);
@@ -395,11 +493,11 @@
                     enctype: "multipart/form-data",
                     processData: false,
                     dataType: "json",
-                    beforeSend: function () {
+                    beforeSend: function() {
                         $(".submit-btn-container button").html("Editing...");
                         $(".submit-btn-container button").attr("disabled", true);
                     },
-                    success: function (response) {
+                    success: function(response) {
                         setTimeout(() => {
                             if (response.success === 1) {
                                 // ALERT USER UPON SUCCESSFUL UPLOAD

@@ -33,7 +33,7 @@
                     </header>
                     <main>
                       <section style='margin: 50px 10px; font-size: 14px;'>
-                      <p style='margin-bottom: 10px; line-height: 1.5;'>'" . greeting() . $first_name . ",</p>
+                      <p style='margin-bottom: 10px; line-height: 1.5;'>'" . greeting() . $fname . ",</p>
                 
                         <p style='margin-bottom: 10px; line-height: 1.5; text-align: justify;'>
                           Welcome to <b>HalfCarry</b> Your agent password is <b>" . $random_pass . "</b>

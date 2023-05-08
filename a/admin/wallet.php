@@ -170,9 +170,8 @@ function generateStatus($status)
 
                                 $period_suffix = $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months");
 
-                                echo $time_left . " " . $period_suffix;
+                                echo $time_left === 0 ? "completed" : "$time_left $period_suffix left";
                                 ?>
-                                left
                             </span>
 
                             <span class="target-date">
@@ -223,9 +222,9 @@ function generateStatus($status)
                                         <i class="fa fa-plus"></i>
                                     </div>
                                     <div class="savings-history-info">
-                                        <span class="saved-for">+ <?php echo $savings_history_details['paid_for'] . " " . $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months"); ?></span>
-                                        <span class="deposited-by">Deposited by: <?= $request_details['deposited_by'] === "1" ? "You" : "Agent" ?></span>
-                                        <span class="paid-date"><?= date("F, d Y", strtotime($savings_history_details['deposited_at'])) ?>Wednesday, 1 Dec 22</span>
+                                        <span class="saved-for">+ <?= $savings_history_details['paid_for'] ?> <?= $installment_type === "1" ? "days" : ($installment_type === "2" ? "weeks" : "months"); ?></span>
+                                        <span class="deposited-by">Deposited by: <?= $savings_history_details['deposited_by'] === "1" ? "You" : "Agent" ?></span>
+                                        <span class="paid-date"><?= date("l, d F Y", strtotime($savings_history_details['deposited_at'])) ?></span>
                                     </div>
                                     <div class="savings-history-price">
                                         + ₦ <?= number_format($savings_history_details['amount'], 2) ?>
@@ -249,7 +248,7 @@ function generateStatus($status)
                 </div>
             </header>
             <section class="wallet-details-section">
-                <p>Add to your savings to aquire your selected products by crediting your wallet.</p>
+                <p>Manually credit this users wallet.</p>
 
                 <p><span>NGN <?= number_format($request_details['installment_amount'], 2) ?></span><sub>/<?= $installment_type === "1" ? "day" : ($installment_type === "2" ? "week" : "month"); ?></sub></p>
             </section>
@@ -277,7 +276,7 @@ function generateStatus($status)
                     </div>
 
                     <div class="action-btn">
-                        <button type="submit">Proceed to Pay</button>
+                        <button type="submit" disabled>Proceed to Pay</button>
                     </div>
                 </form>
             </div>

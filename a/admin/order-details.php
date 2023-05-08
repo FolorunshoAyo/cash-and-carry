@@ -1,46 +1,57 @@
 <?php
-  require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-  AdminAuth::User("a/");
+require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
+AdminAuth::User("a/");
 
-  if(isset($_GET['oid']) && !empty($_GET['oid'])){
+if (isset($_GET['oid']) && !empty($_GET['oid'])) {
     $oid = $_GET['oid'];
+    $products = array();
 
-    $sql_order = $db->query("SELECT *
-    FROM orders INNER JOIN products ON 
-    orders.product_id = products.product_id 
-    INNER JOIN users ON orders.user_id=users.user_id
-    WHERE order_id={$oid}");
+    $get_order_details = $db->query("SELECT * FROM orders INNER JOIN users ON orders.user_id = users.user_id WHERE order_no = {$oid} ");
 
-    $order_details = $sql_order->fetch_assoc();
-  }else{
+    $get_products = $db->query("SELECT orders_products.*, products.pictures as product_pictures, products.name as product_name, products.price as product_price FROM orders_products INNER JOIN products ON orders_products.product_id = products.product_id WHERE order_no={$oid}");
+
+    while ($product = $get_products->fetch_assoc()) {
+        $product_picture = explode(",", $product['product_pictures'])[0];
+        $product_object = array("product_name" => $product['product_name'], "product_picture" => $product_picture, "product_quantity" => $product['quantity'], "product_price" => $product['product_price']);
+
+        array_push($products, $product_object);
+    }
+
+    $order_details  = $get_order_details->fetch_assoc();
+
+    $get_ordered_products_quantity = $db->query("SELECT COUNT(quantity) as no_of_items FROM orders_products WHERE order_no = {$oid}");
+
+    $no_of_items_ordered = $get_ordered_products_quantity->fetch_assoc()['no_of_items'];
+} else {
     header("Location: ./orders");
-  }
+}
 
-  function showStatus($status){
+function showStatus($status)
+{
     $html = "";
-    switch($status){
-      case "1":
-        $html = "<span class='product-status pending'>pending</span>";
-      break;
-      case "2":
-        $html = "<span class='product-status awaiting-shipment'>awaiting shipment</span>";
-      break;
-      case "3":
-        $html = "<span class='product-status shipped'>shipped</span>";
-      break;
-      case "4":
-        $html = "<span class='product-status completed'>completed</span>";
-      break;
-      case "5":
-        $html = "<span class='product-status cancelled'>cancelled</span>";
-      break;
-      default:
-        $html = "Unable to detect status";
-      break;
+    switch ($status) {
+        case "1":
+            $html = "<span class='product-status pending'>pending</span>";
+            break;
+        case "2":
+            $html = "<span class='product-status awaiting-shipment'>awaiting shipment</span>";
+            break;
+        case "3":
+            $html = "<span class='product-status shipped'>shipped</span>";
+            break;
+        case "4":
+            $html = "<span class='product-status completed'>completed</span>";
+            break;
+        case "5":
+            $html = "<span class='product-status cancelled'>cancelled</span>";
+            break;
+        default:
+            $html = "Unable to detect status";
+            break;
     }
 
     return $html;
-  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,89 +70,14 @@
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/order-details.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>Order Details (#14214) - CDS</title>
+    <title>Order Details (#<?= $order_details['order_no'] ?>) - Halfcarry</title>
 </head>
 
 <body style="background-color: #fafafa">
     <div class="dash-wrapper">
-        <div class="mobile-backdrop"></div>
-        <aside class="dash-menu">
-            <div class="logo">
-                <div class="menu-icon">
-                <i class="fa fa-bars"></i>
-                <i class="fa fa-times"></i>
-                </div>
-                <a href="./" class="logo">
-                <i class="fa fa-home"></i>
-                <span> CDS ADMIN </span>
-                </a>
-            </div>
-            <ul class="side-menu" id="side-menu">
-                <li title="dashboard" class="nav-item">
-                <a href="./">
-                    <i class="fa fa-tachometer"></i>
-                    <span>Dashboard</span>
-                </a>
-                </li>
-                <li title="statistics" class="nav-item">
-                <a href="javascript:void(0">
-                    <i class="fa fa-signal"></i>
-                    <span>Statistics</span>
-                </a>
-                </li>
-                <li title="orders" class="nav-item active">
-                <a href="./orders">
-                    <i class="fa fa-usd"></i>
-                    <span>Orders</span>
-                </a>
-                </li>
-                <li title="shipping" class="nav-item">
-                <a href="javascript:void(0">
-                    <i class="fa fa-recycle"></i>
-                    <span>Shipping</span>
-                </a>
-                </li>
-                <li title="products" class="nav-item">
-                <a href="./products">
-                    <i class="fa fa-shopping-bag"></i>
-                    <span>Products</span>
-                </a>
-                </li>
-                <li title="agents" class="nav-item">
-                    <a href="./agents">
-                        <i class="fa fa-users"></i>
-                        <span>Agents</span>
-                    </a>
-                </li>
-                <li title="debtors" class="nav-item">
-                    <a href="./debtors">
-                        <i class="fa fa-info-circle"></i>
-                        <span>Debtors</span>
-                    </a>
-                </li>
-                <li title="messages" class="nav-item">
-                    <a href="javascript:void(0">
-                        <i class="fa fa-commenting-o"></i>
-                        <span>Messages</span>
-                    </a>
-                </li>
-            </ul>
-
-            <ul title="settings" class="side-menu-bottom">
-                <li class="nav-tem">
-                <a href="javascript:void(0)">
-                    <i class="fa fa-gear"></i>
-                    <span>Settings</span>
-                </a>
-                </li>
-                <li title="logout" class="nav-item logout">
-                <a href="../logout">
-                    <i class="fa fa-sign-out"></i>
-                    <span>Logout</span>
-                </a>
-                </li>
-            </ul>
-        </aside>
+        <?php
+        include("includes/admin-sidebar.php");
+        ?>
         <section class="page-wrapper">
             <header class="dash-header">
                 <a href="./orders" class="back-link">
@@ -153,34 +89,68 @@
 
                 <div class="order-details-container">
                     <div class="order-meta">
-                        <h2 class="order-no">Order n<sup>o</sup> <?php echo $order_details['order_no'] ?></h2>
+                        <h2 class="order-no">Order n<sup>o</sup> <?php echo $order_details['order_no'] ?> </h2>
                         <div class="order-product-details">
-                            <span class="product-quantity">1 item(s)</span>
-                            <span class="order-date">Placed on <?php echo explode(" ", $order_details['ord_date'])[0] ?></span>
-                            <span class="product-price">₦<?php echo number_format(intval($order_details['purch_amt'])) ?></span>
+                            <span class="product-quantity"><?= $no_of_items_ordered ?> item(s)</span>
+                            <span class="order-date">Placed on <?php echo explode(" ", $order_details['ordered_at'])[0] ?> </span>
+                            <span class="product-price">₦ <?php echo number_format($order_details['amount'], 2) ?></span>
                         </div>
                     </div>
 
                     <h2 class="order-details-title">Item(s) Ordered</h2>
 
-                    <div class="order-item">
-                        <?php echo showStatus($order_details['status']) ?>
-                        <span class="product-status completes">non-returnable</span>
-
-                        <div class="product-info">
-                            <div class="product-image-container">
-                                <?php
-                                    $product_image = explode(",", $order_details['pictures'])[0]
-                                ?>
-                                <img src="images/<?php echo $product_image ?>" alt="Product picture">
-                            </div>
-                            <div class="product-details">
-                                <span class="product-name"><?php echo $order_details['name'] ?> </span>
-                                <span class="product-qty">Qty: <?php echo $order_details['amount'] ?></span>
-                                <span class="product-price">₦<?php echo number_format(intval($order_details['purch_amt'])) ?></span>
-                            </div>
+                    <?php
+                    if (count($products) > 1) {
+                    ?>
+                        <div class="controls-container">
+                            <button data-direction="prev" disabled><i class="fa fa-arrow-left"></i></button>
+                            <button data-direction="next"><i class="fa fa-arrow-right"></i></button>
                         </div>
-                    </div>
+                    <?php
+                    }
+                    ?>
+
+                    <?php
+                    foreach ($products as $key => $product) {
+                        if ($key == 0) {
+                    ?>
+                            <div class="order-item active">
+                                <?php echo showStatus($order_details['status']) ?>
+                                <span class="product-status completed">non-returnable</span>
+
+                                <div class="product-info">
+                                    <div class="product-image-container">
+                                        <img src="../../assets/product-images/<?= $product['product_picture'] ?>" alt="<?= $product['product_name'] ?>">
+                                    </div>
+                                    <div class="product-details">
+                                        <span class="product-name"><?= $product['product_name'] ?></span>
+                                        <span class="product-qty">Qty: <?= $product['product_quantity'] ?></span>
+                                        <span class="product-price">₦ <?php echo number_format($product['product_price'], 2) ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        } else {
+                        ?>
+                            <div class="order-item">
+                                <?php echo showStatus($order_details['status']) ?>
+                                <span class="product-status completed">non-returnable</span>
+
+                                <div class="product-info">
+                                    <div class="product-image-container">
+                                        <img src="../../assets/product-images/<?= $product['product_picture'] ?>" alt="<?= $product['product_name'] ?>">
+                                    </div>
+                                    <div class="product-details">
+                                        <span class="product-name"><?= $product['product_name'] ?></span>
+                                        <span class="product-qty">Qty: <?= $product['product_quantity'] ?></span>
+                                        <span class="product-price">₦ <?php echo number_format($product['product_price'], 2) ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                    <?php
+                        }
+                    }
+                    ?>
 
                     <div class="order-info-cards">
                         <div class="order-info-card">
@@ -190,15 +160,15 @@
                             <div class="order-card-body">
                                 <div class="order-card-body-group">
                                     <h3>Payment Method</h3>
-                                    <p>Cash on Delivery</p>
+                                    <p><?= $order_details['payment_method'] === "1" ? "Paid with cards, ussd or bank transfers" : "Cash on Delivery" ?> </p>
                                 </div>
 
                                 <div class="order-card-body-group">
                                     <h3> Payment Details </h3>
-                                    <p>Item total: ₦ <?php echo number_format(intval($order_details['purch_amt'])) ?></p>
+                                    <p>Item total: ₦ <?php echo number_format($order_details['amount']) ?></p>
                                     <p>Shipping Fee: none</p>
                                     <!-- <p>Promotional Discount: ₦ 5,600</p> -->
-                                    <p>Total: ₦ <?php echo number_format(intval($order_details['purch_amt'])) ?> </p>
+                                    <p>Total: ₦ <?php echo number_format($order_details['amount'], 2) ?> </p>
                                 </div>
                             </div>
                         </div>
@@ -216,10 +186,10 @@
 
                                 <div class="order-card-body-group">
                                     <h3>Shipping Address</h3>
-                                    <?php 
-                                        $shipping_address = explode("%", $order_details['shipping_address']);
-                                        $recipient_name = $shipping_address[0];
-                                        $address = $shipping_address[1];
+                                    <?php
+                                    $shipping_address = explode("%", $order_details['shipping_address']);
+                                    $recipient_name = $shipping_address[0];
+                                    $address = $shipping_address[1];
                                     ?>
                                     <p><?php echo $recipient_name ?></p>
                                     <p>
@@ -244,6 +214,47 @@
     <script src="../../assets/js/metismenujs/metismenujs.js"></script>
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
+    <script>
+        // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
+        let productCount = 1;
+        $(document).on("click", ".controls-container button", function() {
+            const btnClicked = $(this).attr("data-direction");
+            const orderItems = $(".order-item");
+
+            if (btnClicked === "next") {
+                orderItems.each(function() {
+                    $(this).removeClass("active");
+                });
+
+                productCount++;
+
+                ($(orderItems[productCount - 1]).addClass("active"));
+            } else {
+                orderItems.each(function() {
+                    $(this).removeClass("active");
+                });
+
+                productCount--;
+
+                ($(orderItems[productCount - 1]).addClass("active"));
+            }
+
+            if (productCount === 1) {
+                $(".controls-container button[data-direction = 'prev']").attr("disabled", true);
+                $(".controls-container button[data-direction = 'next']").attr("disabled", false);
+            }
+
+            if (productCount > 1 && productCount < orderItems.length) {
+                $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+                $(".controls-container button[data-direction = 'next']").attr("disabled", false);
+            }
+
+            if (productCount === orderItems.length) {
+                $(".controls-container button[data-direction = 'next']").attr("disabled", true);
+                $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+            }
+        });
+    </script>
 </body>
 
 </html>

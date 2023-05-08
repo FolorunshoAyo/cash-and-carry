@@ -81,7 +81,7 @@ function generateStatus($status)
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/user-wallets.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
-    <title>All <?= $customer_details['last_name'] . " " . $customer_details['first_name'] ?> - Halfcarry Agent</title>
+    <title>All <?= $customer_details['last_name'] . " " . $customer_details['first_name'] ?> wallets assigned to you - Halfcarry Agent</title>
 </head>
 
 <body style="background-color: #fafafa">
@@ -118,7 +118,7 @@ function generateStatus($status)
                                         <?php
                                         $period_left = $wallet_details['duration_of_savings'] - $wallet_details['paid_for'];
                                         ?>
-                                        <span class="savings-days"><?= $period_left . " " . getWalletIntallmentType($wallet_details['installment_type']) ?> left</span>
+                                        <span class="savings-days"><?= $period_left === 0? "completed" : $period_left . " " . getWalletIntallmentType($wallet_details['installment_type']) . " left" ?></span>
                                         <span class="savings-request-type"><span style="color: var(--primary-color)">Type:</span> <?= $wallet_details['type_of_savings'] === "1" ? "Normal Savings" : "Half Savings" ?></span>
                                     </div>
                                     <span class="savings-amount">
@@ -126,7 +126,7 @@ function generateStatus($status)
                                     </span>
                                     <div class="savings-progress-thumb">
                                         <?php
-                                        $percentage_of_savings = (($wallet_details['target_amount'] - $wallet_details['current_amount']) / $wallet_details['target_amount']) * 100;
+                                        $percentage_of_savings = ($wallet_details['amount'] / $wallet_details['target_amount']) * 100;
                                         ?>
                                         <div class="progress-pill" style="width: <?= $percentage_of_savings ?>%;"></div>
                                     </div>

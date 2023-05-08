@@ -43,6 +43,11 @@ if (isset($_POST['submit'])) {
 
     $product_details = $get_product_details->fetch_assoc();
 
+    if($product_details['in_stock'] < $quantity){
+      echo json_encode(array('success' => 0, 'error_msg' => "Item only has " . $product_details['in_stock'] . "in stock"));
+      exit();
+    }
+
     $product_image = explode(",", $product_details['pictures'])[0];
     $product_price = $product_details['price'];
     $product_savings_duration = $product_details['duration_of_payment'];
@@ -268,13 +273,13 @@ if (isset($_POST['submit'])) {
     $agent_subject = "Hello! Agent. " . $agent_details['first_name'] . ", You have a new Savings Request - $savings_id";
 
     // DELIVER MAILS TO BOTH CHOSEN WALLET AND USER VIA PHP MAILER
-    send_custom_mail($user_details['email'], $user_subject, $user_message_html);
-    send_custom_mail($agent_details['email'], $agent_subject, $agent_message_html);
+    // send_custom_mail($user_details['email'], $user_subject, $user_message_html);
+    // send_custom_mail($agent_details['email'], $agent_subject, $agent_message_html);
 
     if ($insert_savings_request) {
       echo json_encode(array('success' => 1, 'savings_id' => $savings_id));
     } else {
-      echo json_encode(array('success' => 0));
+      echo json_encode(array('success' => 0, 'error_msg' => "Unable to place savings request. Please try again."));
     }
   } else {
     // HALF SAVINGS
@@ -284,10 +289,13 @@ if (isset($_POST['submit'])) {
     $productMonths = array();
     $productPrices = array();
 
+    // GATHER PRODUCT NAME AND IN STOCK
+    $products_stock_error_details = array();
+
     foreach ($_SESSION['shopping_cart'] as $key => $values) {
       $product_id = $values['product_id'];
 
-      $sql_get_product_savings_duration = $db->query("SELECT price,duration_of_payment FROM products WHERE product_id = {$product_id}");
+      $sql_get_product_savings_duration = $db->query("SELECT price,duration_of_payment,name,in_stock FROM products WHERE product_id = {$product_id}");
 
       // SAVINGS DURATION OF EACH PRODUCT
       $product_details = $sql_get_product_savings_duration->fetch_assoc();
@@ -296,6 +304,40 @@ if (isset($_POST['submit'])) {
 
       array_push($productMonths, $product_savings_duration);
       array_push($productPrices, ($product_price * $values['product_quantity']));
+
+      if($product_details['in_stock'] < $values['product_quantity']){
+        // STOCK ERROR
+        array_push($products_stock_error_details, array('product_name' => $values['product_name'], 'product_stock' => $product_details['in_stock']));
+      }
+    }
+
+    // CHECK FOR STOCK ERROR
+
+    if(count($products_stock_error_details) > 0){
+      $error_message = "Unable to make request. ";
+
+      foreach($products_stock_error_details as $key => $values){
+        if(($key + 1) === count($products_stock_error_details)){
+          $error_message .= $values['product_name'];
+        }else{
+          $error_message .= $values['product_name'] . ", ";
+        }
+      }
+
+      $error_message .= " has only ";
+
+      foreach($products_stock_error_details as $key => $values){
+        if(($key + 1) === count($products_stock_error_details)){
+          $error_message .= $values['product_stock'];
+        }else{
+          $error_message .= $values['product_stock'] . ", ";
+        }
+      }
+
+      $error_message .= " in stock";
+
+      echo json_encode(array('success' => 0, 'error_msg' => $error_message));
+      exit();
     }
 
     // DETERMINING MAXIMUM SAVINGS PERIOD AND TOTAL PRODUCT PRICES PLUS INTTEREST
@@ -535,13 +577,13 @@ if (isset($_POST['submit'])) {
     $agent_subject = "Hello! Agent. " . $agent_details['first_name'] . ", You have a new Savings Request - $savings_id";
 
     // DELIVER MAILS TO BOTH CHOSEN WALLET AND USER VIA PHP MAILER
-    send_custom_mail($user_details['email'], $user_subject, $user_message_html);
-    send_custom_mail($agent_details['email'], $agent_subject, $agent_message_html);
+    // send_custom_mail($user_details['email'], $user_subject, $user_message_html);
+    // send_custom_mail($agent_details['email'], $agent_subject, $agent_message_html);
 
     if ($insert_savings_request) {
       echo json_encode(array('success' => 1, 'savings_id' => $savings_id));
     } else {
-      echo json_encode(array('success' => 0));
+      echo json_encode(array('success' => 0, 'error_msg' => "Unable to place savings request. Please try again."));
     }
   }
 }

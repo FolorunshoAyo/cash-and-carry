@@ -98,7 +98,7 @@ $sql_other_addresses = $db->query("SELECT *
                 <address class="main-address">
                   <p class="recipient-name"><?php echo $default_address_details['recipient_name'] ?></p>
                   <?php echo $default_address_details['delivery_address'] . ", " . $default_address_details['city_name'] . ". " . $default_address_details['address_state'] . "." ?>
-                  <b class="postal-code"><?php echo $default_address_details['address_postalcode'] ?></b><br><br>
+                  <b class="postal-code"><?php echo $default_address_details['address_postal_code'] ?></b><br><br>
                   <?php echo $default_address_details['additional_info'] ?><br><br>
                   <span><?php echo $default_address_details['recipient_phone_no'] ?></span>
                 </address>
@@ -124,7 +124,7 @@ $sql_other_addresses = $db->query("SELECT *
                   <address class="main-address">
                     <p class="recipient-name"><?php echo $row_address['recipient_name'] ?></p>
                     <?php echo $row_address['delivery_address'] . ", " . $row_address['city_name'] . ". " . $row_address['address_state'] . "." ?>
-                    <b class="postal-code"><?php echo $row_address['address_postalcode'] ?></b><br><br>
+                    <b class="postal-code"><?php echo $row_address['address_postal_code'] ?></b><br><br>
                     <?php echo $row_address['additional_info'] ?><br><br>
                     <span><?php echo $row_address['recipient_phone_no'] ?></span>
                   </address>

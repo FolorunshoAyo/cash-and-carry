@@ -18,13 +18,13 @@ $url = strval($url);
         </a>
     </div>
     <ul class="side-menu" id="side-menu">
-        <li class="nav-item">
+        <li class="nav-item <?= ($file_name === "index.php")? 'active' : ''?>">
             <a href="<?= $url ?>a/agent/">
                 <i class="fa fa-users"></i>
                 <span>Customers</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item <?= ($file_name === "halfsavings_requests.php") || ($file_name === "savings_requests.php") || ($file_name === "user_wallets.php")? 'mm-active' : ''?>">
             <a href="javascript:void(0)">
                 <i class="fa fa-handshake-o"></i>
                 <span>Requests</span>
@@ -45,7 +45,19 @@ $url = strval($url);
                 </li>
             </ul>
         </li>
-        <li class="nav-item">
+        <li class="nav-item <?= ($file_name === "shops.php") || ($file_name === "edit-shop.php") || ($file_name === "add-shop.php")? 'active' : ''?>">
+            <a href="<?= $url ?>a/agent/stores">
+                <i class="fa fa-home"></i>
+                <span>Stores</span>
+            </a>
+        </li>
+        <li class="nav-item <?= ($file_name === "products.php")? 'active' : ''?>">
+            <a href="<?= $url ?>a/agent/products">
+                <i class="fa fa-shopping-bag"></i>
+                <span>Products</span>
+            </a>
+        </li>
+        <li class="nav-item <?= ($file_name === "active_wallets.php")? 'active' : ''?>">
             <a href="<?= $url ?>a/agent/active_wallets">
                 <i class="fa fa-money"></i>
                 <span>Active Wallets</span>

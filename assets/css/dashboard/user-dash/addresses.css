@@ -6,24 +6,26 @@
 
 .address-card{
     flex: 0 0 48%;
-    height: 100%;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
-.address-card:not(:last-child){
+.address-card{
     margin-bottom: 30px;
+    height: 250px;
 }
 
 .main-address{
     font-size: 1.5rem;
     padding: 1.5rem;
     margin-bottom: 0;
+    height: calc(100% - 50px);
+    overflow-x: auto;
 }
 
 .address-card.default .main-address{
-    background-color: #fdeee7;  
+    background-color: var(--primary-color);  
     color: #fff;
     font-weight: 400;  
 }
@@ -32,6 +34,7 @@
 .main-address .recipient-name{
     color: #75757a;
     margin-bottom: 5px;
+    overflow-x: auto;
 }
 
 .address-card.default .recipient-name{  
@@ -46,6 +49,7 @@
     justify-content: space-between;
     border-top: 1px solid #ededed;
     padding: 0.5rem 1rem;
+    height: 50px;
 }
 
 .address-action-container .set-as-default-button{
@@ -55,14 +59,14 @@
     padding: 1rem;
     font-size: 1.2rem;
     text-transform: uppercase;
-    color: #1270B0;
+    color: #fdeee7;
     transition: all .3s linear;
 }
 
 .address-action-container .set-as-default-button:hover:enabled,
 .address-action-icon-group .edit-btn:hover{
-    background-color: #1271b0ea; 
-    color: var(--white);
+    background-color: #fdeee7; 
+    color: var(--primary-color);
 }
 
 
@@ -87,7 +91,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #1270B0;
+    color: var(--primary-color);
     font-size: 1.5rem;
     text-decoration: none;
     transition: all .3s ease-in;
@@ -101,8 +105,7 @@
 .btn-container{
     text-align: end;
     padding: 10px;
-    width: 80%;
-    margin: 20px auto 0;
+    margin: 20px 0 0;
 }
 
 .btn-container .new-address-btn{

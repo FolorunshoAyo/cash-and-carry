@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
             array_push($productMonths, $product_savings_duration);
             array_push($productPrices, ($product_price * $values['product_quantity']));
 
-            if ($key == 0) {
+            if ($key == array_key_first($_SESSION['shopping_cart'])) {
                 $products .= '<div class="savings-product active">
                 <div class="savings-product-image-container">
                     <img src="' . $values['product_image'] . '" alt="' . $values['product_name'] . '">
