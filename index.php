@@ -124,7 +124,7 @@ if ($inSession) {
                 </div>
                 <div class="available-goods">
                     <?php
-                    $recentProductsSql = $db->query("SELECT * FROM products ORDER BY RAND() LIMIT 8");
+                    $recentProductsSql = $db->query("SELECT * FROM products WHERE deleted='0' ORDER BY RAND() LIMIT 8");
 
                     while ($rowProduct = $recentProductsSql->fetch_assoc()) {
                         $interest_amount = (30 / 100) * $rowProduct['price'];

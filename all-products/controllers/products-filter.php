@@ -9,7 +9,7 @@ if ($_POST['submit']) {
     }
 
     $category = $_POST['category'];
-    $category_sql = (isset($category) && $category != "") ? "WHERE category = $category" : "";
+    $category_sql = (isset($category) && $category != "") ? "AND category = $category" : "";
 
     $price_sort = $_POST['price_range'];
     $price_sort_sql = (isset($price_sort) && $price_sort != "") ? "ORDER BY price $price_sort" : "";
@@ -24,7 +24,7 @@ if ($_POST['submit']) {
     // echo "SELECT * FROM products $category_sql $price_sort_sql $order_sort_sql LIMIT $offset $total_records_per_page";
 
     $products_filter_sql = $db->query("SELECT * FROM products $category_sql $price_sort_sql $order_sort_sql LIMIT $offset$total_records_per_page");
-    $result_count = $db->query("SELECT COUNT(*) as total_records FROM products $category_sql $price_sort_sql $order_sort_sql");
+    $result_count = $db->query("SELECT COUNT(*) as total_records FROM products WHERE deleted='0' $category_sql $price_sort_sql $order_sort_sql");
 
     $total_records = $result_count->fetch_assoc()['total_records'];
 

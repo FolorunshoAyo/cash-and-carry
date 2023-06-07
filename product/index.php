@@ -19,7 +19,7 @@ if ($inSession) {
 if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     $pid = $_GET['pid'];
 
-    $sql_product = $db->query("SELECT *, stores.name as store_name FROM ((products INNER JOIN product_categories ON products.category=product_categories.category_id) INNER JOIN stores ON products.store_id = stores.id) WHERE product_id={$pid}");
+    $sql_product = $db->query("SELECT products.*, product_categories.*, stores.name as store_name FROM ((products INNER JOIN product_categories ON products.category=product_categories.category_id) INNER JOIN stores ON products.store_id = stores.id) WHERE product_id={$pid}");
 
     if ($sql_product->num_rows === 0) {
         header("Location: ../");

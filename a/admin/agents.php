@@ -154,7 +154,7 @@ $admin_id = $_SESSION['admin_id'];
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
         $(function() {
-            $("#agents-table").DataTable({
+            const agentTable = $("#agents-table").DataTable({
                 "pageLength": 10
             });
 
@@ -183,7 +183,11 @@ $admin_id = $_SESSION['admin_id'];
                                 });
 
                                 // REMOVE PRODUCT FROM RECORDS
-                                $(self).parent().parent().parent().parent()[0].remove();
+                                const tr = $(`.deleteEl[data-agentId="${selectedAgentId}"]`).parents('tr');
+                                const row = agentTable.row(tr);
+
+                                // REMOVE TABLE ROW
+                                row.remove().draw();
                             } else {
                                 Swal.fire({
                                     title: response.error_title,

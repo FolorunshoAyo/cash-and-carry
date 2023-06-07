@@ -19,7 +19,7 @@ if ($inSession) {
 }
 
 $productQuery = $_GET['q'];
-$searchProducts = $db->query("SELECT * FROM products WHERE name LIKE '%$productQuery%';");
+$searchProducts = $db->query("SELECT * FROM products WHERE deleted='0' AND name LIKE '%$productQuery%';");
 ?>
 <!DOCTYPE html>
 <html lang="en">

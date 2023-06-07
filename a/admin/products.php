@@ -96,6 +96,7 @@ if ($admin_sql->num_rows == 1) {
 
                             $products_count = 1;
                             while ($row_product = $sql_products->fetch_assoc()) {
+                                if($row_product['deleted'] !== "1"){
                             ?>
                                 <tr>
                                     <td>
@@ -157,6 +158,7 @@ if ($admin_sql->num_rows == 1) {
                                 </tr>
                             <?php
                                 $products_count++;
+                                }
                             }
                             ?>
                         </tbody>

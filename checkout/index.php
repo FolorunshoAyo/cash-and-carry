@@ -259,7 +259,7 @@ if (isset($_SESSION['order_no']) && isset($_SESSION['order_type'])) {
                                 array_push($productMonths, $product_savings_duration);
                                 array_push($productPrices, ($product_price * $values['product_quantity']));
 
-                                if ($key == 0) {
+                                if ($key === array_key_first($_SESSION['shopping_cart'])) {
                             ?>
                                     <div class="savings-product active">
                                         <div class="savings-product-image-container">

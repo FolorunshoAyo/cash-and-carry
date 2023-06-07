@@ -11,7 +11,7 @@ if(isset($_POST['submit'])){
     $productName = $deletedProductDetails['name'];
 
     if($deletedProduct){
-        $deleteProduct = $db->query("DELETE FROM products WHERE product_id={$productID}");
+        $deleteProduct = $db->query("UPDATE products SET deleted = '1' WHERE product_id={$productID}");
 
         echo json_encode(array('success' => 1, 'title' => "Product Delete", 'message' => "$productName was deleted successfully"));
     }else{
