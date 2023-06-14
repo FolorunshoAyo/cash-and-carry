@@ -16,7 +16,7 @@
             echo json_encode(array('success' => 0, 'error_title' => "Address Update Error", 'error_msg' => 'One or more input fields are empty'));
             exit();
         }else{
-            $sql_update_address = $db->query("UPDATE addresses SET recipient_name='$rname', recipient_phone_no='$rphoneno', additional_info='$ainfo', city_name='$city', delivery_address='$daddress', address_state='$state', address_postalcode='$pcode' WHERE address_id='$aid'");
+            $sql_update_address = $db->query("UPDATE addresses SET recipient_name='$rname', recipient_phone_no='$rphoneno', additional_info='$ainfo', city_name='$city', delivery_address='$daddress', address_state='$state', address_postal_code='$pcode' WHERE address_id='$aid'");
 
             if($sql_update_address){
                 echo json_encode(array('success' => 1));

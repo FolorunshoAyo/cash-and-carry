@@ -1,5 +1,5 @@
 
-.product-form-wrapper{
+.form-wrapper{
     margin: 2rem 0;
     background-color: var(--white);
     border-radius: 10px;
@@ -7,9 +7,14 @@
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
-.product-form-title{
+.form-title{
     padding: 2rem 0rem;
     font-size: 2.5rem;
+}
+
+
+.form-container{
+  width: 100%;
 }
 
 .back-link{
@@ -22,7 +27,7 @@
     font-size: 2.5rem;
 }
 
-.product-form-container{
+.form-container{
     margin-top: 20px;
 }
 

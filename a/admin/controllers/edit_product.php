@@ -1,6 +1,8 @@
 <?php
 require(dirname(dirname(dirname(__DIR__))) . '/auth-library/resources.php');
 
+$url = strval($url);
+
 if (isset($_POST['submit'])) {
     $productID =  $db->real_escape_string($_POST['product_id']);
     $productName = $db->real_escape_string($_POST['pname']);
@@ -8,10 +10,15 @@ if (isset($_POST['submit'])) {
     $durationInMonths = $db->real_escape_string($_POST['duration']);
     $productDesc = $_POST['pdesc'];
     $category = $db->real_escape_string($_POST['category']);
-    $active = $db->real_escape_string($_POST['active']);
+    $store_id = $db->real_escape_string($_POST['store_id']);
+    $in_stock = $db->real_escape_string($_POST['in_stock']);
+    $visibility = $db->real_escape_string($_POST['visibility']);
+
+    $visibility = ($visibility === "yes") ? "1" : "0";
+    $in_stock = ($in_stock === "0" || $in_stock === "") ? "" : $in_stock;
 
     // File upload configuration 
-    $targetDir = "../images/";
+    $targetDir = $url . "assets/images/";
     $allowTypes = array('jpg', 'png', 'jpeg');
 
     $fileNames = array_filter($_FILES['pimages']['name']);
@@ -19,6 +26,12 @@ if (isset($_POST['submit'])) {
 
     $images = "";
     $errors = array();
+
+    // CHECK IF FORM DATA WAS PASSED
+    if (empty($productID) || empty($productName) || empty($productPrice) || empty($durationInMonths) || empty($productDesc) || empty($in_stock) || empty($store_id) || empty($visibility) || empty($category)) {
+        echo json_encode(array('success' => 0, 'error_title' => 'Product Edit', 'error_msg' => 'Some field(s) were not filled'));
+        exit();
+    }
 
     if (!empty($fileNames)) {
         foreach ($_FILES['pimages']['name'] as $key => $val) {
@@ -46,24 +59,17 @@ if (isset($_POST['submit'])) {
             }
         }
 
-        // CHECK IF FORM DATA WAS PASSED
-        if (empty($productID) || empty($productName) || empty($productPrice) || empty($durationInMonths) || empty($productDesc) || empty($active) || empty($category)) {
-            echo json_encode(array('success' => 0, 'error_title' => 'Product Edit', 'error_msg' => 'Some field(s) were not filled'));
-            exit();
-        }
-
         if (count($errors) === 0) {
             // DELETE EXISTING FILES
             // $sql_former_images = $db->query("SELECT pictures FROM products WHERE product_id={$productID}");
 
             // $pictures = explode(",", $sql_former_images->fetch_assoc()['pictures']);
             // foreach($pictures as $picture){
-            //     unlink("../images/" . $picture);
+            //     unlink("../../../assets/images/" . $picture);
             // }
 
-            $active = ($active === "yes") ? "1" : "0";
             // Update product details in database
-            $updateProduct = $db->query("UPDATE products SET name = '$productName', price = '$productPrice', pictures='$images', details='$productDesc', active='$active', category='$category'
+            $updateProduct = $db->query("UPDATE products SET name = '$productName', price = '$productPrice', pictures='$images', details='$productDesc', duration_of_payment='$durationInMonths', store_id='$store_id', in_stock='$in_stock', visibility='$visibility', category='$category'
             WHERE product_id = '$productID'");
 
             if ($updateProduct) {
@@ -75,6 +81,14 @@ if (isset($_POST['submit'])) {
             echo json_encode(array('success' => 0, 'error_title' => 'Product Edit', 'error_msg' => '(errNo: 3) There was an error editing the product'));
         }
     } else {
-        echo json_encode(array('success' => 0, 'error_title' => 'Image Edit', 'error_msg' => 'No Images were uploaded'));
+        // Update product details in database
+        $updateProduct = $db->query("UPDATE products SET name = '$productName', price = '$productPrice', details='$productDesc', duration_of_payment='$durationInMonths', store_id='$store_id', in_stock='$in_stock', visibility='$visibility', category='$category'
+            WHERE product_id = '$productID'");
+
+        if ($updateProduct) {
+            echo json_encode(array('success' => 1, 'product_name' => $productName));
+        } else {
+            echo json_encode(array('success' => 0, 'error_title' => 'Product Edit', 'error_msg' => '(errno: 1) There was an error editing the product'));
+        }
     }
 }

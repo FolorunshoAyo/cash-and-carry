@@ -1,7 +1,7 @@
 /* < 1800px */ 
 @media only screen and (max-width: 112.5em){ 
     .order-container{
-        width: 720px;
+        width: auto;
     }
 } 
 
@@ -18,11 +18,6 @@
 
     .dashboard-action-group figure figcaption{
         font-size: 1.5rem;
-    }
-
-    
-    .order-container{
-        width: 100%;
     }
 }
 
@@ -139,6 +134,22 @@
     #edit-form, #add-form{
         display: block;
     }
+
+    .order-container{
+        flex-wrap: wrap;
+    }
+
+    .product-info{
+        flex: 1;
+    }
+
+    .order-container{
+        padding: 20px;
+    }
+
+    .product-images-container,.product-info{
+        margin-bottom: 20px;
+    }
 }
 
 
@@ -169,7 +180,7 @@
     }
 
     .list-items-container .savings-card{
-        margin-inline: 10px;
+        margin-inline: 2px;
     }
 
     .savings-card .savings-icon-container{
@@ -182,6 +193,14 @@
 
     .savings-card .savings-amount{
         font-size: 12px;
+    }
+
+    .order-container{
+        margin-inline: 2px;
+    }
+
+    .product-images-container{
+        margin-right: 15px;
     }
 }
 

@@ -42,3 +42,30 @@
     display: block;
 }
 
+tbody tr td span.dot{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+tbody tr td span.pending-dot{
+    background-color: #0275d8;
+}
+
+tbody tr td span.shipped-dot{
+    background-color: #cd02d8;
+}
+
+tbody tr td span.awaiting-shipment-dot{
+    background-color: #d80202;
+}
+
+tbody tr td span.completed-dot{
+    background-color: #6dbd28;
+}
+
+tbody tr td span.cancelled-dot{
+    background-color: #000000;
+}

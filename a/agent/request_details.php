@@ -33,7 +33,7 @@ function generateStatus($status)
             $html = '<span class="dot pending"> </span> pending';
             break;
         case "2":
-            $html = '<span class="dot approved"> </span> approved';
+            $html = '<span class="dot approved"> </span> granted';
             break;
         case "3":
             $html = '<span class="dot rejected"> </span> rejected';
@@ -60,7 +60,7 @@ function generateStatus($status)
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <!-- ADMIN DASHBOARD MENU CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash-menu.css" />
-    <!-- OORDER DETAILS CSS -->
+    <!-- SAVINGS REQUEST DETAILS CSS -->
     <link rel="stylesheet" href="../../assets/css/dashboard/admin-dash/savings-request.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link rel="stylesheet" href="../../assets/css/media-queries/admin-dash-mediaqueries.css" />
@@ -104,7 +104,7 @@ function generateStatus($status)
                     ?>
                             <div class="savings-product active">
                                 <div class="savings-product-image-container">
-                                    <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                    <img src="<?= $url ?>assets/product-images/<?= $product['product_picture'] ?>" alt="Web cam #1">
                                 </div>
                                 <div class="savings-product-details">
                                     <span class="savings-product-name"><?= $product['product_name'] ?></span>

@@ -1039,6 +1039,35 @@ figcaption .payment-plans .product-badge.month{
     color: var(--secondary-color);
 }
 
+.available-good .out-of-stock-container{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin-bottom: 20px;
+    color: red;
+    font-size: 1.5rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.available-good .out-of-stock-container.center{
+    text-align: center;
+}
+
+.available-good .out-of-stock-container .dot.red{
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    background-color: red;
+    vertical-align: middle;
+    border-radius: 50%;
+}
+
+
 .available-good .add-to-cart-btn{
     position: absolute;
     bottom: 0px;

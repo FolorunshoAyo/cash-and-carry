@@ -51,6 +51,7 @@
     width: 80%;
     margin: 30px auto 0;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
@@ -58,6 +59,7 @@
     width: 60px;
     height: 60px;
     cursor: pointer;
+    margin-bottom: 20px;
 }
 
 .product-info{
@@ -98,6 +100,40 @@
     bottom: 10px;
     left: 0px;
 }
+
+.product-info-stock-and-store{
+    margin: 30px 0;
+    font-size: 1.5rem;
+    padding: 0px 10px 10px;
+    width: 90%;
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.product-info-stock-and-store ul{
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+}
+
+.product-info-stock-and-store ul li{
+    display: flex;
+    align-items: center;
+}
+
+.product-info-stock-and-store ul li:not(:last-child)::after{
+    content: "|";
+    margin: 0px 20px;
+    color: var(--primary-color);
+}
+
+.product-info-stock-and-store ul li span.key{
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+
+
+
 
 .product-info-group.price .product-value{
     font-size: 3rem;
@@ -227,6 +263,28 @@
     transform: translate(2px, 2px);
 }
 
+.out-of-stock-container{
+    margin: 20px 0;
+    color: red;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.out-of-stock-container.center{
+    justify-content: center;
+}
+
+.out-of-stock-container .dot.red{
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    display: inline-block;
+    background-color: red;
+    vertical-align: bottom;
+    border-radius: 50%;
+}
+
 .buy-options-container button:hover {
     background-color: var(--black);
 }
@@ -347,30 +405,3 @@ figcaption .payment-plans .product-badge.month{
 .product-card .add-to-cart-btn{
     text-align: center;
 }
-
-.full-loader{
-    display: none;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
-    background-color: #f3f3f3e9;
-    z-index: 200;
-  }
-
-  .full-loader.active{
-    display: flex;
-    animation: fadeIn .5s linear;
-  }
-
-  .spinner {
-    border: 10px solid #f0f0f0;
-    border-top: 10px solid var(--primary-color); 
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 1s linear infinite;
-  }

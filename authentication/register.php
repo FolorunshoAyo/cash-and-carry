@@ -37,6 +37,7 @@ if (isset($_POST['submit'])) {
 				$statement_personal->bind_param("sssss", $first_name, $last_name, $email, $phone_no, $hash_pass);
 					if($statement_personal->execute()){
 					    $_SESSION['email'] = $email;
+					    $_SESSION['first_name'] = $first_name;
 					    echo json_encode(array('success' => 1));
 					}
 			}		

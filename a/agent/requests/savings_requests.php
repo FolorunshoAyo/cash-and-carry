@@ -19,7 +19,7 @@ function showStatus($status)
             $html = "<span class='dot pending-dot'></span> pending";
             break;
         case "2":
-            $html = "<span class='dot shipped-dot'></span> granted";
+            $html = "<span class='dot completed-dot'></span> granted";
             break;
         case "3":
             $html = "<span class='dot cancelled-dot'></span> rejected";
@@ -131,7 +131,7 @@ function showStatus($status)
                                         echo $name;
                                         ?>
                                     </td>
-                                    <td class="status-cell-<?php echo $request_details['savings_id'] ?>">
+                                    <td class="status-cell-<?php echo $request_details['id'] ?>">
                                         <?php echo showStatus($request_details['status']) ?>
                                     </td>
                                     <td>
@@ -139,10 +139,10 @@ function showStatus($status)
                                             <?php
                                             $status = $request_details['status'];
                                             ?>
-                                            <select class="request-status-select" name="request-status-<?= $request_details['id'] ?>" data-requestID="<?php echo $request_details['id'] ?>" data-userID="<?= $request_details['user_id'] ?>">
+                                            <select class="request-status-select" name="request-status-<?= $request_details['id'] ?>" data-requestID="<?php echo $request_details['id'] ?>" data-userID="<?= $request_details['user_id'] ?>" <?= ($status === "2" || $status === "3")? "disabled" : "" ?>>
                                                 <option <?php echo $status === "1" ? "selected" : "" ?> value="1">pending</option>
-                                                <option <?php echo $status === "2" ? "selected" : "" ?> value="2">approved</option>
-                                                <option <?php echo $status === "3" ? "selected" : "" ?> value="3">canceled</option>
+                                                <option <?php echo $status === "2" ? "selected" : "" ?> value="2">granted</option>
+                                                <option <?php echo $status === "3" ? "selected" : "" ?> value="3">rejected</option>
                                             </select>
                                         </form>
                                     </td>
@@ -206,7 +206,7 @@ function showStatus($status)
 
                     const selectedRequestId = $(this).attr("data-requestID");
 
-                    $(selectEl).after("<img src='../../../assets/images/loading-gif.gif' alt='Loading'>")
+                    $(selectEl).after("<img src='../../../assets/images/loading-gif.gif' alt='Loading'>");
 
                     // PREVENT UPDATE IF PENDING
                     if (selectedRequestStatus === "1") return;
@@ -235,7 +235,7 @@ function showStatus($status)
             });
 
             function updateAndDisableSavingsRequest(requestId, selectEl, userId, status) {
-                $.post("controllers/update-saving-request", {
+                $.post("controllers/update-savings-request", {
                     rid: requestId,
                     status: status,
                     user_id: userId,
@@ -249,12 +249,12 @@ function showStatus($status)
                         Swal.fire({
                             title: "Request Status",
                             icon: "success",
-                            text: "This user can go ahead to make half payment.",
+                            text: status === "2"? "This user has been notified and can go ahead to make savings." : "This user request has been rejected",
                             allowOutsideClick: true,
                             allowEscapeKey: true,
                         });
 
-                        switch (selectedRequestStatus) {
+                        switch (status) {
                             case "1":
                                 statusHTML = "<span class='dot pending-dot'></span> pending";
                                 break;
@@ -270,13 +270,13 @@ function showStatus($status)
                         }
 
                         // UPDATE STATUS CELL
-                        $(`.status-cell-${requestID}`).html(statusHTML);
+                        $(`.status-cell-${requestId}`).html(statusHTML);
 
                         // REMOVE LOADER
                         $(selectEl).next("img[alt='Loading']").remove();
 
                         // DISABLE SELECT ELEMENT
-                        $(`[data-requestID = '${requestID}']`).attr("disabled", true);
+                        $(`[data-requestID = '${requestId}']`).attr("disabled", true);
                     } else {
                         Swal.fire({
                             title: response.error_title,

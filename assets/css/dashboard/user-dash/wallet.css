@@ -148,7 +148,7 @@ header{
 }
 
 .savings-history-container{
-    margin-bottom: 50px;
+    margin-bottom: 100px;
 }
 
 
@@ -198,6 +198,9 @@ header{
     font-size: 2rem;
 }
 
+.savings-history-container .savings-history .savings-history-info .deposited-by{
+    font-size: 1.5rem;
+}
 
 .savings-history-container .savings-history .savings-history-info .paid-date{
     color: var(--grey);

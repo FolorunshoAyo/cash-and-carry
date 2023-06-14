@@ -188,7 +188,7 @@ html {
   transition: 0.5s ease-in;
   opacity: 0;
   visibility: hidden;
-  z-index: 100;
+  z-index: 200;
 }
 
 .spinner-wrapper.active {
@@ -226,4 +226,9 @@ button i.rotate{
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+button{
+  font-family: inherit;
 }

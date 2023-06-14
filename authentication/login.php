@@ -17,6 +17,8 @@ if (isset($_POST['login'])) {
 			// if ($password === $passcode) {
 				if($row['is_email_verified'] == 0) {
 					//Redirect to authentication/send-code?a=send
+					$_SESSION['email'] = $email;
+					$_SESSION['first_name'] = $row['first_name'];
 					echo json_encode(array('success' => 1, 'redirect' => 'email-auth'));
 				}elseif ($row['is_email_verified'] == 1 || $row['account_status'] == 1) {
 					$_SESSION['user_id'] = $row['user_id'];

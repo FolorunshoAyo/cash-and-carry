@@ -105,7 +105,7 @@ if ($inSession) {
                                     </div>
                                 </div>
                                 <div data-label="Quantity">
-                                    <input type="number" min="1" max="50" value="<?= $values['product_quantity'] ?>" class="amount" data-product-id="<?= $values['product_id'] ?>">
+                                    <input type="number" min="1" value="<?= $values['product_quantity'] ?>" class="amount" data-product-id="<?= $values['product_id'] ?>" data-product-name="<?= $values['product_name'] ?>">
                                 </div>
                                 <div data-label="Unit-price">
                                     ₦ <?= number_format($values['product_price'], 2) ?>
@@ -319,6 +319,19 @@ if ($inSession) {
     <!-- JUST VALIDATE LIBRARY -->
     <script src="../assets/js/just-validate/just-validate.js"></script>
     <script>
+        <?php
+        if (isset($_SESSION['stock_error_message'])) {
+            echo  'Swal.fire({
+                    title: "Checkout Error",
+                    icon: "error",
+                    text: "' . $_SESSION['stock_error_message'] . '",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                });';
+            unset($_SESSION['stock_error_message']);
+        }
+        ?>
+
         function activateSavingsValidator() {
             const validation = new JustValidate("#savings-form", {
                 errorFieldCssClass: "is-invalid",
@@ -336,7 +349,7 @@ if ($inSession) {
                     const formData = new FormData(savingsForm);
 
                     formData.append("submit", true);
-                    formData.append("type", "2");
+                    formData.append("type", "2");   
 
                     for (const [key, value] of formData.entries()) {
                         console.log(`${key}: ${value}`);
@@ -367,13 +380,13 @@ if ($inSession) {
                                     location.href = `../user/savings-request?id=${response.savings_id}`;
                                 });
                             } else {
-                                $(".spinner-wrapper").addClass("active");
-                                $(".savings-action-btn-container buttton.btn").html("<i class='fa fa-spinner rotate'></i>")
+                                $(".spinner-wrapper").removeClass("active");
+                                $(".savings-action-btn-container button.btn").html("Proceed");
 
                                 Swal.fire({
                                     title: "Savings Request Error",
                                     icon: "error",
-                                    text: "Unable to place savings request. Please try again.",
+                                    text: response.error_msg,
                                     allowOutsideClick: false,
                                     allowEscapeKey: false,
                                 });
@@ -383,7 +396,13 @@ if ($inSession) {
                 });
         }
 
-        activateSavingsValidator();
+        <?php
+        if ($_SESSION['shopping_cart']) {
+        ?>
+            activateSavingsValidator();
+        <?php
+        }
+        ?>
 
         function displayActiveRequest() {
             $(".savings-request-modal-wrapper").addClass("active");
@@ -470,6 +489,8 @@ if ($inSession) {
                             $(".modal-footer .total-amount-container .total-amount").html("NGN " + response.total_amount);
 
                             $(".spinner-wrapper").removeClass("active");
+
+                            savingsProductCount = 1;
                         }
                     });
 
@@ -529,6 +550,7 @@ if ($inSession) {
             var updatedProducts = []; // CONTAINS A LIST OF ALL THE UPDATED PRODUCTS AND THEIR QUANTITIES
 
             $(document).on("click", ".cart-action-section button.btn", function() {
+                // if()
                 $.ajax({
                     url: "controllers/cart-controller.php",
                     method: "POST",
@@ -571,19 +593,22 @@ if ($inSession) {
                             product_quantity
                         });
                     } else {
-                        updatedProducts.forEach((item, index) => {
-                            if (updatedProducts.some((item) => item.product_id == product_id)) {
-                                updatedProducts[index] = {
-                                    product_id,
-                                    product_quantity
+                        if (updatedProducts.findIndex(item => item.product_id === product_id) !== -1) {
+                            updatedProducts.find((item, index) => {
+                                if (item.product_id === product_id) {
+                                    updatedProducts[index] = {
+                                        product_id,
+                                        product_quantity
+                                    };
+                                    return true;
                                 }
-                            } else {
-                                updatedProducts.push({
-                                    product_id,
-                                    product_quantity
-                                });
-                            }
-                        });
+                            });
+                        } else {
+                            updatedProducts.push({
+                                product_id,
+                                product_quantity
+                            })
+                        }
                     }
                 } else {
                     disableUpdateCartButton();
@@ -598,7 +623,6 @@ if ($inSession) {
 
                 // ENABLE UPDATE BUTTON
                 if (Number(product_quantity) > 0) {
-
                     enableUpdateCartButton();
 
                     if (updatedProducts.length == 0) {
@@ -607,23 +631,28 @@ if ($inSession) {
                             product_quantity
                         });
                     } else {
-                        updatedProducts.forEach((item, index) => {
-                            if (updatedProducts.some((item) => item.product_id == product_id)) {
-                                updatedProducts[index] = {
-                                    product_id,
-                                    product_quantity
+                        if (updatedProducts.findIndex(item => item.product_id === product_id) !== -1) {
+                            updatedProducts.find((item, index) => {
+                                if (item.product_id === product_id) {
+                                    updatedProducts[index] = {
+                                        product_id,
+                                        product_quantity
+                                    };
+                                    return true;
                                 }
-                            } else {
-                                updatedProducts.push({
-                                    product_id,
-                                    product_quantity
-                                });
-                            }
-                        });
+                            });
+                        } else {
+                            updatedProducts.push({
+                                product_id,
+                                product_quantity
+                            })
+                        }
                     }
+
                 } else {
                     disableUpdateCartButton();
                 }
+
             });
 
             function enableUpdateCartButton() {
@@ -727,7 +756,7 @@ if ($inSession) {
 
                     savingsProductCount++;
 
-                    ($(savingsProducts[savingsProductCount - 1]).addClass("active"));
+                    $(savingsProducts[savingsProductCount - 1]).addClass("active");
                 } else {
                     savingsProducts.each(function() {
                         $(this).removeClass("active");
@@ -735,12 +764,17 @@ if ($inSession) {
 
                     savingsProductCount--;
 
-                    ($(savingsProducts[savingsProductCount - 1]).addClass("active"));
+                    $(savingsProducts[savingsProductCount - 1]).addClass("active");
                 }
 
                 if (savingsProductCount === 1) {
                     $(".payment-plan-container .controls-container button[data-direction = 'prev']").attr("disabled", true);
                     $(".payment-plan-container .controls-container button[data-direction = 'next']").attr("disabled", false);
+                }
+
+                if (savingsProductCount > 1 && savingsProductCount < savingsProducts.length) {
+                    $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+                    $(".controls-container button[data-direction = 'next']").attr("disabled", false);
                 }
 
                 if (savingsProductCount === savingsProducts.length) {
@@ -776,6 +810,11 @@ if ($inSession) {
                 if (requestProductCount === 1) {
                     $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", true);
                     $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", false);
+                }
+
+                if (requestProductCount > 1 && requestProductCount < savingsProducts.length) {
+                    $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+                    $(".controls-container button[data-direction = 'next']").attr("disabled", false);
                 }
 
                 if (requestProductCount === savingsProducts.length) {

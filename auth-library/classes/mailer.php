@@ -1,33 +1,35 @@
 <?php
-include(dirname(__DIR__)."/call.php");
+include(dirname(__DIR__) . "/call.php");
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
-require dirname(__DIR__).'/PHPMailer/autoload.php';
 
-require dirname(__DIR__).'/PHPMailer/PHPMailer/src/Exception.php';
-require dirname(__DIR__).'/PHPMailer/PHPMailer/src/PHPMailer.php';
-require dirname(__DIR__).'/PHPMailer/PHPMailer/src/SMTP.php';
+require dirname(__DIR__) . '/PHPMailer/autoload.php';
+
+require dirname(__DIR__) . '/PHPMailer/PHPMailer/src/Exception.php';
+require dirname(__DIR__) . '/PHPMailer/PHPMailer/src/PHPMailer.php';
+require dirname(__DIR__) . '/PHPMailer/PHPMailer/src/SMTP.php';
 
 $url = strval($url);
 
 //Function to send otp to the user
 function send_mail($email, $subject, $msg, $gurl)
 {
-    //Create a new PHPMailer instance
-    $mail = new PHPMailer;
+	//Create a new PHPMailer instance
+	$mail = new PHPMailer;
 
-    //Set who the message is to be sent from
-    $mail->setFrom('no-reply@'.$_ENV['EMAIL_DOMAIN'], $_ENV['APP_ENV']);
-    //Set an alternative reply-to address
-    $mail->addReplyTo($email);
-    //Set who the message is to be sent to
-    $mail->addAddress($email);
-    //Set the subject line
-    $mail->isHTML(true);
-    $mail->Subject = $subject;
+	//Set who the message is to be sent from
+	$mail->setFrom('no-reply@' . $_ENV['EMAIL_DOMAIN'], $_ENV['APP_ENV']);
+	//Set an alternative reply-to address
+	$mail->addReplyTo($email);
+	//Set who the message is to be sent to
+	$mail->addAddress($email);
+	//Set the subject line
+	$mail->isHTML(true);
+	$mail->Subject = $subject;
 
-    $message = "<!DOCTYPE html>
+	$message = "<!DOCTYPE html>
 				   <html>
 					   <head>
 					   	   <link rel='stylesheet'  href='" . $url . "assets/fonts/fonts.css' type='text/css' />
@@ -57,34 +59,59 @@ function send_mail($email, $subject, $msg, $gurl)
 					   </body>
 					   </html>";
 
-    $mail->Body = $message;
-    $mail->AltBody = $message;
+	$mail->Body = $message;
+	$mail->AltBody = $message;
 
-    //send the message, check for errors
-    if (!$mail->send()) {
-		alert_back("error","Unable to send email, Kindly confirm your entered email and try again!");
-	}else {
-	    $redirect_url = $_ENV['URL'].$gurl;
-	    alert_msg_url("success","Email Sent Successfully!","Check your mailbox or spam folder for your reset link", $redirect_url);	
-    }
+	//send the message, check for errors
+	if (!$mail->send()) {
+		alert_back("error", "Unable to send email, Kindly confirm your entered email and try again!");
+	} else {
+		$redirect_url = $_ENV['URL'] . $gurl;
+		alert_msg_url("success", "Email Sent Successfully!", "Check your mailbox or spam folder for your reset link", $redirect_url);
+	}
+}
+
+
+function send_custom_mail($recipient_email, $subject, $content)
+{
+	//Create a new PHPMailer instance
+	$mail = new PHPMailer;
+
+	//Set who the message is to be sent from
+	$mail->setFrom('no-reply@' . $_ENV['EMAIL_DOMAIN'], $_ENV['APP_ENV']);
+	//Set an alternative reply-to address
+	$mail->addReplyTo($recipient_email);
+	//Set who the message is to be sent to
+	$mail->addAddress($recipient_email);
+	//Set the subject line
+	$mail->isHTML(true);
+	$mail->Subject = $subject;
+
+	$mail->Body = $content;
+	$mail->AltBody = $content;
+
+	//send the message, check for errors
+	if (!$mail->send()) {
+		echo "error";
+	}
 }
 
 function send_raw_mail($email, $subject, $msg)
 {
-    //Create a new PHPMailer instance
-    $mail = new PHPMailer;
+	//Create a new PHPMailer instance
+	$mail = new PHPMailer;
 
-    //Set who the message is to be sent from
-    $mail->setFrom('no-reply@'.$_ENV['EMAIL_DOMAIN'], $_ENV['APP_ENV']);
-    //Set an alternative reply-to address
-    $mail->addReplyTo($email);
-    //Set who the message is to be sent to
-    $mail->addAddress($email);
-    //Set the subject line
-    $mail->isHTML(true);
-    $mail->Subject = $subject;
+	//Set who the message is to be sent from
+	$mail->setFrom('no-reply@' . $_ENV['EMAIL_DOMAIN'], $_ENV['APP_ENV']);
+	//Set an alternative reply-to address
+	$mail->addReplyTo($email);
+	//Set who the message is to be sent to
+	$mail->addAddress($email);
+	//Set the subject line
+	$mail->isHTML(true);
+	$mail->Subject = $subject;
 
-    $message = "<!DOCTYPE html>
+	$message = "<!DOCTYPE html>
 				   <html>
 					   <head>
 						   <style>               
@@ -115,16 +142,12 @@ function send_raw_mail($email, $subject, $msg)
 					   </body>
 					   </html>";
 
-    $mail->Body = $message;
-    $mail->AltBody = $message;
+	$mail->Body = $message;
+	$mail->AltBody = $message;
 
-    //send the message, check for errors
-    if (!$mail->send()) {
-        echo "error";
+	//send the message, check for errors
+	if (!$mail->send()) {
+		echo "error";
 		// alert_back("error","Unable to send email!");
 	}
 }
-
-
-
-?>

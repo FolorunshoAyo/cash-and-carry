@@ -1,11 +1,10 @@
-    .plan-summary-header{
+.plan-summary-header{
     height: 10vh;
     padding: 15px 30px;
     display: flex;
     align-items: center;
     font-size: 1.5rem;
 }
-
 
 .icon-container{
     display: flex;
@@ -76,4 +75,5 @@
     border: none;
     width: 230px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
 }

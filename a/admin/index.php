@@ -68,8 +68,8 @@ function showStatus($status)
 
 <body style="background-color: #fafafa">
   <div class="dash-wrapper">
-    <?php 
-      include("includes/admin-sidebar.php");
+    <?php
+    include("includes/admin-sidebar.php");
     ?>
     <section class="page-wrapper">
       <header class="dash-header">
@@ -286,13 +286,13 @@ function showStatus($status)
             $this_month_total = 0;
 
             $last_month_revenues = array(
-              $sql_last_month_revenue_installment_payments->fetch_assoc()['month_revenue'], 
+              $sql_last_month_revenue_installment_payments->fetch_assoc()['month_revenue'],
               // $sql_last_month_revenue_easybuy->fetch_assoc()['month_revenue'], 
               // $sql_last_month_revenue_debtors->fetch_assoc()['month_revenue']
             );
 
             $this_month_revenues = array(
-              $sql_this_month_revenue_installment_payments->fetch_assoc()['month_revenue'], 
+              $sql_this_month_revenue_installment_payments->fetch_assoc()['month_revenue'],
               // $sql_this_month_revenue_easybuy->fetch_assoc()['month_revenue'], 
               // $sql_this_month_revenue_debtors->fetch_assoc()['month_revenue']
             );
@@ -306,7 +306,7 @@ function showStatus($status)
             }
 
             // CALCULATE PERCENTAGE CHANGE
-            $percent_change = round(($last_month_total - $this_month_total) / ($last_month_total == 0? 1 : $last_month_total) * 100);
+            $percent_change = round(($last_month_total - $this_month_total) / ($last_month_total == 0 ? 1 : $last_month_total) * 100);
             ?>
             <span class="card-figure">
               NGN
@@ -418,23 +418,24 @@ function showStatus($status)
             <tbody>
               <?php
               $sql_all_store_wallets = $db->query("SELECT * FROM 
-              store_wallets INNER JOIN users ON store_wallets.user_id=users.user_id WHERE store_wallets.completed = 0");
+              ((store_wallets INNER JOIN users ON store_wallets.user_id=users.user_id) INNER JOIN savings_requests ON store_wallets.wallet_no=savings_requests.savings_id) WHERE store_wallets.completed = 0");
 
-              function getWalletType($type){
+              function getWalletType($type)
+              {
                 $output = "";
-                switch($type){
+                switch ($type) {
                   case "1":
                     $output = "daily";
-                  break;
+                    break;
                   case "2":
                     $output = "weekly";
-                  break;
+                    break;
                   case "3":
                     $output = "monthly";
-                  break;
-                  default: 
+                    break;
+                  default:
                     $output = "unable to detect type of wallet";
-                  break;
+                    break;
                 }
 
                 return $output;
@@ -442,22 +443,27 @@ function showStatus($status)
 
               $count = 1;
               while ($wallet_details = $sql_all_store_wallets->fetch_assoc()) {
-                
+
               ?>
                 <tr>
                   <td>#<?php echo $count ?></td>
                   <td><?php echo $wallet_details['last_name'] . " " . $wallet_details['first_name'] ?></td>
-                  <td>NGN <?php echo  number_format($wallet_details['current_amount']) ?></td>
+                  <td>NGN <?php echo  number_format($wallet_details['amount']) ?></td>
                   <td>NGN <?php echo  number_format($wallet_details['target_amount']) ?></td>
-                  <td><?php echo getWalletType($wallet_details['type']) ?></td>
+                  <td><?php echo getWalletType($wallet_details['type_of_savings']) ?></td>
                   <td>
-                    <?php 
-                      $wallet_id = $wallet_details['wallet_id'];
-                      $sql_check_last_deposit = $db->query("SELECT deposited_at FROM intallment_payments WHERE wallet_id={$wallet_id} ORDER BY payment_id DESC LIMIT 1");
-                      
+                    <?php
+                    $wallet_id = $wallet_details['wallet_no'];
+                    $sql_check_last_deposit = $db->query("SELECT deposited_at FROM savings_history WHERE wallet_no={$wallet_id} ORDER BY id DESC LIMIT 1");
+
+
+                    if ($sql_check_last_deposit->num_rows === 0) {
+                      echo "No recorded last deposit";
+                    } else {
                       $last_deposit = $sql_check_last_deposit->fetch_assoc()['deposited_at'];
 
-                      echo $last_deposit === ""? "No recorded deposit" : $last_deposit; 
+                      echo $last_deposit;
+                    }
                     ?>
                   </td>
                 </tr>

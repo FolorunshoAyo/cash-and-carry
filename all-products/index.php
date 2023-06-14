@@ -49,18 +49,10 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
 </head>
 
 <body>
-    <div class="cart-backdrop"></div>
-    <aside class="cart-menu">
-        <div class="close-container">
-            <i class="fa fa-times"></i>
-        </div>
-        <div class="cart-menu-items-container">
-            <div class="spinner-container">
-                <img src="../assets/images/halfcarry-logo.jpeg" alt="Halfcarry Logo">
-                <div class="spinner"></div>
-            </div>
-        </div>
-    </aside>
+    <?php
+    include("../includes/savings-request-modal.php");
+    include("../includes/cart.php");
+    ?>
     <header>
         <div class="top-header">
             <a href="../" class="logo-container">
@@ -172,9 +164,10 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
                             } else {
                             ?>
                                 <ul class="menu">
-                                    <li><a href="user/">Dashboard</a></li>
-                                    <li><a href="user/orders">Orders</a></li>
-                                    <li><a href="logout?rd=home">Log out</a></li>
+                                    <li><a href="<?= $url ?>user/">Dashboard</a></li>
+                                    <li><a href="<?= $url ?>user/orders">Orders</a></li>
+                                    <li><?= $isActiveRequest ? '<a onclick="displayActiveRequest()" href="javascript:void(0)"> <span class="circle"></span> Requests</a>' : '<a href="' . $url . 'user/savings?requests"> Requests</a>' ?> </li>
+                                    <li><a href="<?= $url ?>logout?rd=home">Log out</a></li>
                                 </ul>
                             <?php
                             }
@@ -513,7 +506,7 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
                             product_id: product_id,
                             action: action
                         },
-                        beforeSend: function () {
+                        beforeSend: function() {
                             $(".spinner-wrapper").addClass("active");
                         },
                         success: function() {
@@ -540,7 +533,7 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
                     url: "../controllers/fetch-cart.php",
                     method: "POST",
                     dataType: "json",
-                    beforeSend: function(){
+                    beforeSend: function() {
                         $(".spinner-wrapper").addClass("active");
                     },
                     success: function(data) {
@@ -555,6 +548,46 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
                     }
                 });
             }
+
+            // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
+            let requestProductCount = 1;
+            $(document).on("click", ".savings-request-modal .controls-container button", function() {
+                const btnClicked = $(this).attr("data-direction");
+                const savingsProducts = $(".savings-request-modal .products-container .savings-product");
+
+                if (btnClicked === "next") {
+                    savingsProducts.each(function() {
+                        $(this).removeClass("active");
+                    });
+
+                    requestProductCount++;
+
+                    ($(savingsProducts[requestProductCount - 1]).addClass("active"));
+                } else {
+                    savingsProducts.each(function() {
+                        $(this).removeClass("active");
+                    });
+
+                    requestProductCount--;
+
+                    ($(savingsProducts[requestProductCount - 1]).addClass("active"));
+                }
+
+                if (requestProductCount === 1) {
+                    $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", true);
+                    $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", false);
+                }
+
+                if (requestProductCount === savingsProducts.length) {
+                    $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", true);
+                    $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", false);
+                }
+            });
+
+            // ACTIVE SAVINGS REQUEST MODAL EVENT
+            $(document).on("click", ".savings-request-modal .modal-header .close-container", function() {
+                $(".savings-request-modal-wrapper").removeClass("active");
+            });
         });
     </script>
 </body>

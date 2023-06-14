@@ -16,27 +16,27 @@
             exit();
         }else{
             // CHECK FOR DEFAULT
-            $sql_check_default_address = $db->query("SELECT * FROM user_addresses WHERE user_id={$uid} AND active=1");
+            $sql_check_default_address = $db->query("SELECT * FROM users_addresses WHERE user_id={$uid} AND active=1");
 
             if($sql_check_default_address->num_rows === 1){
                 // CREATE EXTRA ADDRESS
-                $sql_add_to_addresses = $db->query("INSERT INTO addresses (recipient_name, recipient_phone_no, additional_info, city_name, delivery_address, address_state, address_postalcode) VALUES ('$rname', '$rphoneno', '$ainfo', '$city', '$daddress', '$state', '$pcode')");
+                $sql_add_to_addresses = $db->query("INSERT INTO addresses (recipient_name, recipient_phone_no, additional_info, city_name, delivery_address, address_state, address_postal_code) VALUES ('$rname', '$rphoneno', '$ainfo', '$city', '$daddress', '$state', '$pcode')");
 
                 if($sql_add_to_addresses){
                     $address_id = $db->insert_id;
                     //INSERT IN ADDRESS LOOKUP 
-                    $sql_add_to_address_lookup = $db->query("INSERT INTO user_addresses (user_id, address_id, active) VALUES ('$uid', '$address_id', 0)");
+                    $sql_add_to_address_lookup = $db->query("INSERT INTO users_addresses (user_id, address_id, active) VALUES ('$uid', '$address_id', 0)");
                     echo json_encode(array('success' => 1));
                     exit();
                 }
             }else{
                 // CREATE DEFAULT ADDRESS
-                $sql_add_to_addresses = $db->query("INSERT INTO addresses (recipient_name, recipient_phone_no, additional_info, city_name, delivery_address, address_state, address_postalcode) VALUES ('$rname', '$rphoneno', '$ainfo', '$city', '$daddress', '$state', '$pcode')");
+                $sql_add_to_addresses = $db->query("INSERT INTO addresses (recipient_name, recipient_phone_no, additional_info, city_name, delivery_address, address_state, address_postal_code) VALUES ('$rname', '$rphoneno', '$ainfo', '$city', '$daddress', '$state', '$pcode')");
 
                 if($sql_add_to_addresses){
                     $address_id = $db->insert_id;
                     //INSERT IN ADDRESS LOOKUP 
-                    $sql_add_to_address_lookup = $db->query("INSERT INTO user_addresses (user_id, address_id, active) VALUES ('$uid', '$address_id', 1)");
+                    $sql_add_to_address_lookup = $db->query("INSERT INTO users_addresses (user_id, address_id, active) VALUES ('$uid', '$address_id', 1)");
                     echo json_encode(array('success' => 1));
                     exit(); 
                 }

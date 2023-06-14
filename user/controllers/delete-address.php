@@ -10,7 +10,7 @@
             exit();
         }else{
             // DELETE RECORD FROM LOOKUP
-            $sql_delete_address_lookup = $db->query("DELETE FROM user_addresses WHERE address_id='$aid' AND user_id='$uid'");
+            $sql_delete_address_lookup = $db->query("DELETE FROM users_addresses WHERE address_id='$aid' AND user_id='$uid'");
 
             if($sql_delete_address_lookup){
                 //DELETE RECORD FROM ADDRESSES

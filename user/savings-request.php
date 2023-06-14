@@ -129,7 +129,7 @@ function generateStatus($status)
                         ?>
                                 <div class="savings-product active">
                                     <div class="savings-product-image-container">
-                                        <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                        <img src="<?= $url ?>assets/product-images/<?= $product['product_picture'] ?>" alt="Web cam #1">
                                     </div>
                                     <div class="savings-product-details">
                                         <span class="savings-product-name"><?= $product['product_name'] ?></span>
@@ -141,7 +141,7 @@ function generateStatus($status)
                             ?>
                                 <div class="savings-product">
                                     <div class="savings-product-image-container">
-                                        <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                        <img src="<?= $url ?>assets/product-images/<?= $product['product_picture'] ?>" alt="Web cam #1">
                                     </div>
                                     <div class="savings-product-details">
                                         <span class="savings-product-name"><?= $product['product_name'] ?></span>

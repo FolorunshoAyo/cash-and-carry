@@ -19,7 +19,7 @@ if ($inSession) {
 if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     $pid = $_GET['pid'];
 
-    $sql_product = $db->query("SELECT * FROM products INNER JOIN product_categories ON products.category=product_categories.category_id WHERE product_id={$pid}");
+    $sql_product = $db->query("SELECT products.*, product_categories.*, stores.name as store_name FROM ((products INNER JOIN product_categories ON products.category=product_categories.category_id) INNER JOIN stores ON products.store_id = stores.id) WHERE product_id={$pid}");
 
     if ($sql_product->num_rows === 0) {
         header("Location: ../");
@@ -69,9 +69,9 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                             <?php
                             foreach (explode(",", $product_details['pictures']) as $key => $picture) {
                                 if ($key === 0) {
-                                    echo "<img src='" . $url . "a/admin/images/$picture' id='product-image-" . $product_details['product_id'] . "' alt='" . $product_details['name'] . " " . ($key + 1) . "' />";
+                                    echo "<img src='" . $url . "assets/product-images/$picture' id='product-image-" . $product_details['product_id'] . "' alt='" . $product_details['name'] . " " . ($key + 1) . "' />";
                                 } else {
-                                    echo "<img src='" . $url . "a/admin/images/$picture' alt='" . $product_details['name'] . " " . ($key + 1) . "' />";
+                                    echo "<img src='" . $url . "assets/product-images/$picture' alt='" . $product_details['name'] . " " . ($key + 1) . "' />";
                                 }
                             }
                             ?>
@@ -80,7 +80,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                     <div class="product-images">
                         <?php
                         foreach (explode(",", $product_details['pictures']) as $key => $picture) {
-                            echo "<img src='../a/admin/images/$picture' alt='" . $product_details['name'] . " " . ($key + 1) . "' data-image='" . ($key + 1) . "'/>";
+                            echo "<img src='../assets/product-images/$picture' alt='" . $product_details['name'] . " " . ($key + 1) . "' data-image='" . ($key + 1) . "'/>";
                         }
                         ?>
                     </div>
@@ -92,6 +92,18 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                     <h1 id="name-<?= $product_details['product_id'] ?>" data-name="<?= $product_details['name'] ?>" class="product-name">
                         <?php echo $product_details['name'] ?>
                     </h1>
+                    <div class="product-info-stock-and-store">
+                        <ul>
+                            <li>
+                                <span class="key">Store:</span>
+                                <span class="value"><?= $product_details['store_name'] ?></span>
+                            </li>
+                            <li>
+                                <span class="key">Qty In Stock:</span>
+                                <span class="value"><?= $product_details['in_stock'] ?></span>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="product-info-group price">
                         <span id="price-<?= $product_details['product_id'] ?>" data-price="<?= $product_details['price'] ?>" class="product-value">
                             ₦ <?php echo number_format($product_details['price'], 2) ?>
@@ -107,6 +119,8 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                     $productCalculatedDays = $productCalculatedPeriods['days'];
                     $productCalculatedWeeks = $productCalculatedPeriods['weeks'];
                     $productCalculatedMonths = $productCalculatedPeriods['months'];
+
+                    $inStock = $product_details['in_stock'] === "0" ? 0 : 1;
                     ?>
                     <div class="product-info-group">
                         <span class="product-badge">Pay ₦<span><?php echo number_format(($product_installment_price / $productCalculatedDays), 2) ?></span> daily (<?= $productCalculatedPeriods['days'] ?> days)</span>
@@ -120,14 +134,26 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                             ?>
                         </div>
                     </div>
-                    <div class="product-info-group amount-block">
-                        <span class="product-label"> Quantity: </span>
-                        <input type="number" min="1" max="50" value="1" id="amount">
-                    </div>
-                    <div class="buy-options-container">
-                        <button data-product-id="<?= $product_details['product_id'] ?>">Add to cart</button>
-                        <button>Start Saving</button>
-                    </div>
+                    <?php
+                    if (!$inStock) {
+                    ?>
+                        <div class="out-of-stock-container">
+                            <span class="dot red"></span> Out of stock
+                        </div>
+                    <?php
+                    } else {
+                    ?>
+                        <div class="product-info-group amount-block">
+                            <span class="product-label"> Quantity: </span>
+                            <input type="number" min="1" max="50" value="1" id="amount">
+                        </div>
+                        <div class="buy-options-container">
+                            <button data-product-id="<?= $product_details['product_id'] ?>">Add to cart</button>
+                            <button>Start Saving</button>
+                        </div>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
         </section>
@@ -153,6 +179,8 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                             $calculatedDays = $calculatedPeriods['days'];
                             $calculatedWeeks = $calculatedPeriods['weeks'];
                             $calculatedMonths = $calculatedPeriods['months'];
+
+                            $inStock = $related_product['in_stock'] === "0" ? 0 : 1;
                         ?>
                             <div class="product-card">
                                 <a href="./?pid=<?= $related_product['product_id'] ?>">
@@ -160,7 +188,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                                         <?php
                                         $related_product_image_src = explode(",", $related_product['pictures'])[0];
                                         ?>
-                                        <img id="related-product-image-<?= $related_product['product_id'] ?>" src="<?= $url ?>a/admin/images/<?= $related_product_image_src ?>">
+                                        <img id="related-product-image-<?= $related_product['product_id'] ?>" src="<?= $url ?>assets/product-images/<?= $related_product_image_src ?>">
                                         <figcaption>
                                             <div class="payment-plans">
                                                 <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?>/day (<?= $calculatedPeriods['days'] ?> days)</span>
@@ -174,9 +202,21 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                                         </figcaption>
                                     </figure>
                                 </a>
-                                <div class="add-to-cart-btn">
-                                    <button data-product-id="<?= $related_product['product_id'] ?>">Add to Cart</button>
-                                </div>
+                                <?php
+                                if (!$inStock) {
+                                ?>
+                                    <div class="out-of-stock-container center">
+                                        <span class="dot red"></span> Out of stock
+                                    </div>
+                                <?php
+                                } else {
+                                ?>
+                                    <div class="add-to-cart-btn">
+                                        <button data-product-id="<?= $related_product['product_id'] ?>">Add to Cart</button>
+                                    </div>
+                                <?php
+                                }
+                                ?>
                             </div>
                         <?php
                         }
@@ -199,7 +239,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                             <?php
                             $picture = explode(",", $product_details['pictures'])[0];
                             ?>
-                            <img src="<?= $url . "a/admin/images/" . $picture ?>" alt="<?= $product_details['name'] ?>">
+                            <img src="<?= $url . "assets/product-images/" . $picture ?>" alt="<?= $product_details['name'] ?>">
                         </div>
                         <div class="savings-product-details">
                             <span class="savings-product-name"> <?= $product_details['name'] ?> </span>
@@ -261,6 +301,11 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                                 <label for="agent_id">Select Relationship Manager</label>
                             </div>
                         </div>
+
+                        <div class="important-message-container">
+                            <i class="fa fa-info-circle"></i> Note: 20% of the product price is incurred as charges for savings</i>
+                        </div>
+
                         <div class="savings-action-btn-container">
                             <button class="btn" type="submit">Proceed</button>
                         </div>
@@ -311,7 +356,7 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 
                     const formData = new FormData(savingsForm);
 
-                    formData.append("submit", true);     
+                    formData.append("submit", true);
                     formData.append("product_id", "<?= $product_details['product_id'] ?>");
                     formData.append("quantity", productQuantity);
                     formData.append("type", "1");
@@ -345,8 +390,8 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                                     location.href = `../user/savings-request?id=${response.savings_id}`;
                                 });
                             } else {
-                                $(".spinner-wrapper").addClass("active");
-                                $(".savings-action-btn-container buttton.btn").html("<i class='fa fa-spinner rotate'></i>")
+                                $(".spinner-wrapper").removeClass("active");
+                                $(".savings-action-btn-container buttton.btn").html("Proceed");
 
                                 Swal.fire({
                                     title: "Savings Request Error",
@@ -436,6 +481,11 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 
                     if (!selectedQuantity) return;
 
+                    if (selectedQuantity > <?= $product_details['in_stock'] ?>) {
+                        alert("Sorry! This Item only has <?= $product_details['in_stock'] ?> items in stock");
+                        return
+                    }
+
                     $(".product-badge span").each(function() {
                         savingsPrices.push(Number($(this).text().trim().replace(/,/g, "")));
                     });
@@ -513,173 +563,181 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
 
                 if (!product_quantity) return;
 
-                if (product_quantity > 0) {
-                    $.ajax({
-                        url: "../controllers/cart-controller.php",
-                        method: "POST",
-                        data: {
-                            product_id: product_id,
-                            product_name: product_name,
-                            product_price: product_price,
-                            product_quantity: product_quantity,
-                            product_image: product_image_src,
-                            action: action
-                        },
-                        beforeSend: function() {
-                            $(".spinner-wrapper").addClass("active");
-                            add_to_cart_btn.html("<i class='fa fa-spinner rotate'></i>");
-                        },
-                        success: function() {
-                            add_to_cart_btn.html("Add to Cart");
-                            $(".spinner-wrapper").removeClass("active");
-                            iziToast.success({
-                                title: "Item successfully added to cart",
-                                timeout: 3000,
-                                backgroundColor: 'green',
-                                theme: 'dark',
-                                position: 'topRight'
-                            });
-                            load_cart_data();
-                        }
-                    });
-                }
-            });
-
-            //RELATED PRODUCTS FUNCTION
-            $(document).on('click', '.add-to-cart-btn button', function() {
-                var product_id = $(this).attr("data-product-id");
-                var product_name = $('#related-product-name-' + product_id).attr("data-name");
-                var product_price = $('#related-product-price-' + product_id).attr("data-price");
-                var product_image_src = $("#related-product-image-" + product_id).attr("src");
-                var product_quantity = 1
-                var action = "add";
-
-                var add_to_cart_btn = $(this);
-
-                if (product_quantity > 0) {
-                    $.ajax({
-                        url: "../controllers/cart-controller.php",
-                        method: "POST",
-                        data: {
-                            product_id: product_id,
-                            product_name: product_name,
-                            product_price: product_price,
-                            product_quantity: product_quantity,
-                            product_image: product_image_src,
-                            action: action
-                        },
-                        beforeSend: function() {
-                            $(".spinner-wrapper").addClass("active");
-                            add_to_cart_btn.html("<i class='fa fa-spinner rotate'></i>");
-                        },
-                        success: function() {
-                            add_to_cart_btn.html("Add to Cart");
-                            $(".spinner-wrapper").removeClass("active");
-                            iziToast.success({
-                                title: "Item successfully added to cart",
-                                timeout: 3000,
-                                backgroundColor: 'green',
-                                theme: 'dark',
-                                position: 'topRight'
-                            });
-                            load_cart_data();
-                        }
-                    });
-                }
-            });
-
-            $(document).on('click', '.close-btn-container button', function() {
-                var product_id = $(this).attr("data-product-id");
-                var action = 'remove';
-                if (confirm("Are you sure you want to remove this product?")) {
-                    $.ajax({
-                        url: "../controllers/cart-controller.php",
-                        method: "POST",
-                        data: {
-                            product_id: product_id,
-                            action: action
-                        },
-                        beforeSend: function() {
-                            $(".spinner-wrapper").addClass("active");
-                        },
-                        success: function() {
-                            $(".spinner-wrapper").removeClass("active");
-                            iziToast.error({
-                                title: "Item removed from cart",
-                                timeout: 3000,
-                                backgroundColor: 'red',
-                                theme: 'dark',
-                                position: 'topRight'
-                            });
-                            load_cart_data();
-                        }
-                    });
+                if (product_quantity > <?= $product_details['in_stock'] ?>) {
+                    alert("Sorry! This item only has <?= $product_details['in_stock'] ?> items in stock");
+                    return;
                 } else {
-                    return false;
+                    $.ajax({
+                        url: "../controllers/cart-controller.php",
+                        method: "POST",
+                        data: {
+                            product_id: product_id,
+                            product_name: product_name,
+                            product_price: product_price,
+                            product_quantity: product_quantity,
+                            product_image: product_image_src,
+                            action: action
+                        },
+                        beforeSend: function() {
+                            $(".spinner-wrapper").addClass("active");
+                            add_to_cart_btn.html("<i class='fa fa-spinner rotate'></i>");
+                        },
+                        success: function() {
+                            add_to_cart_btn.html("Add to Cart");
+                            $(".spinner-wrapper").removeClass("active");
+                            iziToast.success({
+                                title: "Item successfully added to cart",
+                                timeout: 3000,
+                                backgroundColor: 'green',
+                                theme: 'dark',
+                                position: 'topRight'
+                            });
+                            load_cart_data();
+                        }
+                    });
                 }
             });
+        });
 
-            load_cart_data();
+        //RELATED PRODUCTS FUNCTION
+        $(document).on('click', '.add-to-cart-btn button', function() {
+            var product_id = $(this).attr("data-product-id");
+            var product_name = $('#related-product-name-' + product_id).attr("data-name");
+            var product_price = $('#related-product-price-' + product_id).attr("data-price");
+            var product_image_src = $("#related-product-image-" + product_id).attr("src");
+            var product_quantity = 1
+            var action = "add";
 
-            function load_cart_data() {
+            var add_to_cart_btn = $(this);
+
+            if (product_quantity > 0) {
                 $.ajax({
-                    url: "../controllers/fetch-cart.php",
+                    url: "../controllers/cart-controller.php",
                     method: "POST",
-                    dataType: "json",
+                    data: {
+                        product_id: product_id,
+                        product_name: product_name,
+                        product_price: product_price,
+                        product_quantity: product_quantity,
+                        product_image: product_image_src,
+                        action: action
+                    },
+                    beforeSend: function() {
+                        $(".spinner-wrapper").addClass("active");
+                        add_to_cart_btn.html("<i class='fa fa-spinner rotate'></i>");
+                    },
+                    success: function() {
+                        add_to_cart_btn.html("Add to Cart");
+                        $(".spinner-wrapper").removeClass("active");
+                        iziToast.success({
+                            title: "Item successfully added to cart",
+                            timeout: 3000,
+                            backgroundColor: 'green',
+                            theme: 'dark',
+                            position: 'topRight'
+                        });
+                        load_cart_data();
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '.close-btn-container button', function() {
+            var product_id = $(this).attr("data-product-id");
+            var action = 'remove';
+            if (confirm("Are you sure you want to remove this product?")) {
+                $.ajax({
+                    url: "../controllers/cart-controller.php",
+                    method: "POST",
+                    data: {
+                        product_id: product_id,
+                        action: action
+                    },
                     beforeSend: function() {
                         $(".spinner-wrapper").addClass("active");
                     },
-                    success: function(data) {
+                    success: function() {
                         $(".spinner-wrapper").removeClass("active");
-                        if (data.total_item === 0) {
-                            $(".cart-menu-items-container").html(data.cart_details);
-                            $('.cart-badge').text("0");
-                        } else {
-                            $('.cart-menu-items-container').html(data.cart_details);
-                            $('.cart-badge').text(data.total_item);
-                        }
-                    }
-                });
-                // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
-                let requestProductCount = 1;
-                $(document).on("click", ".savings-request-modal .controls-container button", function() {
-                    const btnClicked = $(this).attr("data-direction");
-                    const savingsProducts = $(".savings-request-modal .products-container .savings-product");
-
-                    if (btnClicked === "next") {
-                        savingsProducts.each(function() {
-                            $(this).removeClass("active");
+                        iziToast.error({
+                            title: "Item removed from cart",
+                            timeout: 3000,
+                            backgroundColor: 'red',
+                            theme: 'dark',
+                            position: 'topRight'
                         });
-
-                        requestProductCount++;
-
-                        ($(savingsProducts[requestProductCount - 1]).addClass("active"));
-                    } else {
-                        savingsProducts.each(function() {
-                            $(this).removeClass("active");
-                        });
-
-                        requestProductCount--;
-
-                        ($(savingsProducts[requestProductCount - 1]).addClass("active"));
-                    }
-
-                    if (requestProductCount === 1) {
-                        $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", true);
-                        $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", false);
-                    }
-
-                    if (requestProductCount === savingsProducts.length) {
-                        $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", true);
-                        $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", false);
+                        load_cart_data();
                     }
                 });
-
-                // ACTIVE SAVINGS REQUEST MODAL EVENT
-                $(document).on("click", ".savings-request-modal .modal-header .close-container", function() {
-                    $(".savings-request-modal-wrapper").removeClass("active");
-                });
+            } else {
+                return false;
             }
+        });
+
+        load_cart_data();
+
+        function load_cart_data() {
+            $.ajax({
+                url: "../controllers/fetch-cart.php",
+                method: "POST",
+                dataType: "json",
+                beforeSend: function() {
+                    $(".spinner-wrapper").addClass("active");
+                },
+                success: function(data) {
+                    $(".spinner-wrapper").removeClass("active");
+                    if (data.total_item === 0) {
+                        $(".cart-menu-items-container").html(data.cart_details);
+                        $('.cart-badge').text("0");
+                    } else {
+                        $('.cart-menu-items-container').html(data.cart_details);
+                        $('.cart-badge').text(data.total_item);
+                    }
+                }
+            });
+        }
+        // ACTIVE SAVINGS REQUEST MODAL FUNCTIONALITY 
+        let requestProductCount = 1;
+        $(document).on("click", ".savings-request-modal .controls-container button", function() {
+            const btnClicked = $(this).attr("data-direction");
+            const savingsProducts = $(".savings-request-modal .products-container .savings-product");
+
+            if (btnClicked === "next") {
+                savingsProducts.each(function() {
+                    $(this).removeClass("active");
+                });
+
+                requestProductCount++;
+
+                ($(savingsProducts[requestProductCount - 1]).addClass("active"));
+            } else {
+                savingsProducts.each(function() {
+                    $(this).removeClass("active");
+                });
+
+                requestProductCount--;
+
+                ($(savingsProducts[requestProductCount - 1]).addClass("active"));
+            }
+
+            if (requestProductCount === 1) {
+                $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", true);
+                $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", false);
+            }
+
+            if (requestProductCount > 1 && requestProductCount < savingsProducts.length) {
+                $(".controls-container button[data-direction = 'prev']").attr("disabled", false);
+                $(".controls-container button[data-direction = 'next']").attr("disabled", false);
+            }
+
+            if (requestProductCount === savingsProducts.length) {
+                $(".savings-request-modal .controls-container button[data-direction = 'next']").attr("disabled", true);
+                $(".savings-request-modal .controls-container button[data-direction = 'prev']").attr("disabled", false);
+            }
+        });
+
+        // ACTIVE SAVINGS REQUEST MODAL EVENT
+        $(document).on("click", ".savings-request-modal .modal-header .close-container", function() {
+            $(".savings-request-modal-wrapper").removeClass("active");
         });
     </script>
 </body>

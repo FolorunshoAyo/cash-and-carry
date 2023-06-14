@@ -9,7 +9,7 @@ if ($_POST['submit']) {
     }
 
     $category = $_POST['category'];
-    $category_sql = (isset($category) && $category != "") ? "WHERE category = $category" : "";
+    $category_sql = (isset($category) && $category != "") ? "AND category = $category" : "";
 
     $price_sort = $_POST['price_range'];
     $price_sort_sql = (isset($price_sort) && $price_sort != "") ? "ORDER BY price $price_sort" : "";
@@ -24,7 +24,7 @@ if ($_POST['submit']) {
     // echo "SELECT * FROM products $category_sql $price_sort_sql $order_sort_sql LIMIT $offset $total_records_per_page";
 
     $products_filter_sql = $db->query("SELECT * FROM products $category_sql $price_sort_sql $order_sort_sql LIMIT $offset$total_records_per_page");
-    $result_count = $db->query("SELECT COUNT(*) as total_records FROM products $category_sql $price_sort_sql $order_sort_sql");
+    $result_count = $db->query("SELECT COUNT(*) as total_records FROM products WHERE deleted='0' $category_sql $price_sort_sql $order_sort_sql");
 
     $total_records = $result_count->fetch_assoc()['total_records'];
 
@@ -32,7 +32,7 @@ if ($_POST['submit']) {
     $productHTML = "";
 
     while ($product_details = $products_filter_sql->fetch_assoc()) {
-        $interest_amount = (30 / 100) * $product_details['price'];
+        $interest_amount = (20 / 100) * $product_details['price'];
 
         $installment_price = $product_details['price'] + $interest_amount;
 
@@ -46,10 +46,24 @@ if ($_POST['submit']) {
 
         $product_id = $product_details['product_id'];
 
+        $inStock = $product_details['in_stock'] === "0" ? 0 : 1;
+
+        $stockView = "";
+
+        if ($inStock) {
+            $stockView = "<div class='add-to-cart-btn'>
+                            <button data-product-id='" . $product_id . "'>Add to Cart</button>
+                        </div>";
+        } else {
+            $stockView = "<div class='out-of-stock-container'>
+            <span class='dot red'></span> Out of Stock
+        </div>";
+        }
+
         $productHTML .= "<div class='product-card'>
             <a href='../product/?pid=" . $product_details['product_id'] . "'>
             <figure>
-                <img id='product-image-$product_id' src='".$url."a/admin/images/" . $product_image_src . "'>
+                <img id='product-image-$product_id' src='" . $url . "assets/product-images/" . $product_image_src . "'>
                 <figcaption>
                     <div class='payment-plans'>
                         <span class='product-badge daily'>₦" . number_format(($installment_price / $calculatedDays), 2) . "/day " . "(" . $calculatedPeriods['days'] . " days)" . "</span>
@@ -63,9 +77,7 @@ if ($_POST['submit']) {
                 </figcaption>
             </figure>
         </a>
-        <div class='add-to-cart-btn'>
-            <button data-product-id='$product_id'>Add to Cart</button>
-        </div>
+        $stockView
         </div>";
     }
 

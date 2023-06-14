@@ -1,6 +1,9 @@
 <?php
+
+$user_id = isset($user_id)? $user_id : "0";
+
 $get_request_details = $db->query("SELECT savings_requests.*, agents.first_name as agent_first_name, agents.last_name as agent_last_name, agents.phone_no as agent_phone_no, agents.email as agent_email FROM 
-    (savings_requests INNER JOIN agents ON savings_requests.agent_id=agents.agent_id) WHERE status = '1' ORDER BY requested_at DESC LIMIT 1");
+    (savings_requests INNER JOIN agents ON savings_requests.agent_id=agents.agent_id) WHERE savings_requests.user_id = '$user_id' AND savings_requests.status = '1' ORDER BY requested_at DESC LIMIT 1");
 
 $isActiveRequest = 0;
 if ($get_request_details->num_rows === 1) {
@@ -72,7 +75,7 @@ if ($isActiveRequest !== 0) {
                 ?>
                         <div class="savings-product active">
                             <div class="savings-product-image-container">
-                                <img src="<?= $url ?>a/admin/images/<?= $product['product_picture'] ?>" alt="Web cam #1">
+                                <img src="<?= $url ?>assets/product-images/<?= $product['product_picture'] ?>" alt="Web cam #1">
                             </div>
                             <div class="savings-product-details">
                                 <span class="savings-product-name"><?= $product['product_name'] ?></span>

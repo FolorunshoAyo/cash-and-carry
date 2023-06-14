@@ -43,7 +43,7 @@ if (!empty($_SESSION["shopping_cart"])) {
       </div>
   </div>
   <div data-label='Quantity'>
-      <input type='number' min='1' max='50' value='" . $values['product_quantity'] . "' class='amount' data-product-id='" . $values['product_id'] . "'>
+      <input type='number' min='1' value='" . $values['product_quantity'] . "' class='amount' data-product-id='" . $values['product_id'] . "'>
   </div>
   <div data-label='Unit-price'>
       ₦ ". number_format($values['product_price'], 2) . "
