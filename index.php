@@ -79,7 +79,7 @@ if ($inSession) {
                                 <span>Tvs & Monitors</span>
                                 <img src="assets/images/alienware.jpg" alt="#">
                             </div>
-                        </div>
+                       </div>
                         <div class="product-desc product-category">
                             <div>
                                 <span>Furnitures</span>
