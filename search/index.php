@@ -253,7 +253,7 @@ $searchProducts = $db->query("SELECT * FROM products WHERE deleted='0' AND name 
             ?>
               <a href="../product/?pid=<?php echo ($rowProduct['product_id']) ?>" class="available-good">
                 <figure>
-                  <img src="../a/admin/images/<?php echo (explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo ($rowProduct['name']) ?>" />
+                  <img src="../assets/product-images/<?php echo (explode(",", $rowProduct['pictures'])[0]) ?>" alt="<?php echo ($rowProduct['name']) ?>" />
                   <figcaption>
                     <div class="payment-plans">
                       <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?>/day (<?= $calculatedPeriods['days'] ?> days)</span>

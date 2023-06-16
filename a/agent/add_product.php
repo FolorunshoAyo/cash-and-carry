@@ -97,6 +97,7 @@ $agent_id = $_SESSION['agent_id'];
                                             <option value="">Choose Option</option>
                                             <option vallue="3">3 Months</option>
                                             <option value="4">4 Months</option>
+                                            <option value="6">6 Months</option>
                                         </select>
                                         <label for="duration">Duration of installmental payments in months</label>
                                     </div>

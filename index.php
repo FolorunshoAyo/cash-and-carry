@@ -320,13 +320,17 @@ if ($inSession) {
                 </div>
             </div>
         </section>
-        <!-- <section class="our-brands-section">
-            <div class="our-brands-container">
-                <div class="our-brands-text-box">
-                    <h2 class="our-brands-title">Our Official Brands</h2>
-                    <p class="our-brands-text">Here are our supported brands/dealers</p>
+        <section class="our-patners-section">
+            <div class="our-patners-container">
+                <div class="our-patners-text-box">
+                    <h2 class="our-patners-title">Our Official Partners</h2>
+                    <p class="our-patners-text">Here are our supported patners/dealers:</p>
                 </div>
-                <div class="scroll-container">
+                <div class="our-patners">
+                    <img src="assets/images/ajk-logo.png" alt="AJK park estate">
+                    <img  src="assets/images/betacar-logo.png" alt="betacar">
+                </div>
+                <!-- <div class="scroll-container">
                     <div class="scroll-element scroll-element-first">
                         <div class="scroll-image">
                             <img src="assets/images/bed-21.jpg" alt="">
@@ -335,7 +339,7 @@ if ($inSession) {
                             <img src="assets/images/bed-21.jpg" alt="">
                         </div>
                         <div class="scroll-image">
-                            <img src="assets/images/bed-21.jpg" alt="">
+                            <img src="assets/images/betacar-logo.png" alt="">
                         </div>
                         <div class="scroll-image">
                             <img src="assets/images/bed-21.jpg" alt="">
@@ -352,7 +356,7 @@ if ($inSession) {
                             <img src="assets/images/bed-21.jpg" alt="">
                         </div>
                         <div class="scroll-image">
-                            <img src="assets/images/bed-21.jpg" alt="">
+                            <img src="assets/images/ajk-logo.png" alt="">
                         </div>
                         <div class="scroll-image">
                             <img src="assets/images/bed-21.jpg" alt="">
@@ -361,9 +365,9 @@ if ($inSession) {
                             <img src="assets/images/bed-21.jpg" alt="">
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
-        </section> -->
+        </section>
     </main>
     <?php
     include("includes/footer.php");

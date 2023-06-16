@@ -171,7 +171,8 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                                         <select name="duration" id="duration" class="form-input">
                                             <option value="">Choose option</option>
                                             <option value="3" <?php echo $product_details['duration_of_payment'] === "3" ? "selected" : "" ?>>3 months</option>
-                                            <option value="6" <?php echo $product_details['duration_of_payment'] === "4" ? "selected" : "" ?>>4 months</option>
+                                            <option value="4" <?php echo $product_details['duration_of_payment'] === "4" ? "selected" : "" ?>>4 months</option>
+                                            <option value="6" <?php echo $product_details['duration_of_payment'] === "6" ? "selected" : "" ?>>6 months</option>
                                         </select>
                                         <label for="duration">Duration of installmental payments in months</label>
                                     </div>

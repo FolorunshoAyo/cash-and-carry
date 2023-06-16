@@ -1295,28 +1295,47 @@ figcaption .payment-plans .product-badge.month{
 }
 
 
-.our-brands-section{
+.our-patners-section{
     margin: 60px 0;
 }
 
-.our-brands-container{
+.our-patners-container{
     padding: 0 4rem;
 }
 
-.our-brands-text-box{
+.our-patners-text-box{
     margin-left: 50px;
 }
 
 
-.our-brands-title{
+.our-patners-title{
     font-size: 3rem;
     color: var(--primary-color);
     margin-bottom: 10px;
 }
 
-.our-brands-text{
+.our-patners-text{
     font-size: 1.5rem;
 }
+
+.our-patners{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin: 4rem 0;
+}
+
+.our-patners img{
+    max-width: 33.33%;
+    min-width: 180px;
+    margin-bottom: 20px;
+    height: auto;   
+}
+
+.our-patners img:not(:last-child){
+    margin-right: 20px;
+}
+
 
 
 .scroll-container{
