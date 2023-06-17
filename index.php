@@ -329,6 +329,7 @@ if ($inSession) {
                 <div class="our-patners">
                     <img src="assets/images/ajk-logo.png" alt="AJK park estate">
                     <img  src="assets/images/betacar-logo.png" alt="betacar">
+                    <img  src="assets/images/fouaani-store.svg" alt="fouani store" style="background-color: black; padding: 10px;">
                 </div>
                 <!-- <div class="scroll-container">
                     <div class="scroll-element scroll-element-first">

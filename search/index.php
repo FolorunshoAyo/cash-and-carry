@@ -21,7 +21,7 @@ if ($inSession) {
 $productQuery = $_GET['q'];
 // $searchProducts = $db->query("SELECT * FROM products WHERE deleted='0' AND name LIKE '%$productQuery%';");
 //UPDATED QUERY
-$searchProducts = $db->query("SELECT * FROM products as p inner join product_categories as pc  ON p.name LIKE '%$productQuery%' or pc.category_name LIKE '%$productQuery%' ORDER BY p.name ASC; ");
+$searchProducts = $db->query("SELECT * FROM products as p inner join product_categories as pc  ON p.name LIKE '%$productQuery%' or pc.category_name LIKE '%$productQuery%' or details LIKE '%$productQuery%' ORDER BY p.name ASC; ");
 ?>
 <!DOCTYPE html>
 <html lang="en">

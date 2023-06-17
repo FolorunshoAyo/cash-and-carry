@@ -1322,21 +1322,19 @@ figcaption .payment-plans .product-badge.month{
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    margin: 4rem 0;
+    margin: 5rem 0;
 }
 
 .our-patners img{
     max-width: 33.33%;
     min-width: 180px;
     margin-bottom: 20px;
-    height: auto;   
+    height: 80px;   
 }
 
 .our-patners img:not(:last-child){
     margin-right: 20px;
 }
-
-
 
 .scroll-container{
     margin: 4rem 0;
