@@ -93,7 +93,7 @@
 
               <div class="submit-btn-container">
                 <button type="submit">Register</button>
-              </div>
+              </div>             
             </div>
           </div>
         </form>
