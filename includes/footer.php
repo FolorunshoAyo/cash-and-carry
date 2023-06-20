@@ -1,6 +1,6 @@
 <?php
     $url = strval($url);
-    // require(dirname(__DIR__) . '/auth-library/resources.php');
+
 ?>
 <!-- <footer>
     <div class="footer-container">
@@ -56,9 +56,6 @@
         </div>
     </div>
 </footer> -->
-<?php
-//  include "../auth-library/classes/connection.php";
-?>
 <hr>
 <footer class="mt-5 bg-white">
     <div class="container">
@@ -67,7 +64,7 @@
 
             <div class="col-lg-2 col-md-4 col-7 mx-auto my-4">
                 <a href="" class="navbar-brand">
-                     <img src="../assets/images/halfcarry-logo.jpeg" alt="Footer logo" width="90px">
+                     <img src="<?php echo $link; ?>assets/images/halfcarry-logo.jpeg" alt="Footer logo" width="90px">
                 </a>
                 <p style="color:black; font-size:1.5rem;" class="my-4">
                     Making Life Easy...

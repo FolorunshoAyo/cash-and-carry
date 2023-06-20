@@ -6,7 +6,7 @@ require(dirname(__DIR__) . '/auth-library/resources.php');
 //   'en_US', 
 //   \NumberFormatter::PADDING_POSITION
 // );
-
+$link="../";
 if (!isset($_GET['q']) && empty($_GET['q'])) {
   header("Location: ../");
 }
