@@ -44,6 +44,11 @@ $searchProducts = $db->query("SELECT * FROM products as p inner join product_cat
   <link rel="stylesheet" href="../assets/css/search.css" />
   <!-- MEDIA QUERIES -->
   <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+  <!-- Bootstrap -->
+    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
+    
   <title>Search results: <?php echo ($productQuery) ?></title>
 </head>
 
