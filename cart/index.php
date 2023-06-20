@@ -49,8 +49,12 @@ if ($inSession) {
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" />
     <!-- Font Awesome -->
-  <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
-  <!-- Bootstrap -->
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
+     <!-- Font Awesome -->
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
     <title>Cart - Halfcarry</title>
 </head>
