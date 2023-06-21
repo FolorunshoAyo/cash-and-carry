@@ -3,6 +3,7 @@ $page_info = explode("/", $_SERVER['SCRIPT_NAME']);
 $file_name = end($page_info); 
 
 $url = strval($url);
+$agent_id=$_SESSION['agent_id']?$_SESSION['agent_id']:null;
 ?>
 
 <div class="mobile-backdrop"></div>
@@ -22,6 +23,12 @@ $url = strval($url);
             <a href="<?= $url ?>a/agent/">
                 <i class="fa fa-users"></i>
                 <span>Customers</span>
+            </a>
+        </li>
+        <li class="nav-item <?= ($file_name === "shops.php") || ($file_name === "edit-shop.php") || ($file_name === "add-shop.php")? 'active' : ''?>">
+            <a href="../../register?agent_id='<?=$agent_id?>'">
+                <i class="fa fa-home"></i>
+                <span>Add Customer</span>
             </a>
         </li>
         <li class="nav-item <?= ($file_name === "halfsavings_requests.php") || ($file_name === "savings_requests.php") || ($file_name === "user_wallets.php")? 'mm-active' : ''?>">
