@@ -90,6 +90,10 @@ if (isset($_SESSION['order_no']) && isset($_SESSION['order_type'])) {
     <link rel="stylesheet" href="../assets/css/checkout.css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css">
+     <!-- Font Awesome -->
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
     <title>Checkout - Codeweb store</title>
 </head>
 

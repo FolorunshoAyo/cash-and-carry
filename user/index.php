@@ -26,6 +26,10 @@
     <link rel="stylesheet" href="../assets/css/dashboard/user-dash-menu.css" />
     <!-- USER DASHBOARD STYLESHEET -->
     <link rel="stylesheet" href="../assets/css/dashboard/user-dash/index.css" />
+     <!-- Font Awesome -->
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
     <!-- DASHHBOARD MEDIA QUERIES -->
     <link
       rel="stylesheet"
