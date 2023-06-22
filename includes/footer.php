@@ -1,6 +1,5 @@
 <?php
     $url = strval($url);
-
 ?>
 <!-- <footer>
     <div class="footer-container">
@@ -55,7 +54,7 @@
             <span>Copyright Codeweb <?php echo date("Y") ?></span>
         </div>
     </div>
-</footer> -->
+</footer>  -->
 <hr>
 <footer class="mt-5 bg-white">
     <div class="container">
