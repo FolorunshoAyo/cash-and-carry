@@ -64,11 +64,7 @@
 
             <div class="col-lg-2 col-md-4 col-7 mx-auto my-4">
                 <a href="" class="navbar-brand">
-<<<<<<< Updated upstream
                      <img src="<?php echo $link; ?>assets/images/halfcarry-logo.jpeg" alt="Footer logo" width="90px">
-=======
-                     <img src="<?php echo $link;?>assets/images/halfcarry-logo.jpeg" alt="Footer logo" width="90px">
->>>>>>> Stashed changes
                 </a>
                 <p style="color:black; font-size:1.5rem;" class="my-4">
                     Making Life Easy...
