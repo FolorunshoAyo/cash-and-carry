@@ -151,7 +151,7 @@ if ($inSession) {
                             ?>
                             <a href="product/?pid=<?= $rowProduct['product_id'] ?>">
                                 <figure>
-                                    <img id="product-image-<?= $rowProduct['product_id'] ?>" src="<?php echo $url ?>assets/product-images/<?php echo explode(",", $rowProduct['pictures'])[0] ?>" alt="<?php echo $rowProduct['name'] ?>">
+                                    <img id="product-image-<?= $rowProduct['product_id'] ?>" src="<?php echo $link ?>assets/product-images/<?php echo explode(",", $rowProduct['pictures'])[0] ?>" alt="<?php echo $rowProduct['name'] ?>">
                                     <figcaption>
                                         <div class="payment-plans">
                                             <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?>/day (<?= $calculatedPeriods['days'] ?> days)</span>

@@ -51,7 +51,11 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     <link rel="stylesheet" href="../assets/css/product.css" type="text/css" />
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" />
+<<<<<<< Updated upstream
      <!-- Font Awesome -->
+=======
+         <!-- Font Awesome -->
+>>>>>>> Stashed changes
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">

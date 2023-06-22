@@ -6,7 +6,11 @@ require(dirname(__DIR__) . '/auth-library/resources.php');
 //   'en_US', 
 //   \NumberFormatter::PADDING_POSITION
 // );
+<<<<<<< Updated upstream
 $link="../";
+=======
+$link ="../";
+>>>>>>> Stashed changes
 $inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
 
 if ($inSession) {
@@ -45,7 +49,14 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
     <link rel="stylesheet" href="../assets/css/all-products.css" type="text/css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css">
+<<<<<<< Updated upstream
     
+=======
+       <!-- Font Awesome -->
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
+>>>>>>> Stashed changes
     <title>All products - Halfcarry</title>
 </head>
 
