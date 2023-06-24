@@ -1,6 +1,6 @@
 <?php
 require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
-// AgentAuth::User("a/login");
+AgentAuth::User("a/login");
 
 $agent_id = $_SESSION['agent_id'];
 ?>
