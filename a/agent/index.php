@@ -55,8 +55,12 @@ $agent_id = $_SESSION['agent_id'];
                                 <th>
                                     Joined on
                                 </th>
-                                <th>
-
+                                <th class="">
+                                        <a href="../../register.php?agent_id='<?= $agent_id ?>'">
+                                        <i class="bi bi-plus-circle"></i>
+                                            <span>Add Customer</span>
+                                        </a>
+                                    
                                 </th>
                             </tr>
                         </thead>
@@ -68,14 +72,14 @@ $agent_id = $_SESSION['agent_id'];
 
                             $count = 1;
                             while ($customer = $sql_agent_customers->fetch_assoc()) {
-                            ?>
+                                ?>
                                 <tr>
                                     <td>
                                         <?php echo $customer['user_last_name'] . " " . $customer['user_first_name']
-                                        ?>
+                                            ?>
                                     </td>
                                     <td>
-                                        <?php echo  $customer['user_email']  ?>
+                                        <?php echo $customer['user_email'] ?>
                                     </td>
                                     <td>
                                         <?php echo $customer['user_phone_no'] ?>
@@ -83,21 +87,26 @@ $agent_id = $_SESSION['agent_id'];
                                     <td>
                                         <?php
                                         echo date("j M, Y", strtotime($customer['created_at']))
-                                        ?>
+                                            ?>
                                     </td>
                                     <td>
                                         <div class="dropdown" style="font-size: 10px;">
-                                            <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
+                                            <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>"
+                                                aria-label="Dropdown Menu">
                                                 o<br>o<br>o
                                             </button>
                                             <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
-                                                <a class="dropdown-menu__link" href="view_customer?uid=<?php echo $customer['user_id'] ?>">View Profile</a>
-                                                <a class="dropdown-menu__link" href="user_wallets?uid=<?php echo $customer['user_id'] ?>">Assigned Wallets</a>
+                                                <a class="dropdown-menu__link"
+                                                    href="view_customer?uid=<?php echo $customer['user_id'] ?>">View
+                                                    Profile</a>
+                                                <a class="dropdown-menu__link"
+                                                    href="user_wallets?uid=<?php echo $customer['user_id'] ?>">Assigned
+                                                    Wallets</a>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
-                            <?php
+                                <?php
                                 $count++;
                             }
                             ?>
@@ -125,7 +134,7 @@ $agent_id = $_SESSION['agent_id'];
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
-        $(function() {
+        $(function () {
             $("#agent-table").DataTable({
                 "pageLength": 10
             });
