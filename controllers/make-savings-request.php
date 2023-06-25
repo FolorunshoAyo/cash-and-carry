@@ -52,7 +52,9 @@ if (isset($_POST['submit'])) {
     $product_price = $product_details['price'];
     $product_savings_duration = $product_details['duration_of_payment'];
 
-    $total_price_with_interest = (((20 / 100) * $product_price) + $product_price) * $quantity;
+    $interest_rate = $product_savings_duration === "6"? 30 : 20;
+
+    $total_price_with_interest = ((($interest_rate / 100) * $product_price) + $product_price) * $quantity;
     $normal_price = $product_details['price'] * $quantity;
 
     $daysWeeksMonths = getDaysWeeks($product_savings_duration);
@@ -348,8 +350,10 @@ if (isset($_POST['submit'])) {
       $total_price += $price;
     }
 
+    $interest_rate = $max_month === 6? 30 : 20;
+
     // CALCUALTING INTEREST
-    $total_price_with_interest = (20 / 100) * $total_price + $total_price;
+    $total_price_with_interest = ($interest_rate / 100) * $total_price + $total_price;
 
     $daysWeeksMonths = getDaysWeeks($max_month);
 

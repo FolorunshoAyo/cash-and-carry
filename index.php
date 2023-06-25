@@ -5,7 +5,7 @@ require(__DIR__ . '/auth-library/resources.php');
 //   'en_US', 
 //   \NumberFormatter::PADDING_POSITION
 // );
-$link=null;
+
 $inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
 
 if ($inSession) {
@@ -22,6 +22,10 @@ if ($inSession) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicon Icon -->
     <link rel="favicon" href="assets/images/halfcarry-logo.jpeg">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="assets/bootstrap-5/css/bootstrap.min.css">
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="assets/fonts/fonts.css">
     <!-- BASE CSS -->
@@ -36,10 +40,6 @@ if ($inSession) {
     <link rel="stylesheet" href="assets/css/index.css?v=1" type="text/css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="assets/css/media-queries/main-media-queries.css">
-     <!-- Font Awesome -->
-    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="assets/bootstrap-5/css/bootstrap.min.css">
     <title>Home - Halfcarry</title>
 </head>
 
@@ -131,7 +131,9 @@ if ($inSession) {
                     $recentProductsSql = $db->query("SELECT * FROM products WHERE deleted='0' ORDER BY RAND() LIMIT 8");
 
                     while ($rowProduct = $recentProductsSql->fetch_assoc()) {
-                        $interest_amount = (30 / 100) * $rowProduct['price'];
+                        $interest_rate = $rowProduct['duration_of_payment'] === "6"? 30 : 20;
+
+                        $interest_amount = ($interest_rate / 100) * $rowProduct['price'];
 
                         $installment_price = $rowProduct['price'] + $interest_amount;
 
@@ -151,7 +153,7 @@ if ($inSession) {
                             ?>
                             <a href="product/?pid=<?= $rowProduct['product_id'] ?>">
                                 <figure>
-                                    <img id="product-image-<?= $rowProduct['product_id'] ?>" src="<?php echo $link ?>assets/product-images/<?php echo explode(",", $rowProduct['pictures'])[0] ?>" alt="<?php echo $rowProduct['name'] ?>">
+                                    <img id="product-image-<?= $rowProduct['product_id'] ?>" src="<?php echo $url ?>assets/product-images/<?php echo explode(",", $rowProduct['pictures'])[0] ?>" alt="<?php echo $rowProduct['name'] ?>">
                                     <figcaption>
                                         <div class="payment-plans">
                                             <span class="product-badge daily">₦<?php echo number_format(($installment_price / $calculatedDays), 2) ?>/day (<?= $calculatedPeriods['days'] ?> days)</span>
@@ -259,7 +261,7 @@ if ($inSession) {
                 <div class="top-categories">
                     <a href="./all-products/?category=electronics" class="top-category">
                         <figure>
-                            <img src="a/admin/images/46.jpeg" alt="#">
+                            <img src="assets/product-images/46.jpeg" alt="#">
                             <figcaption>
                                 Electronics
                             </figcaption>
@@ -283,7 +285,7 @@ if ($inSession) {
                     </a>
                     <a href="./all-products/?category=computer-accessories" class="top-category">
                         <figure>
-                            <img src="a/admin/images/adapter-1.jpg" alt="#">
+                            <img src="assets/product-images/adapter-1.jpg" alt="#">
                             <figcaption>
                                 Computers and accessories
                             </figcaption>

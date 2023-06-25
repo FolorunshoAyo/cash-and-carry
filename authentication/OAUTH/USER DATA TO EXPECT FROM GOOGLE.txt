@@ -1,8 +1,0 @@
-array(13) { ["access_token"]=> string(212)
-"ya29.a0AWY7CkkEXbV_vxsM7QTIVUg2eB42_IJI0RRzLoC9ea5mAAhOWBxkYqftdswQzON5mw3RYWGKcsgpKm2XHhZrMSVzjVCEu2jypTbUmWzI7yu5VTfTQ5G0Qcou8VPbjbn9jAtAGo7YCIFqki92ZlCwUNMLaAlm1AaCgYKAUQSARASFQG1tDrp6w67xlyhz6USoI2lx6fP_w0165"
-["login_email"]=> string(20) "dabirideji@gmail.com" ["login_familyName"]=> string(6) "dabiri" ["login_gender"]=> NULL
-["login_givenName"]=> string(4) "deji" ["login_hd"]=> NULL ["login_id"]=> string(21) "116756441284012003539"
-["login_link"]=> NULL ["login_locale"]=> string(2) "en" ["login_name"]=> string(11) "deji dabiri" ["login_picture"]=>
-string(86) "https://lh3.googleusercontent.com/a/AAcHTtfv4lmxW5DuifTFd57MplJpJgQy-y5fAHFnPAHE=s96-c"
-["login_verifiedEmail"]=> bool(true) ["ucode"]=> string(73)
-"4/0AbUR2VPhAvmYkCTtJExEd3Rcc7IzOFatekR9G86S9XnQ_ZiFx_AcOFvxOClIivJ8OB0GFQ" }

@@ -35,6 +35,10 @@ if ($inSession) {
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="../assets/fonts/fonts.css" />
     <!-- IZITOAST CSS -->
@@ -48,11 +52,7 @@ if ($inSession) {
     <!-- PRODUCT PAGE CSS -->
     <link rel="stylesheet" href="../assets/css/cart.css" type="text/css" />
     <!-- MEDIA QUERIES -->
-    <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" />
-    <!-- Font Awesome -->
-  <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
-  <!-- Bootstrap -->
-    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" type="text/css" />
     <title>Cart - Halfcarry</title>
 </head>
 

@@ -75,8 +75,12 @@
         padding: 0 4rem;
     }
 
-    .available-good, .top-category{
+    .available-good{
         flex: 0 0 31%;
+    }
+
+    .top-category{
+        flex: 0 0 45%;
     }
 
     .banner-img-container{
@@ -582,10 +586,6 @@
         font-size: 1.5rem;
     }
 
-    .submit-btn-container button{
-        width: 150px;
-    }
-
     .product-slider-container{
         width: 100%;
         margin-bottom: 50px;
@@ -645,6 +645,26 @@
 
     .payment-plan-container .savings-product-image-container{
         flex: 0 0 100px;
+    }
+
+    .submit-btn-container{
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;   
+    }
+
+    .submit-btn-container button,
+    .submit-btn-container a{
+        width: 100%;
+        text-align: center;
+    }
+
+    .submit-btn-container button{
+        margin-bottom: 10px;
+    }
+
+    .submit-btn-container a{
+        margin-left: 0px;
     }
 }
 
@@ -755,6 +775,11 @@
 
     .cart-action-section > span{
         margin-bottom: 30px;
+    }
+
+    .banner-section-container .circle{
+        right: -100px;
+        bottom: -100px;
     }
 }
 

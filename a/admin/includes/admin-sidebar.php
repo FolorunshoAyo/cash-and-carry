@@ -28,7 +28,7 @@ $file_name = end($page_info);
                 <span>Statistics</span>
             </a>
         </li>
-        <li title="" class="nav-item <?= $file_name === "orders.php"? 'active' : ''?>">
+        <li title="" class="nav-item <?= ($file_name === "orders.php") || ($file_name === "order-details.php")? 'active' : ''?>">
             <a href="./orders">
                 <i class="fa fa-usd"></i>
                 <span>Orders</span>

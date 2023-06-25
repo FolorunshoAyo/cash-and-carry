@@ -1,3 +1,6 @@
+<?php
+  include(__DIR__ . "/authentication/google_authentication.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -81,6 +84,7 @@
 
                 <div class="submit-btn-container">
                   <button type="submit">Log In</button>
+                  <a href="<?= $gclient->createAuthUrl() ?>"><i class="fa fa-google"></i> Sign in with google</a>
                 </div>
               </div>
             </div>

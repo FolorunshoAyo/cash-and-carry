@@ -47,8 +47,8 @@
             <a href="<?= $url ?>all-products?view-categories">Categories</a>
         </div>
         <div class="search-container">
-            <form class="search-box" action="search/">
-                <input type="text" name="q" placeholder="Search for an item">
+            <form class="search-box" action="<?= $url ?>search/">
+                <input type="text" name="q" value="<?= isset($productQuery)? $productQuery : ""?>" placeholder="Search for an item">
                 <button type="submit" class="search-icon-btn">
                     <i class="fa fa-search"></i>
                 </button>

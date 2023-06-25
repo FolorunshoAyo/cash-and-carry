@@ -347,6 +347,7 @@
     background-color: rgba(0, 0, 0, .125);
     display: none;
     overflow-y: auto;
+    z-index: 200;
   }
   
   .payment-plan-wrapper.active{
@@ -611,6 +612,8 @@ header{
     flex: 1;
     list-style-type: none;
     display: flex;
+    padding-left: 0;
+    margin-bottom: 0;
     justify-content: space-between;
 }
 
@@ -782,6 +785,7 @@ header{
     display: none;
     position: absolute;
     top: 40px;
+    padding-left: 0px;
     left: 50%;
     transform: translateX(-50%);
     width: 120px;
@@ -1228,8 +1232,8 @@ figcaption .payment-plans .product-badge.month{
     border: 10px solid var(--white);
     position: absolute;
     background-color: var(--secondary-color);
-    right: -30px;
-    bottom: -50px;
+    right: -80px;
+    bottom: -80px;
 }
 
 .top-categories-section{
@@ -1505,4 +1509,15 @@ figcaption .payment-plans .product-badge.month{
 
 .copyright-message span{
     margin-left: 10px;
+}
+
+
+/* NEW FOOTER STYLES */
+footer .navigation-block p.my-1 a{
+    color: #000;
+    transition: color .5s linear;
+}
+
+footer .navigation-block p.my-1 a:hover{
+    color: var(--primary-color)
 }

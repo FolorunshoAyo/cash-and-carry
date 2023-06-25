@@ -37,6 +37,10 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="../assets/fonts/fonts.css" />
     <!-- BASE CSS -->
@@ -51,10 +55,6 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
     <link rel="stylesheet" href="../assets/css/product.css" type="text/css" />
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css" />
-     <!-- Font Awesome -->
-    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
     <title><?php echo $product_details['name'] ?> - Halfcarry</title>
 </head>
 
@@ -114,7 +114,9 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                         </span>
                     </div>
                     <?php
-                    $product_interest_amount = (20 / 100) * $product_details['price'];
+                    $interest_rate = $product_details['duration_of_payment'] === "6" ? 30 : 20;
+
+                    $product_interest_amount = ($interest_rate / 100) * $product_details['price'];
 
                     $product_installment_price = $product_details['price'] + $product_interest_amount;
 
@@ -174,7 +176,9 @@ if (isset($_GET['pid']) && !empty($_GET['pid'])) {
                         <?php
                         while ($related_product = $sql_get_related_products->fetch_assoc()) {
 
-                            $interest_amount = (20 / 100) * $related_product['price'];
+                            $interest_rate = $related_product['duration_of_payment'] === "6" ? 30 : 20;
+
+                            $interest_amount = ($interest_rate / 100) * $related_product['price'];
 
                             $installment_price = $related_product['price'] + $interest_amount;
 

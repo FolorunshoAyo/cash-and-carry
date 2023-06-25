@@ -23,7 +23,7 @@ if ($_POST['submit']) {
 
     // echo "SELECT * FROM products $category_sql $price_sort_sql $order_sort_sql LIMIT $offset $total_records_per_page";
 
-    $products_filter_sql = $db->query("SELECT * FROM products $category_sql $price_sort_sql $order_sort_sql LIMIT $offset$total_records_per_page");
+    $products_filter_sql = $db->query("SELECT * FROM products WHERE deleted='0' $category_sql $price_sort_sql $order_sort_sql LIMIT $offset$total_records_per_page");
     $result_count = $db->query("SELECT COUNT(*) as total_records FROM products WHERE deleted='0' $category_sql $price_sort_sql $order_sort_sql");
 
     $total_records = $result_count->fetch_assoc()['total_records'];
@@ -32,7 +32,9 @@ if ($_POST['submit']) {
     $productHTML = "";
 
     while ($product_details = $products_filter_sql->fetch_assoc()) {
-        $interest_amount = (20 / 100) * $product_details['price'];
+        $interest_rate = $product_details['duration_of_payment'] === "6"? 30 : 20;
+
+        $interest_amount = ($interest_rate / 100) * $product_details['price'];
 
         $installment_price = $product_details['price'] + $interest_amount;
 
@@ -68,7 +70,7 @@ if ($_POST['submit']) {
                     <div class='payment-plans'>
                         <span class='product-badge daily'>₦" . number_format(($installment_price / $calculatedDays), 2) . "/day " . "(" . $calculatedPeriods['days'] . " days)" . "</span>
                         <span class='product-badge weekly'>₦" . number_format(($installment_price / $calculatedWeeks), 2) . "/week " . "(" . $calculatedPeriods['weeks'] . " weeks)" . "</span>
-                        <span class='product-badge month'>₦" . number_format(($installment_price / $calculatedMonths), 2) . "/month " . "(" . $calculatedPeriods['months'] . " days)" . "</span>
+                        <span class='product-badge month'>₦" . number_format(($installment_price / $calculatedMonths), 2) . "/month " . "(" . $calculatedPeriods['months'] . " months)" . "</span>
                     </div>
                     <span id='name-$product_id' data-name='{$product_details['name']}' class='product-desc product-category-name'>" . $product_details['name'] . "</span>
                     <span id='price-$product_id' data-price='{$product_details['price']}' class='product-desc product-category-price'>

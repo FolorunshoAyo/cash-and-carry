@@ -192,6 +192,30 @@ function generateStatus($status)
                             <?= generateStatus($request_details['status']) ?>
                         </span>
                     </li>
+                    <li class="savings-info-block">
+                        <span class="savings-label">
+                            Agent Name:
+                        </span>
+                        <span class="savings-value">
+                            <?= $request_details['agent_last_name'] . " " . $request_details['agent_first_name']  ?>
+                        </span>
+                    </li>
+                    <li class="savings-info-block">
+                        <span class="savings-label">
+                            Agent Email:
+                        </span>
+                        <span class="savings-value" style="text-transform: initial">
+                            <?= $request_details['agent_email'] ?>
+                        </span>
+                    </li>
+                    <li class="savings-info-block">
+                        <span class="savings-label">
+                            Agent Phone No:
+                        </span>
+                        <span class="savings-value">
+                            <?= $request_details['agent_phone_no'] ?>
+                        </span>
+                    </li>
                 </ul>
             </div>
         </section>

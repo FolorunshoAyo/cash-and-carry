@@ -108,6 +108,7 @@
 
 .details .action-btn-container button{
     padding: 1.2rem;
+    font-size: 1.5rem;
     border: none;
     cursor: pointer;
     background-color: #fafada;
@@ -121,6 +122,7 @@
 }
 
 div[data-label="Quantity"] input{
+    width: 100%;
     padding: 1rem;
     border: 1px solid var(--primary-color);
 }
@@ -180,6 +182,7 @@ div[data-label="Quantity"] input{
 
 .btn:hover {
     background-color: var(--black);
+    color: var(--white);
 }
   
 .btn:active {

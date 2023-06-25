@@ -6,11 +6,7 @@ require(dirname(__DIR__) . '/auth-library/resources.php');
 //   'en_US', 
 //   \NumberFormatter::PADDING_POSITION
 // );
-<<<<<<< Updated upstream
-$link="../";
-=======
-$link ="../";
->>>>>>> Stashed changes
+
 $inSession = (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) || (isset($_SESSION['user_name']) && !empty($_SESSION['user_name']));
 
 if ($inSession) {
@@ -33,6 +29,10 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
     <!-- Custom Fonts (Inter) -->
     <link rel="stylesheet" href="../assets/fonts/fonts.css">
     <!-- IZITOAST CSS -->
@@ -49,21 +49,13 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
     <link rel="stylesheet" href="../assets/css/all-products.css" type="text/css">
     <!-- MEDIA QUERIES -->
     <link rel="stylesheet" href="../assets/css/media-queries/main-media-queries.css">
-<<<<<<< Updated upstream
-    
-=======
-       <!-- Font Awesome -->
-    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="../assets/bootstrap-5/css/bootstrap.min.css">
->>>>>>> Stashed changes
     <title>All products - Halfcarry</title>
 </head>
 
 <body>
     <?php
-    include("../includes/savings-request-modal.php");
-    include("../includes/cart.php");
+      include("../includes/cart.php");
+      include("../includes/savings-request-modal.php");
     ?>
     <header>
         <div class="top-header">
@@ -278,7 +270,7 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
                     <div class="info-container">
                         <span>Retrieved 0 results</span>
                     </div>
-                    <div class="products-container"></div>
+                    <div id="products-container"></div></div>
                 </div>
             </div>
         </section>
@@ -299,6 +291,14 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
     <!-- IZI TOAST SCRIPT -->
     <script src="../auth-library/vendor/dist/js/iziToast.min.js"></script>
     <script>
+        function displayActiveRequest() {
+            $(".savings-request-modal-wrapper").addClass("active");
+        }
+        // ACTIVE SAVINGS REQUEST MODAL EVENT
+        $(document).on("click", ".savings-request-modal .modal-header .close-container", function() {
+            $(".savings-request-modal-wrapper").removeClass("active");
+        });
+        
         $(function() {
             const allSelects = $('.filter-select');
             const quickLinksContainer = $(".quick-links-container");
@@ -353,13 +353,13 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
 
                             infoEl.html(`Retrieved ${response.total_size} results`);
                             // dyanmically set page
-                            $(".products-container").whjPaging("setPage", {
+                            $("#products-container").whjPaging("setPage", {
                                 currPage: response.curr_page,
                                 totalPage: response.total_page,
                                 totalSize: response.total_size
                             });
 
-                            $(".products-container").prepend(`<div class="products">${response.data}</div>`);
+                            $("#products-container").prepend(`<div class="products">${response.data}</div>`);
                             setTimeout(() => $(".products-container-overlay").toggleClass("loading"), 2000);
                         }
                     }
@@ -369,7 +369,7 @@ if (isset($_GET['view-categories']) && empty($_GET['view-categories'])) {
             }
 
 
-            $(".products-container").whjPaging({
+            $("#products-container").whjPaging({
                 css: 'css-4',
                 // the number of entries
                 totalSize: 10,

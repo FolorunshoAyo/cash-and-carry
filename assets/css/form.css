@@ -306,11 +306,13 @@ input[type="file"]#pimages{
 
 .submit-btn-container{
     margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.submit-btn-container button{
-    width: 250px;
-    padding: 2rem 2rem;
+.submit-btn-container button,
+.submit-btn-container a{
+    padding: 2rem;
     color: var(--white);
     border-radius: 10px;
     background-color: var(--primary-color);
@@ -319,8 +321,22 @@ input[type="file"]#pimages{
     cursor: pointer;
 }
 
-.submit-btn-container button i{
+.submit-btn-container button{
+    width: 150px;
+}
+
+.submit-btn-container a{
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.submit-btn-container button i,
+.submit-btn-container a i{
     font-size: 2rem;
+}
+
+.submit-btn-container a i{
+    margin-right: 10px;
 }
 
 .submit-btn-container button i.rotate{

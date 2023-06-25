@@ -516,7 +516,7 @@ function showStatus($status)
                     </td>
                     <td>
                       <?php
-                      echo date("d M, Y", strtotime($order['date']));
+                      echo date("d M, Y", strtotime($order['ordered_at']));
                       ?>
                     </td>
                     <td>
@@ -534,7 +534,7 @@ function showStatus($status)
                     </td>
                     <td>
                       <!-- Link to flutterwave -->
-                      <a href="order-details?oid=<?= $order['order_id'] ?>">View Order</a>
+                      <a href="order-details?oid=<?= $order['order_no'] ?>">View Order</a>
                     </td>
                   </tr>
                 <?php
