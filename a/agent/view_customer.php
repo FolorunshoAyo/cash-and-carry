@@ -14,7 +14,7 @@ if (isset($_GET['uid']) && !empty($_GET['uid'])) {
     }else{
         header("Location: ./");
     }
-    
+
 } else {
     header("Location: ./");
 }
