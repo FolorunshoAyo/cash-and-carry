@@ -3,13 +3,9 @@ include(dirname(__DIR__) . "/call.php");
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
 
-require dirname(__DIR__) . '/PHPMailer/autoload.php';
 
-require dirname(__DIR__) . '/PHPMailer/PHPMailer/src/Exception.php';
-require dirname(__DIR__) . '/PHPMailer/PHPMailer/src/PHPMailer.php';
-require dirname(__DIR__) . '/PHPMailer/PHPMailer/src/SMTP.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 $url = strval($url);
 
