@@ -3,6 +3,7 @@ require(dirname(dirname(__DIR__)) . '/auth-library/resources.php');
 AgentAuth::User("a/login");
 
 $agent_id = $_SESSION['agent_id'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +38,7 @@ $agent_id = $_SESSION['agent_id'];
         ?>
         <section class="page-wrapper">
             <div class="table-wrapper">
-                <h2 class="table-title" style="font-size: 2rem;">All assigned customers with outstanding payments</h2>
+                <h2 class="table-title" style="font-size: 2rem;">All Registered customers</h2>
 
                 <div class="table-container">
                     <table id="agent-table" class="main-table">
@@ -55,27 +56,35 @@ $agent_id = $_SESSION['agent_id'];
                                 <th>
                                     Joined on
                                 </th>
-                                <th>
-
+                                <th class="">
+                                        <a href="../../register.php?agent_id='<?= $agent_id ?>'">
+                                        <i class="bi bi-plus-circle"></i>
+                                            <span>Add Customer</span>
+                                        </a>
+                                    
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $sql_agent_customers = $db->query("SELECT DISTINCT store_wallets.*, users.first_name as user_first_name, users.last_name as user_last_name, users.email as user_email, users.phone_no as user_phone_no 
-                            FROM store_wallets INNER JOIN users ON store_wallets.user_id = users.user_id
-                            WHERE store_wallets.agent_id='$agent_id' ORDER BY store_wallets.wallet_id DESC");
+                            // $sql_agent_customers = $db->query("SELECT DISTINCT store_wallets.*, users.first_name as user_first_name, users.last_name as user_last_name, users.email as user_email, users.phone_no as user_phone_no 
+                            // FROM store_wallets INNER JOIN users ON store_wallets.user_id = users.user_id
+                            // WHERE store_wallets.agent_id='$agent_id' ORDER BY store_wallets.wallet_id DESC");
+                            $sql_agent_customers = $db->query("SELECT users.*, users.first_name as user_first_name, users.last_name as user_last_name, users.email as user_email, users.phone_no as user_phone_no,users.created_at
+                            FROM users 
+                            WHERE users.agent_id='$agent_id' ORDER BY users.last_name ASC");
+                            echo "$agent_id";
 
                             $count = 1;
                             while ($customer = $sql_agent_customers->fetch_assoc()) {
-                            ?>
+                                ?>
                                 <tr>
                                     <td>
                                         <?php echo $customer['user_last_name'] . " " . $customer['user_first_name']
-                                        ?>
+                                            ?>
                                     </td>
                                     <td>
-                                        <?php echo  $customer['user_email']  ?>
+                                        <?php echo $customer['user_email'] ?>
                                     </td>
                                     <td>
                                         <?php echo $customer['user_phone_no'] ?>
@@ -83,21 +92,28 @@ $agent_id = $_SESSION['agent_id'];
                                     <td>
                                         <?php
                                         echo date("j M, Y", strtotime($customer['created_at']))
-                                        ?>
+                                            ?>
                                     </td>
                                     <td>
                                         <div class="dropdown" style="font-size: 10px;">
-                                            <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>" aria-label="Dropdown Menu">
+                                            <button class="dropdown-toggle" data-dd-target="<?php echo $count ?>"
+                                                aria-label="Dropdown Menu">
                                                 o<br>o<br>o
                                             </button>
                                             <div class="dropdown-menu" data-dd-path="<?php echo $count ?>">
-                                                <a class="dropdown-menu__link" href="view_customer?uid=<?php echo $customer['user_id'] ?>">View Profile</a>
-                                                <a class="dropdown-menu__link" href="user_wallets?uid=<?php echo $customer['user_id'] ?>">Assigned Wallets</a>
+                                                <a class="dropdown-menu__link"
+                                                    href="view_customer?uid=<?php echo $customer['user_id'] ?>">View
+                                                    Profile</a>
+                                                <a class="dropdown-menu__link"
+                                                    href="savings-request?uid=<?php echo $customer['user_id'] ?>">Create Wallets</a>
+                                                <a class="dropdown-menu__link"
+                                                    href="user_wallets?uid=<?php echo $customer['user_id'] ?>">Assigned
+                                                    Wallets</a>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
-                            <?php
+                                <?php
                                 $count++;
                             }
                             ?>
@@ -125,7 +141,7 @@ $agent_id = $_SESSION['agent_id'];
     <!-- DASHBOARD SCRIPT -->
     <script src="../../assets/js/admin-dash.js"></script>
     <script>
-        $(function() {
+        $(function () {
             $("#agent-table").DataTable({
                 "pageLength": 10
             });
