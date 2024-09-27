@@ -34,6 +34,12 @@ $file_name = end($page_info);
                 <span>Orders</span>
             </a>
         </li>
+        <li title="orders" class="nav-item <?= ($file_name === "edit_user.php") || ($file_name === "add_user.php") || ($file_name === "users.php")? 'active' : ''?>">
+            <a href="./users">
+                <i class="fa fa-users"></i>
+                <span>Users</span>
+            </a>
+        </li>
         <li title="orders" class="nav-item <?= ($file_name === "edit_agent.php") || ($file_name === "add_agent.php") || ($file_name === "agents.php")? 'active' : ''?>">
             <a href="./agents">
                 <i class="fa fa-users"></i>

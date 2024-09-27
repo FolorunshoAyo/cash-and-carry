@@ -1,6 +1,6 @@
 /* DASHBOARD MENU STYLING */
 .dash-menu{
-    width: 75px;
+    width: 90px;
     position: fixed;
     top: 0;
     left: 0;
@@ -197,6 +197,12 @@ li a span.nav-item-badge{
     margin: 20px 0 0 120px;
     padding: 0 2rem;
     transition: .5s;
+}
+
+#side-menu{
+    padding-right: 10px;
+    height: fit-content;
+    overflow: auto;
 }
 
 .side-menu-bottom{

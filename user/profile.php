@@ -30,7 +30,7 @@ $user_details = $user_details_sql->fetch_assoc();
   <link rel="stylesheet" href="../assets/css/dashboard/user-dash/profile.css" />
   <!-- DASHHBOARD MEDIA QUERIES -->
   <link rel="stylesheet" href="../assets/css/media-queries/user-dash-mediaqueries.css" />
-  <title>Edit Profile - CDS</title>
+  <title>Edit Profile - Halfcarry</title>
 </head>
 
 <body>
@@ -94,9 +94,30 @@ $user_details = $user_details_sql->fetch_assoc();
                 </div>
               </div>
               <div class="form-group-container">
-                <h3 class="static-label">Email</h3>
-                <span class="static-value"><?php echo ($user_details['email']) ?></span>
+                <div class="form-group animate">
+                  <input type="text" name="username" id="username" class="form-input" value="<?php echo ($user_details['username']) ?>" placeholder=" " required />
+                  <label for="mobileno">Enter Username</label>
+                </div>
               </div>
+              <?php
+              if (empty($user_details['email'])) {
+              ?>
+                <div class="form-group-container">
+                  <div class="form-group animate">
+                    <input type="email" name="email" id="email" class="form-input" value="<?php echo ($user_details['email']) ?>" placeholder=" " required />
+                    <label for="email">Enter Email</label>
+                  </div>
+                </div>
+              <?php
+              } else {
+              ?>
+                <div class="form-group-container">
+                  <h3 class="static-label">Email</h3>
+                  <span class="static-value"><?php echo ($user_details['email']) ?></span>
+                </div>
+              <?php
+              }
+              ?>
               <div class="form-group-container">
                 <div class="form-group animate">
                   <input type="number" name="mobileno" id="mobileno" class="form-input" value="<?php echo ($user_details['phone_no']) ?>" placeholder=" " required />
@@ -242,6 +263,26 @@ $user_details = $user_details_sql->fetch_assoc();
           value: 30,
         },
       ])
+      .addField("#username", [{
+          rule: "required",
+          errorMessage: "Field is required",
+        }
+      ])
+    <?php
+    if (empty($user_details['email'])) {
+    ?>
+        .addField("#email", [{
+            rule: "required",
+            errorMessage: "Field is required",
+          },
+          {
+            rule: "email",
+            errorMessage: "Email is invalid!",
+          },
+        ])
+    <?php
+    }
+    ?>
       .addField('#mobileno', [{
           rule: 'required',
           errorMessage: "Field is required"

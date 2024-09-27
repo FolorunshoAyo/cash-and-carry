@@ -57,14 +57,14 @@
                 <div class="form-group-container">
                   <div class="form-group animate">
                     <input
-                      type="email"
-                      name="email"
-                      id="email"
+                      type="text"
+                      name="identifier"
+                      id="identifier"
                       class="form-input"
                       placeholder=" "
                       required
                     />
-                    <label for="email">Email address</label>
+                    <label for="email">Email/Username</label>
                   </div>
                 </div>
 
@@ -120,14 +120,10 @@
       });
 
       validation
-        .addField("#email", [
+        .addField("#identifier", [
           {
             rule: "required",
             errorMessage: "Field is required",
-          },
-          {
-            rule: "email",
-            errorMessage: "Email is invalid!",
           },
         ])
         .addField("#pwd", [
@@ -164,7 +160,6 @@
             },
             success: function (response) {
               response = JSON.parse(response);
-
               if (response.success === 1) {
                 if (response.redirect === "home-page") {
                   //REDIRECT TO DASH

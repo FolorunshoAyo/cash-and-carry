@@ -24,6 +24,12 @@ $url = strval($url);
                 <span>Customers</span>
             </a>
         </li>
+        <li title="users" class="nav-item <?= ($file_name === "edit_user.php") || ($file_name === "add_user.php") || ($file_name === "users.php")? 'active' : ''?>">
+            <a href="./users">
+                <i class="fa fa-users"></i>
+                <span>Users</span>
+            </a>
+        </li>
         <li class="nav-item <?= ($file_name === "halfsavings_requests.php") || ($file_name === "savings_requests.php") || ($file_name === "user_wallets.php")? 'mm-active' : ''?>">
             <a href="javascript:void(0)">
                 <i class="fa fa-handshake-o"></i>
